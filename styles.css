@@ -1,0 +1,61 @@
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+html,body{height:100%;min-height:100svh;background:#000;color:#e8e8e8;overflow:hidden;font-family:"Inter","Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+#scene{position:fixed;inset:0;width:100%;height:100%;display:block}
+header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:clamp(22px,9vh,110px) 8.3vw 0;z-index:5}
+.logo{font-weight:500;letter-spacing:-.015em;font-size:clamp(17px,1.45vw,27px);color:#eee;text-decoration:none}
+nav a{color:#ddd;text-decoration:none;font-size:clamp(11px,.9vw,15px);font-weight:600;letter-spacing:-.01em;margin-left:1.1em;transition:opacity .3s}
+nav a:hover{opacity:.55}
+.hero{position:fixed;left:8.3vw;top:28svh;z-index:2;max-width:34vw}
+.tag{font-size:clamp(10px,.85vw,14px);font-weight:600;letter-spacing:-.01em;color:#cfcfcf;margin-bottom:clamp(18px,3.2vh,40px)}
+h1{font-weight:400;font-size:clamp(38px,3.9vw,74px);line-height:1.08;color:#e9e9e9}
+.sub{margin-top:clamp(28px,7vh,90px);font-size:clamp(14px,1.15vw,20px);line-height:1.55;color:#d6d6d6}
+.cta{display:inline-block;margin-top:clamp(14px,2vh,26px);width:clamp(200px,19vw,330px);padding:clamp(14px,1.9vh,22px) 26px;background:#d4d4d4;color:#777;font-size:clamp(12px,.95vw,16px);letter-spacing:.02em;text-decoration:none;transition:background .4s,color .4s}
+.cta:hover{background:#fff;color:#111}
+@media (max-aspect-ratio:4/5){
+  header{padding-top:28px}
+  nav a{margin-left:.8em}
+  .hero{top:13vh;max-width:84vw}
+  .tag{margin-bottom:14px}
+  h1{font-size:clamp(32px,10vw,54px)}
+  .sub{margin-top:3vh}
+}
+h1{text-wrap:balance}
+:focus-visible{outline:2px solid #fff;outline-offset:4px}
+.skip-link{position:fixed;top:-100px;left:1rem;padding:.6rem 1rem;background:#eee;color:#000;z-index:9999;font-size:14px;text-decoration:none}
+.skip-link:focus{top:1rem}
+/* Sin JS el canvas no pinta: fondo de respaldo para que no quede negro plano */
+html:not(.is-ready) body{background:radial-gradient(ellipse 30% 45% at 50% 50%,#1b2433 0%,#000 70%)}
+
+/* Entrada escalonada (no se desactiva con reduced-motion: es suave, no intrusiva) */
+:root{--ease:cubic-bezier(.22,1,.36,1)}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+.logo,.links,.burger{animation:rise .9s var(--ease) .3s both}
+.tag{animation:rise .9s var(--ease) .55s both}
+h1{animation:rise 1s var(--ease) .65s both}
+.sub{animation:rise 1s var(--ease) .8s both}
+.hero .cta{animation:rise 1s var(--ease) .95s both}
+#scene{animation:sceneIn 2.2s ease both}
+@keyframes sceneIn{from{opacity:0}}
+
+/* Menú móvil */
+.burger{display:none;width:46px;height:46px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);cursor:pointer;position:relative;z-index:4}
+@supports not (backdrop-filter:blur(1px)){.burger{background:rgba(20,20,20,.85)}}
+.burger i{position:absolute;left:14px;right:14px;height:1.5px;background:#eee;transition:transform .35s var(--ease)}
+.burger i:first-child{top:19px}.burger i:last-child{top:25px}
+.is-open .burger i:first-child{transform:translateY(3px) rotate(45deg)}
+.is-open .burger i:last-child{transform:translateY(-3px) rotate(-45deg)}
+.menu{position:fixed;inset:0;z-index:3;display:flex;flex-direction:column;justify-content:center;padding:0 32px;background:rgba(3,4,6,.9);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);opacity:0;visibility:hidden;transition:opacity .42s var(--ease),visibility .42s}
+.is-open .menu{opacity:1;visibility:visible}
+.menu-eyebrow{font-size:12px;letter-spacing:.14em;color:#8a8a8a;margin-bottom:22px}
+.menu ul{list-style:none;padding:0!important;margin:0}
+.menu li a{display:block;color:#eee;text-decoration:none;font-size:max(25px,8vw);font-weight:400;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.menu-cta{margin-top:34px}
+.menu>*{opacity:0;transform:translateY(12px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.is-open .menu>*{opacity:1;transform:none}
+.is-open .menu>*:nth-child(2){transition-delay:.08s}.is-open .menu>*:nth-child(3){transition-delay:.16s}
+@media (max-width:640px){
+  .links{display:none}
+  .burger{display:block}
+}
+.menu a{margin-left:0!important}
