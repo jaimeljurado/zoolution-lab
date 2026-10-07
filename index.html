@@ -9,16 +9,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261006b">
-<script defer src="lib/manifest.js?v=20261006b"></script>
-<script defer src="main.js?v=20261006b"></script>
+<link rel="preload" as="image" href="assets/hero-poster.webp?v=20261007a" fetchpriority="high">
+<link rel="stylesheet" href="styles.css?v=20261007a">
+<script defer src="lib/manifest.js?v=20261007a"></script>
+<script defer src="main.js?v=20261007a"></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <div class="plate" aria-hidden="true">
-  <video class="plate-video" id="heroVideo" autoplay muted loop playsinline preload="auto" poster="assets/hero-poster.webp">
-    <source src="assets/hero.webm" type="video/webm">
-    <source src="assets/hero.mp4" type="video/mp4">
+  <video class="plate-video" id="heroVideo" autoplay muted loop playsinline preload="auto" poster="assets/hero-poster.webp?v=20261007a">
+    <source src="assets/hero.webm?v=20261007a" type="video/webm">
+    <source src="assets/hero.mp4?v=20261007a" type="video/mp4">
   </video>
 </div>
 <canvas id="scene" aria-hidden="true"></canvas>

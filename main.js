@@ -222,7 +222,7 @@
       ctx.fillStyle=grainPat;ctx.fillRect(-ox,-oy,W,H);ctx.restore();
 
     }
-    function loop(n){if(window.__sceneOff){cv.style.display='none';return}if(safe(()=>{frame(n);return true},'frame')===false)cv.style.display='none';else requestAnimationFrame(loop)}
+    function loop(n){if(safe(()=>{frame(n);return true},'frame')===false)cv.style.display='none';else requestAnimationFrame(loop)}
 
     let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>safe(layout,'layout'),150)});
     if(cv.getContext&&safe(()=>{layout();return true},'layout'))requestAnimationFrame(loop);
@@ -246,14 +246,21 @@
     addEventListener("resize", () => { if (innerWidth > 640) set(false); });
   }
 
-  // Vídeo HD: si carga, se muestra y se para la escena en código
+  // Vídeo HD renderizado en Blender. Si no se puede reproducir, se usa la escena en código.
   function initVideo() {
     const v = $("#heroVideo");
     if (!v || v.dataset.ready) return;
     v.dataset.ready = "1";
-    const on = () => { document.documentElement.classList.add("has-video"); setTimeout(() => { window.__sceneOff = true; }, 1800); };
-    if (v.readyState >= 3) on(); else v.addEventListener("canplay", on, { once: true });
-    v.addEventListener("error", () => {}, true);
+    const fallback = () => {
+      if (document.documentElement.classList.contains("no-video")) return;
+      document.documentElement.classList.add("no-video");
+      safe(initScene, "initScene");
+    };
+    const fuentes = $$("source", v);
+    let fallos = 0;
+    fuentes.forEach(s => s.addEventListener("error", () => { if (++fallos >= fuentes.length) fallback(); }));
+    v.addEventListener("error", fallback);
+    if (!v.canPlayType("video/webm") && !v.canPlayType("video/mp4")) fallback();
     const p = v.play && v.play(); if (p && p.catch) p.catch(() => {});
   }
 
@@ -261,7 +268,6 @@
     safe(initVideo, "initVideo");
     safe(initContact, "initContact");
     safe(initMenu, "initMenu");
-    safe(initScene, "initScene");
     document.documentElement.classList.add("is-ready");
   }
 
