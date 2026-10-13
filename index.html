@@ -1,49 +1,59 @@
 <!doctype html>
-<html lang="en">
+<html lang="es" class="is-home-root">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Zoolution Lab — AI Automation / SaaS</title>
-<meta name="description" content="Zoolution Lab builds intelligent systems that give you more time for what matters.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Zoolutions Lab — Automatización, software y apps con IA</title>
+<meta name="description" content="Automatizamos procesos y creamos software a medida para pymes y grandes empresas.">
 <meta name="theme-color" content="#000000">
+<link rel="icon" type="image/png" href="assets/favicon.png?v=20261014a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
-<link rel="preload" as="image" href="assets/hero-poster.webp?v=20261007a" fetchpriority="high">
-<link rel="stylesheet" href="styles.css?v=20261007a">
-<script defer src="lib/manifest.js?v=20261007a"></script>
-<script defer src="main.js?v=20261007a"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900&family=Instrument+Serif:ital@1&display=swap">
+<link rel="stylesheet" href="styles.css?v=20261014a">
+<script defer src="main.js?v=20261014a"></script>
 </head>
-<body>
-<a class="skip-link" href="#main">Skip to content</a>
-<div class="plate" aria-hidden="true">
-  <video class="plate-video" id="heroVideo" autoplay muted loop playsinline preload="auto" poster="assets/hero-poster.webp?v=20261007a">
-    <source src="assets/hero.webm?v=20261007a" type="video/webm">
-    <source src="assets/hero.mp4?v=20261007a" type="video/mp4">
+<body class="is-home" style="background:#000;color:#fff">
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+<div class="grain" aria-hidden="true"></div>
+<div class="hero-photo" aria-hidden="true">
+  <video autoplay muted loop playsinline preload="auto">
+    <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260818_072341_50851634-bbc3-4c33-9acc-7647d4db44aa.mp4" type="video/mp4">
   </video>
 </div>
-<canvas id="scene" aria-hidden="true"></canvas>
-<header>
-  <a class="logo" href="./">ZOOLUTION LAB</a>
-  <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><i></i><i></i></button>
-  <nav class="links" aria-label="Main">
-    <a href="mailto:central@zoolutionslab.com" data-mail>ABOUT</a><a href="mailto:central@zoolutionslab.com" data-mail>SOLUTIONS</a><a href="mailto:central@zoolutionslab.com" data-mail>CONTACT</a>
-  </nav>
-</header>
-<nav class="menu" id="menu" aria-hidden="true" aria-label="Mobile">
-  <p class="menu-eyebrow">MENU</p>
-  <ul>
-    <li><a href="mailto:central@zoolutionslab.com" data-mail>About</a></li>
-    <li><a href="mailto:central@zoolutionslab.com" data-mail>Solutions</a></li>
-    <li><a href="mailto:central@zoolutionslab.com" data-mail>Contact</a></li>
-  </ul>
-  <a class="cta menu-cta" href="mailto:central@zoolutionslab.com" data-mail>LET'S TALK</a>
-</nav>
-<main class="hero" id="main">
-  <p class="tag">AI AUTOMATION / SAAS</p>
-  <h1>BUILD<br>WHAT'S<br>NEXT.</h1>
-  <p class="sub">Intelligent systems.<br>More time for what matters.</p>
-  <a class="cta" href="mailto:central@zoolutionslab.com" data-mail>LET'S TALK</a>
-</main>
+<div class="page">
+  <div class="menu-backdrop" aria-hidden="true"></div>
+  <header class="header">
+    <a class="logo appear appear--scale" style="--d:0.08s" href="index.html" aria-label="Zoolutions Lab, inicio">
+      <img src="assets/logo-mark.png?v=20261014a" alt="" width="60" height="111">
+      <span>Zoolutions<span class="logo-suffix"> Lab</span></span>
+    </a>
+    <nav id="site-nav" aria-label="Principal"><a class="appear appear--scale" style="--d:0.16s" href="servicios.html">Servicios</a><a class="appear appear--soft" style="--d:0.28s" href="proyectos.html">Proyectos</a><a class="appear appear--scale" style="--d:0.40s" href="contacto.html">Contacto</a></nav>
+    <a class="btn btn-solid header-cta appear appear--scale" style="--d:0.34s" href="contacto.html">Hablemos</a>
+    <button class="burger appear appear--scale" style="--d:0.34s" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+  </header>
+  <main class="hero" id="contenido">
+    <div class="hero-copy">
+      <span class="badge appear appear--pop" style="--d:0.22s"><svg class="badge-star" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2.6C12.55 2.6 12.88 3.15 13.08 4.7c.62 4.7 1.52 5.6 6.22 6.22 1.55.2 2.1.53 2.1 1.08s-.55.88-2.1 1.08c-4.7.62-5.6 1.52-6.22 6.22-.2 1.55-.53 2.1-1.08 2.1s-.88-.55-1.08-2.1c-.62-4.7-1.52-5.6-6.22-6.22C3.15 12.88 2.6 12.55 2.6 12s.55-.88 2.1-1.08c4.7-.62 5.6-1.52 6.22-6.22C11.12 3.15 11.45 2.6 12 2.6Z"/></svg>Automatización, software y apps con IA</span>
+      <h1><span class="headline-line"><span class="appear appear--mask" style="--d:0.42s">Ponemos la <em>IA a trabajar</em></span></span><span class="headline-line"><span class="appear appear--mask" style="--d:0.62s">dentro de tu negocio.</span></span></h1>
+      <p class="lede appear appear--soft" style="--d:0.82s;animation-duration:1.25s">Automatizamos lo que hoy se hace a mano y creamos software a medida para tu empresa. Lo implantamos, lo mantenemos y lo mejoramos cada mes.</p>
+      <div class="hero-actions"><a class="btn btn-solid appear appear--btn" style="--d:0.96s" href="contacto.html">Hablemos</a><a class="btn btn-ghost appear appear--side" style="--d:1.10s" href="servicios.html">Ver qué hacemos</a></div>
+    </div>
+  </main>
+  <footer class="stats" aria-label="Datos">
+    <div class="stat appear appear--stat" style="--d:1.12s">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="g1" x1="3" y1="2" x2="14" y2="22" gradientUnits="userSpaceOnUse"><stop stop-color="#fff" stop-opacity=".38"/><stop offset="1" stop-color="#3a3a3a" stop-opacity=".62"/></linearGradient><linearGradient id="g2" x1="13" y1="2" x2="24" y2="22" gradientUnits="userSpaceOnUse"><stop stop-color="#3a3a3a" stop-opacity=".38"/><stop offset="1" stop-color="#fff" stop-opacity=".62"/></linearGradient></defs><rect x="3.4" y="2.6" width="7.2" height="18.8" rx="3.6" fill="url(#g1)"/><rect x="13.4" y="2.6" width="7.2" height="18.8" rx="3.6" fill="url(#g2)"/><rect x="9.2" y="10.9" width="5.6" height="2.2" rx="1.1" fill="#4a4a4a"/></svg>
+      <span>15 módulos de gestión listos para adaptar</span>
+    </div>
+    <div class="stat appear appear--stat" style="--d:1.28s">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.4" y="2.4" width="19.2" height="19.2" rx="6.2" fill="#fff"/><path d="M12 7.1v7.4M8.15 12.35 12 16.2l3.85-3.85" stroke="#111" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      <span>Implantación a medida y servicio mensual</span>
+    </div>
+    <div class="stat appear appear--stat" style="--d:1.44s">
+      <svg class="stat-icon-wide" viewBox="0 0 40 22" aria-hidden="true"><circle cx="10.2" cy="11" r="9.2" fill="#2b2b2b"/><path d="M5.6 6.4l2.2 2.8-3 .4Z M14.8 6.4l-2.2 2.8 3 .4Z" fill="#f4f4f4"/><ellipse cx="10.2" cy="12.1" rx="4.15" ry="3.7" fill="#f4f4f4"/><circle cx="8.7" cy="11.6" r=".7" fill="#1a1a1a"/><circle cx="11.7" cy="11.6" r=".7" fill="#1a1a1a"/><circle cx="20.2" cy="11" r="9.2" fill="#fff"/><circle cx="17.6" cy="9.6" r="1.7" fill="#111"/><circle cx="22.8" cy="9.6" r="1.7" fill="#111"/><ellipse cx="20.2" cy="12.4" rx="1" ry=".7" fill="#111"/><path d="M17.4 14.4q2.8 2.4 5.6 0" stroke="#111" stroke-width="1.2" fill="none" stroke-linecap="round"/><circle cx="30.2" cy="11" r="9.2" fill="#f26b1d"/><text x="30.2" y="15.1" font-family="Inter, sans-serif" font-weight="700" font-size="12.5" text-anchor="middle" fill="#fff">z</text></svg>
+      <span>Para pymes y grandes empresas</span>
+    </div>
+  </footer>
+</div>
 </body>
 </html>
