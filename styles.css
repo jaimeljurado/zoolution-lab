@@ -46,15 +46,17 @@ button, input, select, textarea { font-family: inherit; }
 .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 70%, rgba(142,127,148,.18), transparent 70%); }
 .hero-vid { object-fit: cover; }
 .dots { position: absolute; inset: 0; pointer-events: none; opacity: .05; background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 24px 24px; }
-.watermark { position: absolute; left: 0; right: 0; top: calc(50% + 50px); transform: translateY(-50%); text-align: center; font-family: var(--anton); text-transform: uppercase; font-size: clamp(110px, 21vw, 380px); letter-spacing: -4px; line-height: 1; white-space: nowrap; opacity: .10; pointer-events: none; user-select: none;
+.watermark { position: absolute; left: 0; right: 0; top: calc(50% + 50px); transform: translateY(-50%); text-align: center; font-family: var(--anton); text-transform: uppercase; font-size: clamp(110px, 21vw, 380px); letter-spacing: 2px; line-height: 1; white-space: nowrap; pointer-events: none; user-select: none;
+  color: rgba(255,110,150,.22); -webkit-text-fill-color: rgba(255,110,150,.17);
+  text-shadow: 0 0 16px rgba(255,50,110,.6), 0 0 50px rgba(255,30,100,.4), 0 0 110px rgba(255,20,90,.25); }
   background: radial-gradient(circle, rgba(142,127,148,0) 0%, #8E7F94 70%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
-.hero-short .watermark { font-size: clamp(90px, 17vw, 300px); }
+.hero-short .watermark { font-size: clamp(60px, 12.5vw, 230px); top: calc(50% + 70px); }
 .hero-fade { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; padding: 96px var(--px) clamp(24px, 4vw, 48px); opacity: 0; transition: opacity 1s; }
 .hero-fade.in { opacity: 1; }
 .hero-row { display: flex; flex-direction: column; gap: 24px; }
 .hero-left { display: flex; flex-direction: column; gap: 16px; }
 .h-mega { font-weight: 400; font-size: clamp(40px, 10vw, 100px); line-height: .95; letter-spacing: -0.03em; }
-.hero-short .h-mega { font-size: clamp(34px, 7.4vw, 84px); }
+.hero-short .h-mega { font-size: clamp(24px, 4.2vw, 52px); line-height: 1.02; }
 .h-right { text-align: left; }
 .hero-desc { max-width: 24rem; font-size: 13px; color: rgba(255,255,255,.65); line-height: 1.65; }
 [data-scramble-in] { display: inline-block; min-height: 1em; }
