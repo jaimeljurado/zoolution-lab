@@ -3,98 +3,105 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Zoolutions Lab — Do it all · Automatización, software y apps con IA</title>
+<title>Zoolutions Lab — Do it all · Automatización, software y apps</title>
 <meta name="description" content="Automatizamos procesos y creamos software a medida para pymes y grandes empresas.">
 <meta name="theme-color" content="#000000">
-<link rel="icon" type="image/png" href="assets/favicon.png?v=20261014b">
+<link rel="icon" type="image/png" href="assets/favicon.png?v=20261014c">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Instrument+Serif:ital@0;1&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261014b">
-<script defer src="main.js?v=20261014b"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Anton+SC&display=swap">
+<link rel="stylesheet" href="styles.css?v=20261014c">
+<script defer src="main.js?v=20261014c"></script>
 </head>
 <body style="background:#000;color:#fff">
 <a class="skip-link" href="#contenido">Saltar al contenido</a>
-<header class="topbar">
-  <div class="nav liquid-glass">
-    <a class="brand" href="index.html" aria-label="Zoolutions Lab, inicio">
-      <img src="assets/logo-mark.png?v=20261014b" alt="" width="60" height="111"><span>Zoolutions<span class="brand-suffix"> Lab</span></span>
-    </a>
-    <nav class="nav-links" id="site-nav" aria-label="Principal"><a href="servicios.html">Servicios</a><a href="proyectos.html">Proyectos</a><a href="contacto.html">Contacto</a></nav>
-    <div class="nav-right">
-      <a class="nav-text" href="mailto:central@zoolutionslab.com">central@zoolutionslab.com</a>
-      <a class="pill liquid-glass" href="contacto.html">Hablemos</a>
-      <button class="burger" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Abrir menú"><span></span><span></span></button>
+<header class="topbar" id="topbar">
+  <div class="tb-left">
+    <a class="pill-glass logo-pill" href="index.html" aria-label="Zoolutions Lab, inicio"><img src="assets/logo-mark.png" alt="" width="60" height="111"><span>Zoolutions Lab</span></a>
+    <div class="pill-glass menu-pill" id="menu-pill">
+      <button class="hamb" type="button" id="hamb" aria-expanded="false" aria-controls="menu-links" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+      <nav class="menu-links" id="menu-links" aria-label="Principal"><a class="scr" data-scramble href="servicios.html">Servicios</a><a class="scr" data-scramble href="proyectos.html">Proyectos</a><a class="scr" data-scramble href="contacto.html">Contacto</a></nav>
     </div>
   </div>
+  <a class="dl-btn" href="contacto.html" data-scramble-host><span class="scr-label" data-scramble-text="Hablemos">Hablemos</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
 </header>
-<main id="contenido">
-<section class="hero hero-home">
-  <div class="hero-bg"><video class="hero-video" muted playsinline loop preload="metadata" autoplay data-fade><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_074625_a81f018a-956b-43fb-9aee-4d1508e30e6a.mp4" type="video/mp4"></video></div>
-  <div class="hero-shade"></div>
-  <div class="hero-content hero-content-home">
-    <h1 class="mega rv">Do it <em>all</em>.</h1>
-    <form class="mail liquid-glass rv" style="--rd:.15s" id="hero-mail" action="contacto.html" method="get">
-      <input type="email" name="email" placeholder="Tu email, y te contamos cómo" aria-label="Tu email" autocomplete="email">
-      <button type="submit" aria-label="Enviar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-    </form>
-    <p class="sub rv" style="--rd:.25s">Automatización, software y apps con IA para cualquier empresa. Cuéntanos qué te quita tiempo y lo hacemos por ti.</p>
-    <a class="pill pill-lg liquid-glass rv" style="--rd:.35s" href="servicios.html">Ver qué hacemos</a>
-  </div>
-  <div class="hero-foot"><span class="liquid-glass chip-foot">15 módulos de gestión listos para adaptar</span><span class="liquid-glass chip-foot">Implantación a medida y servicio mensual</span><span class="liquid-glass chip-foot">Para pymes y grandes empresas</span></div>
-</section>
-
-<section class="about">
-  <p class="label rv">Zoolutions Lab</p>
-  <h2 class="big rv" style="--rd:.1s">Ponemos la <em>IA a trabajar</em><br class="br-d"> dentro de tu negocio, para que tú <em>decidas y crezcas.</em></h2>
-</section>
-
-<section class="featured">
-  <div class="featured-box rv">
-    <video class="fill" muted playsinline loop preload="metadata" autoplay data-lazy><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260402_054547_9875cfc5-155a-4229-8ec8-b7ba7125cbf8.mp4" type="video/mp4"></video>
-    <div class="featured-shade"></div>
-    <div class="featured-over">
-      <div class="liquid-glass card-over">
-        <p class="label sm">Cómo trabajamos</p>
-        <p>Lo que hacemos no se entrega y se olvida: se implanta, se mantiene y se mejora cada mes. Escuchamos, diseñamos, implantamos y te acompañamos.</p>
+<section class="hero hero-tall" id="hero">
+  <div class="hero-bg"><video class="vid hero-vid" muted playsinline loop preload="auto" data-scrub><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_083515_290e5a10-0b95-41af-a5e2-32b6389baa4d.mp4" type="video/mp4"></video></div>
+  <div class="dots" aria-hidden="true"></div>
+  <div class="watermark" aria-hidden="true">DO IT ALL</div>
+  <div class="hero-fade fade-in-on">
+    <div class="spacer"></div>
+    <div class="hero-row">
+      <div class="hero-left">
+        <h1 class="h-mega"><span data-scramble-in data-delay="200">Menos tareas</span><br><span data-scramble-in data-delay="500">Más negocio</span></h1>
+        <p class="hero-desc">Automatizamos lo que hoy se hace a mano y creamos software y apps a medida. Lo implantamos, lo mantenemos y lo mejoramos cada mes.</p>
       </div>
-      <a class="pill pill-lg liquid-glass" href="contacto.html">Hablemos</a>
+      <h2 class="h-mega h-right"><span data-scramble-in data-delay="700">Cualquier</span><br><span data-scramble-in data-delay="1000">empresa</span></h2>
+    </div>
+  </div>
+</section>
+<main id="contenido">
+<section class="cine">
+  <div class="sec-video"><video class="vid" muted playsinline loop preload="auto" autoplay data-lazy><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_092455_089c54f8-3b03-4966-9df1-e9746063d0ef.mp4" type="video/mp4"></video></div>
+  <div class="cine-top"></div>
+  <div class="cine-wrap"><p class="cine-text" id="cine-text">Lo que hoy se hace a mano, lo hacemos automático. Cada tarea repetitiva se convierte en un proceso ordenado, medible y visible. Construimos el software que te falta, adaptado a cómo trabaja tu empresa. Lo implantamos, lo mantenemos y lo mejoramos cada mes.</p></div>
+</section>
+
+<section class="metrics">
+  <div class="sec-video"><video class="vid" muted playsinline loop preload="auto" autoplay data-lazy><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_095810_ecea3dd2-fc5e-4e41-8696-4219290b6589.mp4" type="video/mp4"></video><div class="sec-shade"></div></div>
+  <div class="metrics-in">
+    <p class="sub-label rv">Zoolutions Lab en cifras</p>
+    <div class="metrics-grid">
+      <div class="metric rv"><div class="m-val">15</div><div class="m-lab">Módulos de gestión listos para adaptar</div></div>
+      <div class="metric rv" style="--rd:.15s"><div class="m-val">5</div><div class="m-lab">Ya funcionando en proyectos reales</div></div>
+      <div class="metric rv" style="--rd:.3s"><div class="m-val">6</div><div class="m-lab">Proyectos terminados o en marcha</div></div>
     </div>
   </div>
 </section>
 
-<section class="philo">
-  <h2 class="huge rv">Automatizar <em>x</em> Software</h2>
-  <div class="philo-grid">
-    <div class="philo-video rv"><video class="fill" muted playsinline loop preload="metadata" autoplay data-lazy><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260307_083826_e938b29f-a43a-41ec-a153-3d4730578ab8.mp4" type="video/mp4"></video></div>
-    <div class="philo-text rv" style="--rd:.12s">
-      <div><p class="label sm">Todo lo repetitivo</p><p class="body-lg">Leer correos y facturas, pasar albaranes, avisar a tiempo, preparar informes: lo que hoy se hace a mano pasa a hacerse solo. Tu equipo recupera horas cada semana y los errores desaparecen.</p></div>
-      <div class="divider"></div>
-      <div><p class="label sm">Todo lo que te falta</p><p class="body-lg">Módulos de gestión que se contratan sueltos o juntos, como un ERP, y software a medida para lo que no existe en el mercado. Para una pyme o para una gran empresa, de cualquier sector.</p></div>
+<section class="tech">
+  <div class="sec-video"><video class="vid" muted playsinline loop preload="auto" autoplay data-lazy><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_095750_32a52ce0-2005-45c9-9093-41f03fde9530.mp4" type="video/mp4"></video><div class="sec-shade"></div></div>
+  <div class="tech-in">
+    <div class="tech-top">
+      <h2 class="h-sec rv">A tu medida<br>y sin límites</h2>
+      <p class="tech-p rv" style="--rd:.2s">Primero entendemos cómo trabaja tu empresa. Después lo adaptamos todo a ti, sin que tengas que cambiar tu forma de trabajar.</p>
+    </div>
+    <div class="spacer"></div>
+    <div class="tech-grid rv" style="--rd:.3s">
+      <a href="servicios.html"><h3>Automatización de procesos</h3><p>Correos, facturas, albaranes, avisos e informes: en automático.</p></a>
+      <a href="servicios.html"><h3>Software por módulos</h3><p>Herramientas de gestión sueltas o juntas, como un ERP.</p></a>
+      <a href="servicios.html"><h3>Soluciones por sector</h3><p>Hostelería, inmobiliarias, acero, educación y más.</p></a>
+      <a href="proyectos.html"><h3>Proyectos a medida</h3><p>Sistemas para empresas grandes, integrados con lo que ya usan.</p></a>
     </div>
   </div>
 </section>
 
-<section class="services">
-  <div class="services-head rv"><h2 class="mid">Qué hacemos</h2><a class="label link" href="servicios.html">Todos los servicios →</a></div>
-  <div class="services-grid">
-    <a class="svc liquid-glass rv" href="servicios.html">
-      <div class="svc-media"><video class="fill" muted playsinline loop preload="metadata" autoplay data-lazy><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260314_131748_f2ca2a28-fed7-44c8-b9a9-bd9acdd5ec31.mp4" type="video/mp4"></video><div class="svc-shade"></div></div>
-      <div class="svc-body"><div class="svc-top"><span class="label sm">Automatización</span><span class="go liquid-glass"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span></div>
-      <h3>Procesos que se hacen solos</h3><p>Facturas, correos, reservas, alertas e informes funcionando en automático, conectados a las herramientas que ya usas.</p></div>
-    </a>
-    <a class="svc liquid-glass rv" style="--rd:.15s" href="proyectos.html">
-      <div class="svc-media"><video class="fill" muted playsinline loop preload="metadata" autoplay data-lazy><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260324_151826_c7218672-6e92-402c-9e45-f1e0f454bdc4.mp4" type="video/mp4"></video><div class="svc-shade"></div></div>
-      <div class="svc-body"><div class="svc-top"><span class="label sm">Software y apps</span><span class="go liquid-glass"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span></div>
-      <h3>Software a medida, listo para crecer</h3><p>Un ERP por módulos, proyectos a medida y apps propias. Ya está funcionando en negocios reales.</p></div>
-    </a>
+<section class="arch">
+  <div class="arch-head rv">
+    <p class="sub-label">Cómo trabajamos</p>
+    <h2 class="h-arch">Cuatro pasos. Cero fricción.</h2>
+    <p class="arch-p">Escuchamos cómo funciona tu empresa. Diseñamos la solución. La implantamos con tu equipo. Y nos quedamos para mantenerla y mejorarla cada mes.</p>
   </div>
+  <div class="layers rv" style="--rd:.2s">
+    <div class="layer"><span>Paso 1</span><b>Escuchamos</b></div>
+    <div class="layer"><span>Paso 2</span><b>Diseñamos</b></div>
+    <div class="layer"><span>Paso 3</span><b>Implantamos</b></div>
+    <div class="layer"><span>Paso 4</span><b>Mantenemos</b></div>
+  </div>
+  <a class="cta-solid" href="contacto.html" data-scramble-host><span class="scr-label" data-scramble-text="Hablemos">Hablemos</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
 </section>
 </main>
-<footer class="site-foot">
-  <a class="brand" href="index.html"><img src="assets/logo-mark.png" alt="" width="60" height="111"><span>Zoolutions<span class="brand-suffix"> Lab</span></span></a>
-  <span class="foot-copy">© 2026 Zoolutions Lab · Automatización, software y apps con IA</span>
-  <a class="foot-mail" href="mailto:central@zoolutionslab.com">central@zoolutionslab.com</a>
+<footer class="foot">
+  <div class="foot-video"><video class="vid" muted playsinline loop preload="auto" autoplay data-lazy><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_080203_fd7f4f85-3a86-4837-8192-85e7bfe68e75.mp4" type="video/mp4"></video></div>
+  <div class="foot-text">
+    <div>
+      <div class="foot-brand"><img src="assets/logo-mark.png" alt="" width="60" height="111"><span>Zoolutions Lab</span></div>
+      <p class="foot-p">Lo que hacemos no se entrega y se olvida: se implanta, se mantiene y se mejora cada mes. Automatización, software y apps para pymes y grandes empresas.</p>
+      <p class="foot-links"><a href="mailto:central@zoolutionslab.com">central@zoolutionslab.com</a></p>
+      <p class="foot-links"><a href="servicios.html">Servicios</a> · <a href="proyectos.html">Proyectos</a> · <a href="contacto.html">Contacto</a></p>
+    </div>
+    <p class="foot-copy">© 2026 Zoolutions Lab. Todos los derechos reservados.</p>
+  </div>
 </footer>
 </body>
 </html>

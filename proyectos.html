@@ -6,42 +6,45 @@
 <title>Proyectos — Zoolutions Lab</title>
 <meta name="description" content="Casos reales en marcha y apps propias de Zoolutions Lab.">
 <meta name="theme-color" content="#000000">
-<link rel="icon" type="image/png" href="assets/favicon.png?v=20261014b">
+<link rel="icon" type="image/png" href="assets/favicon.png?v=20261014c">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Instrument+Serif:ital@0;1&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261014b">
-<script defer src="main.js?v=20261014b"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Anton+SC&display=swap">
+<link rel="stylesheet" href="styles.css?v=20261014c">
+<script defer src="main.js?v=20261014c"></script>
 </head>
 <body style="background:#000;color:#fff">
 <a class="skip-link" href="#contenido">Saltar al contenido</a>
-<header class="topbar">
-  <div class="nav liquid-glass">
-    <a class="brand" href="index.html" aria-label="Zoolutions Lab, inicio">
-      <img src="assets/logo-mark.png?v=20261014b" alt="" width="60" height="111"><span>Zoolutions<span class="brand-suffix"> Lab</span></span>
-    </a>
-    <nav class="nav-links" id="site-nav" aria-label="Principal"><a href="servicios.html">Servicios</a><a href="proyectos.html" aria-current="page">Proyectos</a><a href="contacto.html">Contacto</a></nav>
-    <div class="nav-right">
-      <a class="nav-text" href="mailto:central@zoolutionslab.com">central@zoolutionslab.com</a>
-      <a class="pill liquid-glass" href="contacto.html">Hablemos</a>
-      <button class="burger" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Abrir menú"><span></span><span></span></button>
+<header class="topbar" id="topbar">
+  <div class="tb-left">
+    <a class="pill-glass logo-pill" href="index.html" aria-label="Zoolutions Lab, inicio"><img src="assets/logo-mark.png" alt="" width="60" height="111"><span>Zoolutions Lab</span></a>
+    <div class="pill-glass menu-pill" id="menu-pill">
+      <button class="hamb" type="button" id="hamb" aria-expanded="false" aria-controls="menu-links" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+      <nav class="menu-links" id="menu-links" aria-label="Principal"><a class="scr" data-scramble href="servicios.html">Servicios</a><a class="scr" data-scramble href="proyectos.html" aria-current="page">Proyectos</a><a class="scr" data-scramble href="contacto.html">Contacto</a></nav>
     </div>
   </div>
+  <a class="dl-btn" href="contacto.html" data-scramble-host><span class="scr-label" data-scramble-text="Hablemos">Hablemos</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
 </header>
-  <main id="contenido">
-    <section class="hero hero-inner">
-  <div class="hero-bg"><video class="hero-video" muted playsinline loop preload="metadata" autoplay data-fade><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_074625_a81f018a-956b-43fb-9aee-4d1508e30e6a.mp4" type="video/mp4"></video></div>
-  <div class="hero-shade"></div>
-  <div class="hero-content">
-    <span class="eyebrow liquid-glass rv">Proyectos</span>
-    <h1 class="display rv" style="--rd:.08s">Lo que ya está <em>funcionando</em><br>en negocios reales.</h1>
-    <p class="sub rv" style="--rd:.2s">Cada proyecto empieza con un problema concreto del día a día. Estos son algunos en los que estamos trabajando ahora.</p>
+  <section class="hero hero-short" id="hero">
+  <div class="hero-bg"><video class="vid hero-vid" muted playsinline loop preload="auto" data-scrub><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_083515_290e5a10-0b95-41af-a5e2-32b6389baa4d.mp4" type="video/mp4"></video></div>
+  <div class="dots" aria-hidden="true"></div>
+  <div class="watermark" aria-hidden="true">PROYECTOS</div>
+  <div class="hero-fade fade-in-on">
+    <div class="spacer"></div>
+    <div class="hero-row">
+      <div class="hero-left">
+        <h1 class="h-mega"><span data-scramble-in data-delay="200">Lo que ya</span><br><span data-scramble-in data-delay="500">está funcionando</span></h1>
+        <p class="hero-desc">Cada proyecto empieza con un problema concreto del día a día. Estos son algunos en los que estamos trabajando ahora.</p>
+      </div>
+      <h2 class="h-mega h-right"><span data-scramble-in data-delay="700">En negocios</span><br><span data-scramble-in data-delay="1000">reales</span></h2>
+    </div>
   </div>
 </section>
+<main id="contenido">
     <div class="wrap">
       <p class="section-label reveal">Casos en marcha</p>
       <div class="grid grid-2">
-        <article class="panel liquid-glass reveal">
+        <article class="panel reveal">
           <span class="tag">En desarrollo · instalación próxima</span>
           <span class="kicker">Hostelería</span>
           <h3>Un restaurante, con la gestión del día a día ordenada y automatizada</h3>
@@ -51,7 +54,7 @@
             <li><b>Lo que viene.</b> Inventario y conexión con el TPV.</li>
           </ul>
         </article>
-        <article class="panel liquid-glass reveal">
+        <article class="panel reveal">
           <span class="tag">Muy avanzado</span>
           <span class="kicker">Inmobiliario</span>
           <h3>Una agencia inmobiliaria, con el trabajo del captador hecho cada mañana</h3>
@@ -65,12 +68,12 @@
       <div class="block">
         <p class="section-label reveal">Apps propias</p>
         <div class="grid grid-2">
-          <article class="panel liquid-glass reveal">
+          <article class="panel reveal">
             <span class="tag">Primera versión funcionando</span>
             <h3>Family App</h3>
             <p>Las tareas de casa convertidas en juego: los padres crean las tareas y los hijos ganan puntos al cumplirlas, cada uno con su perfil. También pensada para colegios y sus familias.</p>
           </article>
-          <article class="panel liquid-glass reveal">
+          <article class="panel reveal">
             <span class="tag soon">Próximamente</span>
             <h3>App de karting</h3>
             <p>Para circuitos y pilotos: tiempos por vuelta en el móvil, clasificación en vivo, comparación de carreras, ranking por nivel y campeonatos entre amigos.</p>
@@ -81,13 +84,13 @@
       <div class="block">
         <p class="section-label reveal">Lo que viene</p>
         <div class="grid grid-2">
-          <article class="panel liquid-glass teaser reveal">
+          <article class="panel teaser reveal">
             <span class="tag soon">Terminado · sin anunciar</span>
             <h3>Proyecto <span class="redact">████████</span></h3>
             <div class="bars"><i></i><i></i><i style="width:62%"></i></div>
             <p class="tease">Ya está hecho. Ya funciona. Todavía no podemos contar qué es… pero va a cambiar la forma de trabajar de un sector entero.</p>
           </article>
-          <article class="panel liquid-glass teaser reveal">
+          <article class="panel teaser reveal">
             <span class="tag soon">Terminado · sin anunciar</span>
             <h3>Proyecto <span class="redact">███████████</span></h3>
             <div class="bars"><i></i><i style="width:84%"></i><i style="width:48%"></i></div>
@@ -103,10 +106,29 @@
       </div>
     </div>
   </main>
-<footer class="site-foot">
-  <a class="brand" href="index.html"><img src="assets/logo-mark.png" alt="" width="60" height="111"><span>Zoolutions<span class="brand-suffix"> Lab</span></span></a>
-  <span class="foot-copy">© 2026 Zoolutions Lab · Automatización, software y apps con IA</span>
-  <a class="foot-mail" href="mailto:central@zoolutionslab.com">central@zoolutionslab.com</a>
+  <footer class="foot">
+  <div class="foot-video"><video class="vid" muted playsinline loop preload="auto" autoplay data-lazy><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_080203_fd7f4f85-3a86-4837-8192-85e7bfe68e75.mp4" type="video/mp4"></video></div>
+  <div class="foot-text">
+    <div>
+      <div class="foot-brand"><img src="assets/logo-mark.png" alt="" width="60" height="111"><span>Zoolutions Lab</span></div>
+      <p class="foot-p">Lo que hacemos no se entrega y se olvida: se implanta, se mantiene y se mejora cada mes. Automatización, software y apps para pymes y grandes empresas.</p>
+      <p class="foot-links"><a href="mailto:central@zoolutionslab.com">central@zoolutionslab.com</a></p>
+      <p class="foot-links"><a href="servicios.html">Servicios</a> · <a href="proyectos.html">Proyectos</a> · <a href="contacto.html">Contacto</a></p>
+    </div>
+    <p class="foot-copy">© 2026 Zoolutions Lab. Todos los derechos reservados.</p>
+  </div>
+</footer>
+<footer class="foot">
+  <div class="foot-video"><video class="vid" muted playsinline loop preload="auto" autoplay data-lazy><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_080203_fd7f4f85-3a86-4837-8192-85e7bfe68e75.mp4" type="video/mp4"></video></div>
+  <div class="foot-text">
+    <div>
+      <div class="foot-brand"><img src="assets/logo-mark.png" alt="" width="60" height="111"><span>Zoolutions Lab</span></div>
+      <p class="foot-p">Lo que hacemos no se entrega y se olvida: se implanta, se mantiene y se mejora cada mes. Automatización, software y apps para pymes y grandes empresas.</p>
+      <p class="foot-links"><a href="mailto:central@zoolutionslab.com">central@zoolutionslab.com</a></p>
+      <p class="foot-links"><a href="servicios.html">Servicios</a> · <a href="proyectos.html">Proyectos</a> · <a href="contacto.html">Contacto</a></p>
+    </div>
+    <p class="foot-copy">© 2026 Zoolutions Lab. Todos los derechos reservados.</p>
+  </div>
 </footer>
 </body>
 </html>

@@ -6,41 +6,44 @@
 <title>Contacto — Zoolutions Lab</title>
 <meta name="description" content="Cuéntanos qué te quita tiempo. central@zoolutionslab.com">
 <meta name="theme-color" content="#000000">
-<link rel="icon" type="image/png" href="assets/favicon.png?v=20261014b">
+<link rel="icon" type="image/png" href="assets/favicon.png?v=20261014c">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Instrument+Serif:ital@0;1&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261014b">
-<script defer src="main.js?v=20261014b"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Anton+SC&display=swap">
+<link rel="stylesheet" href="styles.css?v=20261014c">
+<script defer src="main.js?v=20261014c"></script>
 </head>
 <body style="background:#000;color:#fff">
 <a class="skip-link" href="#contenido">Saltar al contenido</a>
-<header class="topbar">
-  <div class="nav liquid-glass">
-    <a class="brand" href="index.html" aria-label="Zoolutions Lab, inicio">
-      <img src="assets/logo-mark.png?v=20261014b" alt="" width="60" height="111"><span>Zoolutions<span class="brand-suffix"> Lab</span></span>
-    </a>
-    <nav class="nav-links" id="site-nav" aria-label="Principal"><a href="servicios.html">Servicios</a><a href="proyectos.html">Proyectos</a><a href="contacto.html" aria-current="page">Contacto</a></nav>
-    <div class="nav-right">
-      <a class="nav-text" href="mailto:central@zoolutionslab.com">central@zoolutionslab.com</a>
-      <a class="pill liquid-glass" href="contacto.html">Hablemos</a>
-      <button class="burger" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Abrir menú"><span></span><span></span></button>
+<header class="topbar" id="topbar">
+  <div class="tb-left">
+    <a class="pill-glass logo-pill" href="index.html" aria-label="Zoolutions Lab, inicio"><img src="assets/logo-mark.png" alt="" width="60" height="111"><span>Zoolutions Lab</span></a>
+    <div class="pill-glass menu-pill" id="menu-pill">
+      <button class="hamb" type="button" id="hamb" aria-expanded="false" aria-controls="menu-links" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+      <nav class="menu-links" id="menu-links" aria-label="Principal"><a class="scr" data-scramble href="servicios.html">Servicios</a><a class="scr" data-scramble href="proyectos.html">Proyectos</a><a class="scr" data-scramble href="contacto.html" aria-current="page">Contacto</a></nav>
     </div>
   </div>
+  <a class="dl-btn" href="contacto.html" data-scramble-host><span class="scr-label" data-scramble-text="Hablemos">Hablemos</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
 </header>
-  <main id="contenido">
-    <section class="hero hero-inner">
-  <div class="hero-bg"><video class="hero-video" muted playsinline loop preload="metadata" autoplay data-fade><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_074625_a81f018a-956b-43fb-9aee-4d1508e30e6a.mp4" type="video/mp4"></video></div>
-  <div class="hero-shade"></div>
-  <div class="hero-content">
-    <span class="eyebrow liquid-glass rv">Contacto</span>
-    <h1 class="display rv" style="--rd:.08s">Cuéntanos qué te<br><em>quita tiempo</em>.</h1>
-    <p class="sub rv" style="--rd:.2s">Cada hora que tu equipo pierde en tareas repetitivas es una hora que tu competencia gana. Cuéntanos dónde se te va el tiempo y lo convertimos en un sistema que trabaja solo.</p>
+  <section class="hero hero-short" id="hero">
+  <div class="hero-bg"><video class="vid hero-vid" muted playsinline loop preload="auto" data-scrub><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_083515_290e5a10-0b95-41af-a5e2-32b6389baa4d.mp4" type="video/mp4"></video></div>
+  <div class="dots" aria-hidden="true"></div>
+  <div class="watermark" aria-hidden="true">HABLEMOS</div>
+  <div class="hero-fade fade-in-on">
+    <div class="spacer"></div>
+    <div class="hero-row">
+      <div class="hero-left">
+        <h1 class="h-mega"><span data-scramble-in data-delay="200">Cuéntanos qué</span><br><span data-scramble-in data-delay="500">te quita tiempo</span></h1>
+        <p class="hero-desc">Cada hora que tu equipo pierde en tareas repetitivas es una hora que tu competencia gana. Cuéntanos dónde se te va el tiempo y lo convertimos en un sistema que trabaja solo.</p>
+      </div>
+      <h2 class="h-mega h-right"><span data-scramble-in data-delay="700">Y lo</span><br><span data-scramble-in data-delay="1000">resolvemos</span></h2>
+    </div>
   </div>
 </section>
+<main id="contenido">
     <div class="wrap">
       <div class="grid grid-2">
-        <article class="panel liquid-glass reveal">
+        <article class="panel reveal">
           <h3>Escríbenos</h3>
           <form class="form" id="contact-form" novalidate>
             <div class="field"><label for="f-nombre">Nombre</label><input id="f-nombre" name="nombre" autocomplete="name" required></div>
@@ -55,19 +58,38 @@
             <button class="btn btn-solid" type="submit">Enviar mensaje</button>
           </form>
         </article>
-        <article class="panel liquid-glass reveal">
+        <article class="panel reveal">
           <h3>Menos tareas. Más negocio.</h3>
-          <p class="pitch">La IA no sustituye a tu equipo: lo libera. Automatizamos lo repetitivo, conectamos tus herramientas y construimos el software que tu empresa lleva años necesitando, para que tú te dediques a decidir y crecer.</p>
+          <p class="pitch">Tu equipo no está para perder el día en tareas repetitivas. Automatizamos lo repetitivo, conectamos tus herramientas y construimos el software que tu empresa lleva años necesitando, para que tú te dediques a decidir y crecer.</p>
           <p style="margin-top:14px">Lo que hacemos no se entrega y se olvida: se implanta, se mantiene y mejora cada mes.</p>
           <div class="contact-line"><span style="color:#9a9a9a">Email</span><a href="mailto:central@zoolutionslab.com">central@zoolutionslab.com</a></div>
         </article>
       </div>
     </div>
   </main>
-<footer class="site-foot">
-  <a class="brand" href="index.html"><img src="assets/logo-mark.png" alt="" width="60" height="111"><span>Zoolutions<span class="brand-suffix"> Lab</span></span></a>
-  <span class="foot-copy">© 2026 Zoolutions Lab · Automatización, software y apps con IA</span>
-  <a class="foot-mail" href="mailto:central@zoolutionslab.com">central@zoolutionslab.com</a>
+  <footer class="foot">
+  <div class="foot-video"><video class="vid" muted playsinline loop preload="auto" autoplay data-lazy><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_080203_fd7f4f85-3a86-4837-8192-85e7bfe68e75.mp4" type="video/mp4"></video></div>
+  <div class="foot-text">
+    <div>
+      <div class="foot-brand"><img src="assets/logo-mark.png" alt="" width="60" height="111"><span>Zoolutions Lab</span></div>
+      <p class="foot-p">Lo que hacemos no se entrega y se olvida: se implanta, se mantiene y se mejora cada mes. Automatización, software y apps para pymes y grandes empresas.</p>
+      <p class="foot-links"><a href="mailto:central@zoolutionslab.com">central@zoolutionslab.com</a></p>
+      <p class="foot-links"><a href="servicios.html">Servicios</a> · <a href="proyectos.html">Proyectos</a> · <a href="contacto.html">Contacto</a></p>
+    </div>
+    <p class="foot-copy">© 2026 Zoolutions Lab. Todos los derechos reservados.</p>
+  </div>
+</footer>
+<footer class="foot">
+  <div class="foot-video"><video class="vid" muted playsinline loop preload="auto" autoplay data-lazy><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_080203_fd7f4f85-3a86-4837-8192-85e7bfe68e75.mp4" type="video/mp4"></video></div>
+  <div class="foot-text">
+    <div>
+      <div class="foot-brand"><img src="assets/logo-mark.png" alt="" width="60" height="111"><span>Zoolutions Lab</span></div>
+      <p class="foot-p">Lo que hacemos no se entrega y se olvida: se implanta, se mantiene y se mejora cada mes. Automatización, software y apps para pymes y grandes empresas.</p>
+      <p class="foot-links"><a href="mailto:central@zoolutionslab.com">central@zoolutionslab.com</a></p>
+      <p class="foot-links"><a href="servicios.html">Servicios</a> · <a href="proyectos.html">Proyectos</a> · <a href="contacto.html">Contacto</a></p>
+    </div>
+    <p class="foot-copy">© 2026 Zoolutions Lab. Todos los derechos reservados.</p>
+  </div>
 </footer>
 </body>
 </html>
