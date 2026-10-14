@@ -16,10 +16,10 @@ button, input, select, textarea { font-family: inherit; }
 .topbar > * { pointer-events: auto; }
 .tb-left { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; min-width: 0; width: 120px; }
 .pill-glass { height: 48px; border-radius: 14px; background: rgba(255,255,255,.15); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); display: flex; align-items: center; transition: background-color .3s, transform .3s; }
-.logo-pill { width: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0; height: auto; background: none; border-radius: 0; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; font-size: 13.5px; font-weight: 700; letter-spacing: -0.04em; white-space: nowrap; text-align: center; transition: transform .3s, opacity .35s; }
+.logo-pill { width: 132px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0; height: auto; background: none; border-radius: 0; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; font-size: 16px; font-weight: 700; letter-spacing: -0.04em; white-space: nowrap; text-align: center; transition: transform .3s, opacity .35s; }
 .logo-pill:hover { transform: scale(1.04); background: none; }
-.logo-pill img { height: 72px; width: auto; display: block; flex: none; }
-.menu-pill { margin-left: 36px; overflow: hidden; width: 48px; transition: width .5s cubic-bezier(.34,1.3,.5,1); }
+.logo-pill img { height: 84px; width: auto; display: block; flex: none; }
+.menu-pill { margin-left: 42px; overflow: hidden; width: 48px; transition: width .5s cubic-bezier(.34,1.3,.5,1); }
 .menu-pill.open { width: 410px; }
 .hamb { flex: none; width: 48px; height: 48px; border: 0; background: transparent; border-radius: 14px; cursor: pointer; position: relative; transition: background-color .3s, width .3s, height .3s, margin .3s; }
 .menu-pill.open .hamb { width: 36px; height: 36px; border-radius: 11px; margin-left: 6px; background: rgba(255,255,255,.1); }
@@ -47,13 +47,15 @@ button, input, select, textarea { font-family: inherit; }
 .hero-vid { object-fit: cover; }
 .dots { position: absolute; inset: 0; pointer-events: none; opacity: .05; background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 24px 24px; }
 .watermark { position: absolute; left: 0; right: 0; top: calc(50% + 50px); transform: translateY(-50%); text-align: center; font-family: var(--anton); text-transform: uppercase; font-size: clamp(110px, 21vw, 380px); letter-spacing: 2px; line-height: 1; white-space: nowrap; pointer-events: none; user-select: none;
-  mix-blend-mode: lighten; color: #2a0f19; -webkit-text-fill-color: #2a0f19; filter: blur(3px);
-  text-shadow: 0 0 22px #200d15, 0 0 70px #170a10; }
+  mix-blend-mode: lighten; color: #430d28; -webkit-text-fill-color: #430d28; filter: blur(8px);
+  text-shadow: 0 0 26px #430d28, 0 0 80px #36091f; }
   background: radial-gradient(circle, rgba(142,127,148,0) 0%, #8E7F94 70%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
 .hero-short .watermark { font-size: clamp(60px, 12.5vw, 230px); top: calc(50% + 70px); }
 .hero-fade { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; padding: 150px var(--px) clamp(24px, 4vw, 48px); opacity: 0; transition: opacity 1s; }
 .hero-fade.in { opacity: 1; }
 .hero-row { display: flex; flex-direction: column; gap: 24px; }
+.hero-right { display: flex; flex-direction: column; gap: 16px; }
+.hero-right .hero-desc { max-width: 21rem; }
 .hero-left { display: flex; flex-direction: column; gap: 16px; }
 .h-mega { font-weight: 400; font-size: clamp(40px, 10vw, 100px); line-height: .95; letter-spacing: -0.03em; }
 .hero-short .h-mega { font-size: clamp(22px, 3.6vw, 52px); line-height: 1.04; }
@@ -172,8 +174,9 @@ main > .wrap { padding-top: clamp(56px, 8vw, 100px); }
 .rv.is-visible, .reveal.is-visible { opacity: 1; transform: none; }
 
 @media (min-width: 768px) {
-  .hero-row { flex-direction: row; align-items: flex-end; justify-content: space-between; }
-  .h-right { text-align: right; }
+  .hero-row { flex-direction: row; align-items: flex-start; justify-content: space-between; }
+  .hero-right { align-items: flex-end; }
+  .h-right, .hero-right .hero-desc { text-align: right; }
   .foot { flex-direction: row; } .foot-video { width: 50%; height: auto; min-height: 400px; } .foot-text { width: 50%; }
   .tech-top { flex-direction: row; align-items: flex-start; } .tech-p { text-align: right; padding-top: 8px; }
 }

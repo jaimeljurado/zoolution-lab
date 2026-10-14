@@ -55,7 +55,12 @@
     const pill = $("#menu-pill"), btn = $("#hamb"), left = $(".tb-left");
     if (!pill || !btn) return;
     const set = o => { pill.classList.toggle("open", o); left.classList.toggle("menu-open", o); document.body.classList.toggle("menu-open", o); btn.setAttribute("aria-expanded", String(o)); btn.setAttribute("aria-label", o ? "Cerrar menú" : "Abrir menú"); };
+    let t; const hov = matchMedia("(hover: hover)").matches;
     btn.addEventListener("click", e => { e.stopPropagation(); set(!pill.classList.contains("open")); });
+    if (hov) {
+      pill.addEventListener("mouseenter", () => { clearTimeout(t); set(true); });
+      pill.addEventListener("mouseleave", () => { clearTimeout(t); t = setTimeout(() => set(false), 350); });
+    }
     document.addEventListener("click", e => { if (!e.target.closest("#menu-pill")) set(false); });
     addEventListener("keydown", e => { if (e.key === "Escape") set(false); });
   }
@@ -67,17 +72,27 @@
     const coarse = matchMedia("(pointer: coarse)").matches;
     if (coarse || reduce) { v.setAttribute("autoplay", ""); const p = v.play(); p && p.catch && p.catch(() => {}); return; }
     v.pause();
-    let target = 0, seeking = false, ready = false, last = null;
-    const apply = () => { if (!ready || seeking) return; if (Math.abs(v.currentTime - target) < 0.01) return; seeking = true; v.currentTime = target; };
-    v.addEventListener("loadedmetadata", () => { ready = true; target = 0; });
+    let target = 0, seeking = false, ready = false, mx = null, my = 0.5;
+    const apply = () => { if (!ready || seeking) return; if (Math.abs(v.currentTime - target) < 0.012) return; seeking = true; v.currentTime = target; };
+    v.addEventListener("loadedmetadata", () => { ready = true; target = v.duration * 0.5; v.currentTime = target; });
     v.addEventListener("seeked", () => { seeking = false; apply(); });
-    addEventListener("mousemove", e => {
-      if (last === null) { last = e.clientX; return; }
-      const dx = e.clientX - last; last = e.clientX;
-      if (!ready || !v.duration) return;
-      target = Math.max(0, Math.min(v.duration - 0.05, target + (dx / innerWidth) * v.duration * 0.8));
-      apply();
-    }, { passive: true });
+    // posición absoluta del ratón -> momento del vídeo (con zona extra en los bordes para llegar a los extremos)
+    addEventListener("mousemove", e => { mx = e.clientX / innerWidth; my = e.clientY / innerHeight; }, { passive: true });
+    const wrap = v.parentElement; let ty = 0, cy = 0, cx = 0;
+    v.style.willChange = "transform"; v.style.transformOrigin = "50% 60%";
+    (function loop() {
+      if (ready && v.duration && mx !== null) {
+        const p = Math.max(0, Math.min(1, (mx - 0.08) / 0.84));
+        const want = p * (v.duration - 0.05);
+        target += (want - target) * 0.22;
+        apply();
+      }
+      // inclinación vertical: mirar arriba/abajo/lados con un ligero giro del plano
+      const ny = (my - 0.5) * 2, nx = ((mx === null ? 0.5 : mx) - 0.5) * 2;
+      cy += (ny - cy) * 0.08; cx += (nx - cx) * 0.08;
+      v.style.transform = "perspective(1200px) rotateX(" + (cy * -3).toFixed(2) + "deg) rotateY(" + (cx * 2).toFixed(2) + "deg) translateY(" + (cy * -10).toFixed(1) + "px) scale(1.06)";
+      requestAnimationFrame(loop);
+    })();
     v.load();
   }
   // Vídeos de las secciones: solo se reproducen cuando se ven
