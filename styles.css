@@ -19,8 +19,8 @@ button, input, select, textarea { font-family: inherit; }
 .logo-pill { width: 132px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0; height: auto; background: none; border-radius: 0; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; font-size: 16px; font-weight: 700; letter-spacing: -0.04em; white-space: nowrap; text-align: center; transition: transform .3s, opacity .35s; }
 .logo-pill:hover { transform: scale(1.04); background: none; }
 .logo-pill img { height: 84px; width: auto; display: block; flex: none; }
-.menu-pill { margin-left: 42px; overflow: hidden; width: 48px; transition: width .5s cubic-bezier(.34,1.3,.5,1); }
-.menu-pill.open { width: 410px; }
+.menu-pill { position: fixed; top: 22px; left: 50%; margin-left: -24px; z-index: 60; transition: width .5s cubic-bezier(.34,1.3,.5,1), margin-left .5s cubic-bezier(.34,1.3,.5,1); overflow: hidden; width: 48px; pointer-events: auto; }
+.menu-pill.open { width: 410px; margin-left: -205px; }
 .hamb { flex: none; width: 48px; height: 48px; border: 0; background: transparent; border-radius: 14px; cursor: pointer; position: relative; transition: background-color .3s, width .3s, height .3s, margin .3s; }
 .menu-pill.open .hamb { width: 36px; height: 36px; border-radius: 11px; margin-left: 6px; background: rgba(255,255,255,.1); }
 .menu-pill.open .hamb:hover { background: rgba(255,255,255,.2); }
@@ -44,11 +44,11 @@ button, input, select, textarea { font-family: inherit; }
 .hero-tall { height: 100vh; height: 100dvh; }
 .hero-short { height: 78vh; height: 78dvh; min-height: 520px; }
 .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 70%, rgba(142,127,148,.18), transparent 70%); }
-.hero-vid { object-fit: cover; }
+.hero-vid { object-fit: cover; filter: grayscale(1) contrast(1.05); }
 .dots { position: absolute; inset: 0; pointer-events: none; opacity: .05; background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 24px 24px; }
 .watermark { position: absolute; left: 0; right: 0; top: calc(50% + 50px); transform: translateY(-50%); text-align: center; font-family: var(--anton); text-transform: uppercase; font-size: clamp(110px, 21vw, 380px); letter-spacing: 2px; line-height: 1; white-space: nowrap; pointer-events: none; user-select: none;
-  mix-blend-mode: lighten; color: #430d28; -webkit-text-fill-color: #430d28; filter: blur(8px);
-  text-shadow: 0 0 26px #430d28, 0 0 80px #36091f; }
+  mix-blend-mode: lighten; color: #1d1d1d; -webkit-text-fill-color: #1d1d1d; filter: blur(8px);
+  text-shadow: 0 0 26px #1d1d1d, 0 0 80px #141414; }
   background: radial-gradient(circle, rgba(142,127,148,0) 0%, #8E7F94 70%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
 .hero-short .watermark { font-size: clamp(60px, 12.5vw, 230px); top: calc(50% + 70px); }
 .hero-fade { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; padding: 150px var(--px) clamp(24px, 4vw, 48px); opacity: 0; transition: opacity 1s; }
@@ -181,7 +181,7 @@ main > .wrap { padding-top: clamp(56px, 8vw, 100px); }
   .tech-top { flex-direction: row; align-items: flex-start; } .tech-p { text-align: right; padding-top: 8px; }
 }
 @media (max-width: 900px) {
-  .menu-pill.open { width: 330px; } .menu-links { gap: 18px; }
+  .menu-pill.open { width: 330px; margin-left: -165px; } .menu-links { gap: 18px; }
   .metrics-grid { grid-template-columns: 1fr; gap: 64px; }
   .tech-grid { grid-template-columns: repeat(2, 1fr); gap: 32px 24px; }
   .grid-4 { grid-template-columns: repeat(2, 1fr); }
@@ -193,7 +193,7 @@ main > .wrap { padding-top: clamp(56px, 8vw, 100px); }
   .logo-pill { width: auto; flex-direction: row; gap: 8px; font-size: 14px; }
   .logo-pill img { height: 40px; } .menu-pill { margin-left: 0; }
   .hamb { width: 36px; height: 36px; } .hamb span { width: 15px; margin-left: -7.5px; height: 1.2px; }
-  .menu-pill { width: 36px; } .menu-pill.open { width: calc(100vw - 2 * var(--px)); }
+  .menu-pill { position: static; margin-left: 0; width: 36px; } .menu-pill.open { margin-left: 0; width: calc(100vw - 2 * var(--px)); }
   body.menu-open .dl-btn { display: none; }
   .menu-links { gap: 14px; padding: 0 12px 0 10px; } .menu-links a { font-size: 12.5px; }
   .tb-left.menu-open .logo-pill { width: 0; padding: 0; opacity: 0; overflow: hidden; }
