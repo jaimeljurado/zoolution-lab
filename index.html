@@ -3,108 +3,170 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Zoolutions Lab — Do it all · Automatización, software y apps</title>
-<meta name="description" content="Automatizamos procesos y creamos software a medida para pymes y grandes empresas.">
+<title>Zoolutions Lab — Menos tareas. Más negocio.</title>
+<meta name="description" content="Automatizamos lo que hoy se hace a mano y creamos software y apps a medida para empresas de cualquier tamaño.">
 <meta name="theme-color" content="#000000">
-<link rel="icon" type="image/png" href="assets/favicon.png?v=20261014c">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Anton+SC&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261014c">
-<script defer src="main.js?v=20261014c"></script>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preload" href="assets/fonts/DepartureMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face { font-family: "Departure Mono"; src: url("assets/fonts/DepartureMono-Regular.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Inter"; src: url("assets/fonts/inter-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+
+:root {
+  --ink: #fafafa;
+  --muted: rgba(250,250,250,.66);
+  --dim: rgba(250,250,250,.42);
+  --pixel: "Departure Mono", ui-monospace, monospace;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --px: clamp(18px, 3.4vw, 56px);
+  --ease: cubic-bezier(.22, 1, .36, 1);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; background: #000; color: var(--ink); overflow-x: hidden; }
+body { font-family: var(--sans); -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+
+/* ---------- escenario ---------- */
+.stage { position: relative; height: 100vh; height: 100svh; min-height: 560px; overflow: hidden; }
+.plate { position: absolute; inset: 0; overflow: hidden; background: #000 url("assets/zl-puerta-poster.jpg") center / cover no-repeat; }
+.plate video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; }
+/* oscurece solo los laterales y el pie para que el texto se lea; el centro (puerta y cabra) queda limpio */
+.plate::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(to right, rgba(0,0,0,.55) 0%, rgba(0,0,0,0) 34%, rgba(0,0,0,0) 66%, rgba(0,0,0,.55) 100%),
+    linear-gradient(to bottom, rgba(0,0,0,.35) 0%, rgba(0,0,0,0) 18%, rgba(0,0,0,0) 80%, rgba(0,0,0,.75) 100%); }
+/* grano fino, como en la referencia */
+.grain { position: absolute; inset: -50%; pointer-events: none; opacity: .07; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation: grain 1.2s steps(6) infinite; }
+@keyframes grain { 0%{transform:translate(0,0)} 20%{transform:translate(-3%,2%)} 40%{transform:translate(2%,-3%)} 60%{transform:translate(-2%,-1%)} 80%{transform:translate(3%,3%)} 100%{transform:translate(0,0)} }
+
+/* ---------- barra superior ---------- */
+.top { position: absolute; z-index: 5; top: 0; left: 0; right: 0; display: flex; align-items: flex-start; justify-content: space-between; padding: clamp(18px, 2.6vw, 34px) var(--px) 0; }
+.brand { display: flex; align-items: center; gap: 14px; }
+.brand img { height: clamp(56px, 5.6vw, 84px); width: auto; display: block; }
+.brand span { font-family: var(--pixel); font-size: clamp(16px, 1.55vw, 23px); letter-spacing: .02em; line-height: 1.1; }
+.pill { display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 46px; padding: 0 22px; border-radius: 999px; background: #fff; color: #050505; font: 500 15px/1 var(--sans); box-shadow: 0 0 24px rgba(255,255,255,.18); transition: transform .3s var(--ease), box-shadow .3s; white-space: nowrap; }
+.pill:hover { transform: translateY(-1px); box-shadow: 0 0 34px rgba(255,255,255,.32); }
+.pill svg { width: 15px; height: 15px; transition: transform .3s var(--ease); }
+.pill:hover svg { transform: translateX(3px); }
+
+/* ---------- titular (izquierda) y texto (derecha), dejando libre el centro ---------- */
+.hero { position: absolute; z-index: 4; left: 0; right: 0; top: 27%; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; padding: 0 var(--px); pointer-events: none; }
+.hero > * { pointer-events: auto; }
+.left { width: min(42vw, 640px); } .right { width: min(34vw, 520px); }
+.badge { display: inline-flex; align-items: center; gap: 10px; height: 34px; padding: 0 14px 0 6px; border-radius: 999px; background: rgba(20,20,20,.72); border: 1px solid rgba(255,255,255,.12); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); font: 500 13px/1 var(--sans); color: rgba(255,255,255,.86); margin-bottom: 22px; }
+.badge i { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: #fff; color: #050505; font: 13px/1 var(--pixel); font-style: normal; margin-right: -6px; border: 2px solid #111; }
+.badge i:last-of-type { margin-right: 4px; }
+h1 { font-family: var(--pixel); font-weight: 400; font-size: clamp(32px, 4.1vw, 66px); line-height: 1.12; letter-spacing: -.01em; text-shadow: 0 0 30px rgba(0,0,0,.6); }
+h1 span { display: block; }
+.right { text-align: right; display: flex; flex-direction: column; align-items: flex-end; padding-top: 56px; }
+.right p { font-size: clamp(15px, 1.15vw, 17.5px); line-height: 1.55; color: var(--muted); max-width: 27em; text-shadow: 0 0 20px rgba(0,0,0,.8); }
+.actions { display: flex; align-items: center; gap: 22px; margin-top: 26px; flex-wrap: wrap; justify-content: flex-end; }
+.ghost { font: 500 15px/1 var(--sans); color: #fff; border-bottom: 1px solid rgba(255,255,255,.3); padding-bottom: 3px; transition: border-color .3s; }
+.ghost:hover { border-color: #fff; }
+
+/* ---------- franja inferior ---------- */
+.facts { position: absolute; z-index: 4; left: 0; right: 0; bottom: clamp(20px, 3.4vh, 40px); display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 0 var(--px); max-width: 1240px; margin: 0 auto; }
+.fact { text-align: center; }
+.fact .g { font: 22px/1 var(--pixel); color: rgba(255,255,255,.75); }
+.fact b { display: block; font: 400 clamp(20px, 1.8vw, 28px)/1.1 var(--pixel); margin-top: 12px; }
+.fact small { display: block; font-size: 12.5px; color: var(--dim); margin-top: 6px; letter-spacing: .01em; }
+
+.foot { position: absolute; z-index: 4; left: var(--px); right: var(--px); bottom: 10px; display: none; }
+
+/* ---------- entrada ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .rise { opacity: 0; transform: translateY(14px); animation: rise .9s var(--ease) forwards; }
+  .d1 { animation-delay: .15s } .d2 { animation-delay: .3s } .d3 { animation-delay: .45s } .d4 { animation-delay: .6s } .d5 { animation-delay: .8s }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+}
+@media (prefers-reduced-motion: reduce) { .grain { animation: none; } }
+
+/* ---------- pantallas medianas ---------- */
+@media (max-width: 1100px) {
+  .hero { top: 24%; }
+  .right { padding-top: 40px; }
+  .facts { grid-template-columns: repeat(2, 1fr); row-gap: 18px; max-width: 760px; }
+  .fact:nth-child(n+3) { display: none; }
+}
+
+/* ---------- móvil: el vídeo arriba, el texto debajo sobre negro ---------- */
+@media (max-width: 760px), (max-aspect-ratio: 4/5) {
+  .stage { height: auto; min-height: 0; overflow: visible; }
+  .plate { position: relative; height: 72svh; min-height: 440px; }
+  .plate::after { background: linear-gradient(to bottom, rgba(0,0,0,.45) 0%, rgba(0,0,0,0) 22%, rgba(0,0,0,0) 70%, #000 100%); }
+  .top { padding-top: 16px; }
+  .brand img { height: 44px; }
+  .pill { height: 42px; padding: 0 18px; font-size: 14px; }
+  .hero { position: relative; top: auto; flex-direction: column; gap: 0; margin-top: -40px; padding-bottom: 8px; }
+  .left, .right { width: 100%; }
+  .left h1 span { display: inline; }
+  .right { text-align: left; align-items: flex-start; padding-top: 18px; }
+  .actions { justify-content: flex-start; }
+  h1 { font-size: clamp(32px, 10vw, 46px); }
+  .facts { position: relative; bottom: auto; grid-template-columns: repeat(2, 1fr); row-gap: 26px; padding: 40px var(--px) 30px; text-align: left; }
+  .fact { text-align: left; }
+  .fact:nth-child(n+3) { display: block; }
+  .foot { position: relative; display: flex; justify-content: space-between; left: auto; right: auto; bottom: auto; padding: 18px var(--px) 28px; border-top: 1px solid rgba(255,255,255,.08); font-size: 12px; color: var(--dim); gap: 12px; flex-wrap: wrap; }
+}
+</style>
 </head>
-<body style="background:#000;color:#fff">
-<a class="skip-link" href="#contenido">Saltar al contenido</a>
-<header class="topbar" id="topbar">
-  <div class="tb-left">
-    <a class="pill-glass logo-pill" href="index.html" aria-label="Zoolutions Lab, inicio"><img src="assets/logo-mark.png" alt="" width="60" height="111"><span>Zoolutions Lab</span></a>
-    <div class="pill-glass menu-pill" id="menu-pill">
-      <button class="hamb" type="button" id="hamb" aria-expanded="false" aria-controls="menu-links" aria-label="Abrir menú"><span></span><span></span><span></span></button>
-      <nav class="menu-links" id="menu-links" aria-label="Principal"><a class="scr" data-scramble href="servicios.html">Servicios</a><a class="scr" data-scramble href="proyectos.html">Proyectos</a><a class="scr" data-scramble href="contacto.html">Contacto</a></nav>
-    </div>
+<body>
+<div class="stage">
+  <div class="plate" aria-hidden="true">
+    <video id="bg" autoplay muted loop playsinline preload="auto" poster="assets/zl-puerta-poster.jpg">
+      <source src="assets/zl-puerta-1080.mp4" type="video/mp4">
+    </video>
+    <div class="grain"></div>
   </div>
-  <a class="dl-btn" href="contacto.html" data-scramble-host><span class="scr-label" data-scramble-text="Hablemos">Hablemos</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-</header>
-<section class="hero hero-tall" id="hero">
-  <div class="hero-bg"><video class="vid hero-vid" muted playsinline loop preload="auto" data-scrub><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_083515_290e5a10-0b95-41af-a5e2-32b6389baa4d.mp4" type="video/mp4"></video></div>
-  <div class="dots" aria-hidden="true"></div>
-  <div class="watermark" aria-hidden="true"><span>DO IT ALL</span></div>
-  <div class="hero-fade fade-in-on">
-    <div class="spacer"></div>
-    <div class="hero-row">
-      <div class="hero-left">
-        <h1 class="h-mega"><span data-scramble-in data-delay="200">Menos tareas</span><br><span data-scramble-in data-delay="500">Más negocio</span></h1>
-        <p class="hero-desc">Automatizamos lo que hoy se hace a mano y creamos software y apps a medida. Lo implantamos, lo mantenemos y lo mejoramos cada mes.</p>
+
+  <header class="top">
+    <a class="brand rise" href="/" aria-label="Zoolutions Lab, inicio">
+      <img src="assets/logo-mark.png" alt="" width="120" height="222">
+      <span>Zoolutions<br>Lab</span>
+    </a>
+    <a class="pill rise d1" href="mailto:central@zoolutionslab.com">Hablemos
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </header>
+
+  <main class="hero">
+    <div class="left">
+      <div class="badge rise d1"><i>⚙</i><i>▢</i><i>↻</i> Automatización · Software · SaaS</div>
+      <h1 class="rise d2"><span>Menos tareas.</span><span>Más negocio.</span></h1>
+    </div>
+    <div class="right">
+      <p class="rise d3">Automatizamos lo que hoy se hace a mano y creamos software y apps a medida para empresas de cualquier tamaño. Lo implantamos, lo mantenemos y lo mejoramos cada mes.</p>
+      <div class="actions rise d4">
+        <a class="ghost" href="mailto:central@zoolutionslab.com">central@zoolutionslab.com</a>
+        <a class="pill" href="mailto:central@zoolutionslab.com?subject=Quiero%20contaros%20un%20proyecto">Cuéntanos tu proyecto
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
       </div>
-      <div class="hero-right">
-        <h2 class="h-mega h-right"><span data-scramble-in data-delay="700">Cualquier</span><br><span data-scramble-in data-delay="1000">empresa</span></h2>
-        <p class="hero-desc">Da igual el tamaño o el sector: si hay un proceso que se repite, hay una forma mejor de hacerlo.</p>
-      </div>
     </div>
-  </div>
-</section>
-<main id="contenido">
-<section class="cine">
-  <div class="sec-video"><video class="vid" muted playsinline loop preload="auto" autoplay data-lazy><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_092455_089c54f8-3b03-4966-9df1-e9746063d0ef.mp4" type="video/mp4"></video></div>
-  <div class="cine-top"></div>
-  <div class="cine-wrap"><p class="cine-text" id="cine-text">Lo que hoy se hace a mano, lo hacemos automático. Cada tarea repetitiva se convierte en un proceso ordenado, medible y visible. Construimos el software que te falta, adaptado a cómo trabaja tu empresa. Lo implantamos, lo mantenemos y lo mejoramos cada mes.</p></div>
-</section>
+  </main>
 
-<section class="metrics">
-  <div class="sec-video"><video class="vid" muted playsinline loop preload="auto" autoplay data-lazy><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_095810_ecea3dd2-fc5e-4e41-8696-4219290b6589.mp4" type="video/mp4"></video><div class="sec-shade"></div></div>
-  <div class="metrics-in">
-    <p class="sub-label rv">Zoolutions Lab en cifras</p>
-    <div class="metrics-grid">
-      <div class="metric rv"><div class="m-val">15</div><div class="m-lab">Módulos de gestión listos para adaptar</div></div>
-      <div class="metric rv" style="--rd:.15s"><div class="m-val">5</div><div class="m-lab">Ya funcionando en proyectos reales</div></div>
-      <div class="metric rv" style="--rd:.3s"><div class="m-val">6</div><div class="m-lab">Proyectos terminados o en marcha</div></div>
-    </div>
-  </div>
-</section>
+  <section class="facts rise d5" aria-label="Cómo trabajamos">
+    <div class="fact"><span class="g">&lt;/&gt;</span><b>A medida</b><small>Nada de plantillas</small></div>
+    <div class="fact"><span class="g">%</span><b>Automático</b><small>Lo repetitivo, fuera</small></div>
+    <div class="fact"><span class="g">*</span><b>24/7</b><small>Funcionando sin parar</small></div>
+    <div class="fact"><span class="g">#</span><b>Cada mes</b><small>Mantenimiento y mejora</small></div>
+  </section>
 
-<section class="tech">
-  <div class="sec-video"><video class="vid" muted playsinline loop preload="auto" autoplay data-lazy><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_095750_32a52ce0-2005-45c9-9093-41f03fde9530.mp4" type="video/mp4"></video><div class="sec-shade"></div></div>
-  <div class="tech-in">
-    <div class="tech-top">
-      <h2 class="h-sec rv">A tu medida<br>y sin límites</h2>
-      <p class="tech-p rv" style="--rd:.2s">Primero entendemos cómo trabaja tu empresa. Después lo adaptamos todo a ti, sin que tengas que cambiar tu forma de trabajar.</p>
-    </div>
-    <div class="spacer"></div>
-    <div class="tech-grid rv" style="--rd:.3s">
-      <a href="servicios.html"><h3>Automatización de procesos</h3><p>Correos, facturas, albaranes, avisos e informes: en automático.</p></a>
-      <a href="servicios.html"><h3>Software por módulos</h3><p>Herramientas de gestión sueltas o juntas, como un ERP.</p></a>
-      <a href="servicios.html"><h3>Soluciones por sector</h3><p>Hostelería, inmobiliarias, acero, educación y más.</p></a>
-      <a href="proyectos.html"><h3>Proyectos a medida</h3><p>Sistemas para empresas grandes, integrados con lo que ya usan.</p></a>
-    </div>
-  </div>
-</section>
+  <footer class="foot"><span>© 2026 Zoolutions Lab</span><a href="mailto:central@zoolutionslab.com">central@zoolutionslab.com</a></footer>
+</div>
 
-<section class="arch">
-  <div class="arch-head rv">
-    <p class="sub-label">Cómo trabajamos</p>
-    <h2 class="h-arch">Cuatro pasos. Cero fricción.</h2>
-    <p class="arch-p">Escuchamos cómo funciona tu empresa. Diseñamos la solución. La implantamos con tu equipo. Y nos quedamos para mantenerla y mejorarla cada mes.</p>
-  </div>
-  <div class="layers rv" style="--rd:.2s">
-    <div class="layer"><span>Paso 1</span><b>Escuchamos</b></div>
-    <div class="layer"><span>Paso 2</span><b>Diseñamos</b></div>
-    <div class="layer"><span>Paso 3</span><b>Implantamos</b></div>
-    <div class="layer"><span>Paso 4</span><b>Mantenemos</b></div>
-  </div>
-  <a class="cta-solid" href="contacto.html" data-scramble-host><span class="scr-label" data-scramble-text="Hablemos">Hablemos</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-</section>
-</main>
-<footer class="foot">
-  <div class="foot-video"><video class="vid" muted playsinline loop preload="auto" autoplay data-lazy><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_080203_fd7f4f85-3a86-4837-8192-85e7bfe68e75.mp4" type="video/mp4"></video></div>
-  <div class="foot-text">
-    <div>
-      <div class="foot-brand"><img src="assets/logo-mark.png" alt="" width="60" height="111"><span>Zoolutions Lab</span></div>
-      <p class="foot-p">Lo que hacemos no se entrega y se olvida: se implanta, se mantiene y se mejora cada mes. Automatización, software y apps para pymes y grandes empresas.</p>
-      <p class="foot-links"><a href="mailto:central@zoolutionslab.com">central@zoolutionslab.com</a></p>
-      <p class="foot-links"><a href="servicios.html">Servicios</a> · <a href="proyectos.html">Proyectos</a> · <a href="contacto.html">Contacto</a></p>
-    </div>
-    <p class="foot-copy">© 2026 Zoolutions Lab. Todos los derechos reservados.</p>
-  </div>
-</footer>
+<script>
+// Bucle del vídeo: si el navegador bloquea el autoplay, se queda la imagen fija (poster).
+(function () {
+  var v = document.getElementById("bg");
+  if (!v) return;
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) { v.removeAttribute("autoplay"); v.pause(); return; }
+  var p = v.play(); if (p && p.catch) p.catch(function () {});
+  document.addEventListener("visibilitychange", function () { if (document.hidden) v.pause(); else { var q = v.play(); if (q && q.catch) q.catch(function(){}); } });
+})();
+</script>
 </body>
 </html>
