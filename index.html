@@ -1,37 +1,45 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" class="no-sb">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Zoolutions Lab — Menos tareas. Más negocio.</title>
-<meta name="description" content="Automatizamos lo que hoy se hace a mano y creamos software y apps a medida para empresas de cualquier tamaño.">
+<meta name="description" content="Automatizamos procesos y creamos software y apps a medida para empresas de cualquier tamaño.">
 <meta name="theme-color" content="#000000">
 <meta property="og:title" content="Zoolutions Lab — Menos tareas. Más negocio.">
-<meta property="og:description" content="Automatizamos lo que hoy se hace a mano y creamos software y apps a medida para empresas de cualquier tamaño.">
 <meta property="og:image" content="assets/zl-puerta-poster.jpg">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="preload" href="assets/fonts/DepartureMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=20261019">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Italiana&family=Outfit:wght@300;400;600&display=swap">
+<link rel="stylesheet" href="site.css?v=20261019b">
+<link rel="stylesheet" href="escena.css?v=20261019b">
+<script type="importmap">{"imports":{"three":"./assets/vendor/three/build/three.module.min.js","three/addons/":"./assets/vendor/three/examples/jsm/"}}</script>
 </head>
-<body>
-<a class="skip" href="#contenido">Saltar al contenido</a>
-<div class="stage ">
+<body class="one">
+<div class="cursor-in"></div><div class="cursor-out"></div>
+<a class="skip" href="#que-hacemos">Saltar al contenido</a>
+
+<header class="top">
+  <a class="brand rise" href="#inicio" aria-label="Zoolutions Lab, inicio">
+    <img class="door" src="assets/logo-door.png" alt="" width="324" height="603">
+    <img class="word" src="assets/logo-wordmark.png" alt="Zoolutions Lab" width="764" height="96">
+  </a>
+  <nav class="nav rise d1" aria-label="Principal"><a href="#inicio">Inicio</a><a href="#que-hacemos">Qué hacemos</a><a href="#manada">Módulos</a><a href="#proyectos">Proyectos</a><a href="#contacto">Contacto</a></nav>
+  <a class="pill top-cta rise d1" href="#contacto">Hablemos <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  <button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="drawer"><i></i><i></i></button>
+</header>
+<div class="drawer" id="drawer"><a href="#inicio">Inicio</a><a href="#que-hacemos">Qué hacemos</a><a href="#manada">Módulos</a><a href="#proyectos">Proyectos</a><a href="#contacto">Contacto</a><a class="pill" href="#contacto">Hablemos <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+
+<section class="hero-stage" id="inicio">
+<div class="stage">
   <div class="plate" aria-hidden="true">
     <video id="bg" autoplay muted loop playsinline preload="auto" poster="assets/zl-puerta-poster.jpg">
       <source src="assets/zl-puerta-1080.mp4" type="video/mp4">
     </video>
     <div class="grain"></div>
   </div>
-  <header class="top">
-    <a class="brand rise" href="index.html" aria-label="Zoolutions Lab, inicio">
-      <img class="door" src="assets/logo-door.png" alt="" width="324" height="603">
-      <img class="word" src="assets/logo-wordmark.png" alt="Zoolutions Lab" width="764" height="96">
-    </a>
-    <nav class="nav rise d1" aria-label="Principal"><a href="index.html" aria-current="page">Inicio</a><a href="servicios.html">Servicios</a><a href="proyectos.html">Proyectos</a><a href="contacto.html">Contacto</a></nav>
-    <a class="pill top-cta rise d1" href="contacto.html">Hablemos <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-    <button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="drawer"><i></i><i></i></button>
-  </header>
-  <main class="hero" id="contenido">
+  <main class="hero">
     <div class="left">
       <div class="badge rise d1"><i>⚙</i><i>▢</i><i>↻</i> Automatización · Software · SaaS</div>
       <h1 class="rise d2"><span>Menos tareas.</span> <span>Más negocio.</span></h1>
@@ -39,8 +47,8 @@
     <div class="right">
       <p class="rise d3">Automatizamos lo que hoy se hace a mano y creamos software y apps a medida para empresas de cualquier tamaño. Lo implantamos, lo mantenemos y lo mejoramos cada mes.</p>
       <div class="actions rise d4">
-        <a class="ghost" href="servicios.html">Ver qué hacemos</a>
-        <a class="pill" href="contacto.html">Cuéntanos tu proyecto <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a class="ghost" href="#que-hacemos">Ver qué hacemos</a>
+        <a class="pill" href="#contacto">Cuéntanos tu proyecto <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </div>
     </div>
   </main>
@@ -50,10 +58,71 @@
     <div class="fact"><span class="g">*</span><b>24/7</b><small>Funcionando sin parar</small></div>
     <div class="fact"><span class="g">#</span><b>Cada mes</b><small>Mantenimiento y mejora</small></div>
   </section>
-  <p class="mini-foot">© 2026 Zoolutions Lab · <a href="mailto:central@zoolutionslab.com">central@zoolutionslab.com</a></p>
+  <p class="mini-foot">Baja para conocer la manada ↓</p>
 </div>
-<div class="drawer" id="drawer"><a href="index.html" aria-current="page">Inicio</a><a href="servicios.html">Servicios</a><a href="proyectos.html">Proyectos</a><a href="contacto.html">Contacto</a><a class="pill" href="contacto.html">Hablemos <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+</section>
 
-<script src="site.js?v=20261019"></script>
+<div class="scroll-space" aria-hidden="true"></div>
+<canvas id="webgl" aria-hidden="true"></canvas>
+<p class="loading3d">Cargando la cabra…</p>
+
+<div class="grid-hline"></div>
+<div class="grid-lines">
+  <div class="grid-line"><div class="grid-dot"></div><div class="grid-dot"></div></div>
+  <div class="grid-line"><div class="grid-dot"></div><div class="grid-dot"></div></div>
+  <div class="grid-line"><div class="grid-dot"></div><div class="grid-dot"></div></div>
+  <div class="grid-line"><div class="grid-dot"></div><div class="grid-dot"></div></div>
+  <div class="grid-line"><div class="grid-dot"></div><div class="grid-dot"></div>
+    <div class="story-dashes"><div class="story-dash"><i></i></div><div class="story-dash"><i></i></div><div class="story-dash"><i></i></div><div class="story-dash"><i></i></div><div class="story-dash"><i></i></div></div>
+  </div>
+</div>
+
+<div class="cine" aria-live="polite">
+  <section class="slide" id="s1" aria-labelledby="t1">
+    <span id="que-hacemos"></span>
+    <h2 class="slide-title" id="t1">Automatizar <br>procesos</h2>
+    <div class="desc-row">
+      <p class="slide-desc col-1">O crear el software que tu empresa lleva años necesitando. Entendemos cómo trabajáis, y lo repetitivo pasa a hacerse solo.</p>
+      <p class="slide-desc col-2">Cuatro líneas, una misma base: gestión para pymes, soluciones por sector (hostelería, inmobiliarias, karting, colegios), proyectos grandes y apps propias.</p>
+    </div>
+  </section>
+
+  <aside id="manada" aria-label="Los 16 módulos">
+    <div class="head"><img src="assets/goat.png" alt="" width="182" height="209"><p><b>La cabra lidera la manada.</b><br>16 módulos, cada uno con su animal.</p></div>
+    <ul><li class="on"><svg aria-hidden="true"><use href="assets/animales.svg#a-erp"/></svg>Paquete ERP</li><li class="on"><svg aria-hidden="true"><use href="assets/animales.svg#a-rent"/></svg>Análisis de rentabilidad</li><li class="on"><svg aria-hidden="true"><use href="assets/animales.svg#a-gastos"/></svg>Orden de gastos</li><li class="on"><svg aria-hidden="true"><use href="assets/animales.svg#a-inv"/></svg>Inventario y proveedores</li><li class="on"><svg aria-hidden="true"><use href="assets/animales.svg#a-fact"/></svg>Comparación de facturas</li><li><svg aria-hidden="true"><use href="assets/animales.svg#a-exp"/></svg>Seguimiento de expedientes</li><li><svg aria-hidden="true"><use href="assets/animales.svg#a-correo"/></svg>Automatización de correos</li><li><svg aria-hidden="true"><use href="assets/animales.svg#a-agenda"/></svg>Reservas y agenda</li><li><svg aria-hidden="true"><use href="assets/animales.svg#a-alert"/></svg>Alertas</li><li><svg aria-hidden="true"><use href="assets/animales.svg#a-inf"/></svg>Informes de negocio</li><li><svg aria-hidden="true"><use href="assets/animales.svg#a-crm"/></svg>CRM</li><li><svg aria-hidden="true"><use href="assets/animales.svg#a-contr"/></svg>Contratos y formularios</li><li><svg aria-hidden="true"><use href="assets/animales.svg#a-tareas"/></svg>Seguimiento de tareas</li><li><svg aria-hidden="true"><use href="assets/animales.svg#a-presu"/></svg>Presupuestos y ofertas</li><li><svg aria-hidden="true"><use href="assets/animales.svg#a-prosp"/></svg>Prospección</li><li><svg aria-hidden="true"><use href="assets/animales.svg#a-diario"/></svg>Diario de reuniones</li></ul>
+    <p class="legend">● Ya funcionando en un caso real</p>
+  </aside>
+  <section class="slide" id="s2" aria-labelledby="t2">
+    <h2 class="slide-title" id="t2">La <br>manada</h2>
+    <p class="slide-desc">Módulos de gestión que se contratan sueltos o juntos como un ERP, adaptados a cada empresa. Cinco ya funcionan en un caso real; el resto, listos para implantar.</p>
+  </section>
+
+  <section class="slide" id="s3" aria-labelledby="t3">
+    <span id="proyectos"></span>
+    <h2 class="slide-title" id="t3">Ya funciona</h2>
+    <p class="slide-desc">Un restaurante con todo su día a día en un solo sistema: facturas, horas, caja, reservas y alertas. Un software de captación inmobiliaria que revisa cada mañana unas 30 viviendas y sugiere qué hacer. Y Family App, que convierte las tareas de casa en un juego.</p>
+  </section>
+
+  <section class="slide" id="s4" aria-labelledby="t4">
+    <span id="metodo"></span>
+    <h2 class="slide-title" id="t4">Cuatro <br>pasos</h2>
+    <p class="slide-desc">Diagnóstico, un plan para tu empresa, una prueba con tus datos reales e implantación. Después, servicio mensual: mantenemos y mejoramos cada mes. No entregamos y desaparecemos.</p>
+  </section>
+
+  <section class="slide" id="s5" aria-labelledby="t5">
+    <span id="contacto"></span>
+    <div>
+      <h2 class="slide-title" id="t5">Hablemos</h2>
+      <p class="slide-desc">Cuéntanos qué te quita tiempo y lo convertimos en un sistema que trabaja solo. Pymes y grandes empresas, de cualquier sector.</p>
+    </div>
+    <div class="cta5">
+      <a class="pill" href="mailto:central@zoolutionslab.com?subject=Quiero%20contaros%20un%20proyecto">Cuéntanos tu proyecto <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="mail" href="mailto:central@zoolutionslab.com">central@zoolutionslab.com</a>
+    </div>
+  </section>
+</div>
+
+<script src="site.js?v=20261019b"></script>
+<script type="module" src="escena.js?v=20261019b"></script>
 </body>
 </html>
