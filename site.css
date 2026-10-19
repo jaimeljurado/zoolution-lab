@@ -224,7 +224,7 @@ h2 { font: 400 clamp(26px, 3vw, 44px)/1.15 var(--pixel); letter-spacing: -.01em;
     linear-gradient(to right, rgba(0,0,0,.62) 0%, rgba(0,0,0,.15) 36%, rgba(0,0,0,0) 42%, rgba(0,0,0,0) 58%, rgba(0,0,0,.15) 64%, rgba(0,0,0,.62) 100%),
     linear-gradient(to bottom, rgba(0,0,0,.4) 0%, rgba(0,0,0,0) 16%, rgba(0,0,0,0) 76%, rgba(0,0,0,.85) 100%); }
 .zone { position: absolute; z-index: 4; display: flex; flex-direction: column; gap: clamp(8px, 1.4vh, 14px); }
-.z-left { left: var(--px); top: clamp(108px, 15vh, 150px); bottom: 21vh; width: min(35vw, 560px); }
+.z-left { left: var(--px); top: clamp(124px, 15.5vh, 156px); bottom: 21vh; width: min(35vw, 560px); }
 .z-right { right: var(--px); top: clamp(110px, 15vh, 150px); bottom: 21vh; width: min(34vw, 540px); align-items: stretch; }
 .z-bottom { left: var(--px); right: var(--px); bottom: clamp(14px, 2.6vh, 28px); }
 .zone h1 { font-size: min(3.5vw, 6.2vh); line-height: 1.1; }
@@ -286,3 +286,42 @@ h2 { font: 400 clamp(26px, 3vw, 44px)/1.15 var(--pixel); letter-spacing: -.01em;
 
 .zone > * { flex-shrink: 0; }
 @media (max-height: 800px) and (min-width: 1101px) { .zone .glass { padding: 10px 14px; } .zone .glass p { font-size: 12.5px; line-height: 1.4; } .zone .mod-live div { padding: 6px 12px; } .svc { gap: 7px; } }
+
+/* ---------- nuevo logo ---------- */
+.brand { gap: clamp(12px, 1.2vw, 18px); align-items: flex-end; }
+.brand img.door { height: clamp(58px, 6vw, 88px); width: auto; }
+.brand img.word { height: clamp(15px, 1.45vw, 21px); width: auto; margin-bottom: 2px; }
+.site-foot .fb img, .foot-door { height: 40px; }
+
+/* ---------- animales de los módulos ---------- */
+.ani { width: 22px; height: 22px; flex: none; color: #fff; }
+.zone .mod-live div::before { display: none; }
+.zone .mod-live div { gap: 12px; }
+.zone .mod-live div .ani { width: clamp(20px, 2.8vh, 26px); height: clamp(20px, 2.8vh, 26px); }
+.zone .mod-live div::after { content: ""; margin-left: auto; width: 7px; height: 7px; border-radius: 50%; background: #fff; box-shadow: 0 0 10px #fff; animation: pulse 2s infinite; flex: none; }
+.chips span { gap: 7px; }
+.chips span .ani { width: 17px; height: 17px; opacity: .9; }
+.chips span em { font-style: normal; font: 10px/1 var(--pixel); color: var(--dim); border-left: 1px solid var(--line); padding-left: 7px; margin-left: 2px; text-transform: uppercase; letter-spacing: .06em; }
+.pack { display: flex; align-items: flex-end; gap: 12px; }
+.pack img { height: clamp(34px, 5.2vh, 52px); width: auto; filter: drop-shadow(0 0 10px rgba(0,0,0,.8)); }
+.pack p { font-size: clamp(12.5px, 1.6vh, 14.5px); color: var(--muted); line-height: 1.35; text-shadow: 0 0 14px rgba(0,0,0,.9); }
+.pack b { color: #fff; font-weight: 500; }
+@media (max-width: 760px), (max-aspect-ratio: 4/5) { .brand img.door { height: 48px; } .brand img.word { height: 14px; } }
+
+.zone h1.compact { font-size: min(2.75vw, 5.2vh); }
+.zr-tight { top: clamp(96px, 12.5vh, 130px); gap: clamp(6px, 1vh, 10px); }
+.zr-tight .glass { padding: clamp(10px, 1.4vh, 14px) clamp(12px, 1.1vw, 16px); }
+.zr-tight .mod-live { grid-template-columns: 1fr 1fr; gap: 6px; }
+.zr-tight .mod-live div { padding: clamp(6px, .9vh, 9px) 10px; font-size: clamp(12px, 1.6vh, 13.5px); gap: 9px; border-radius: 10px; }
+.zr-tight .mod-live div:last-child { grid-column: span 2; }
+.zr-tight .mod-live div .ani { width: clamp(17px, 2.3vh, 22px); height: clamp(17px, 2.3vh, 22px); }
+.zr-tight .mod-live div::after { width: 6px; height: 6px; }
+.zr-tight .chips span { height: clamp(24px, 3vh, 29px); font-size: clamp(11px, 1.45vh, 12.5px); padding: 0 9px; }
+.zr-tight .chips span .ani { width: 15px; height: 15px; }
+
+@media (max-height: 760px) and (min-width: 1101px) { .brand img.door { height: 64px; } .brand img.word { height: 15px; } }
+@media (max-width: 1100px), (max-height: 640px), (max-aspect-ratio: 4/5) {
+  .zone h1.compact { font-size: clamp(28px, 6.4vw, 44px); }
+  .zr-tight { top: auto; }
+  .mini-foot { white-space: normal; padding: 0 var(--px) 24px; }
+}
