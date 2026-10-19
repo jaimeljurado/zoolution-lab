@@ -143,13 +143,15 @@
   var sheet = document.querySelector(".sheet"), cur = 0;
   function openSheet(i) {
     cur = (i + N) % N; var d = MODS[cur];
-    sheet.querySelector(".pic").innerHTML = d.k === "goat" ? '<img src="assets/goat.png" alt="">' : '<svg aria-hidden="true"><use href="assets/animales.svg#a-' + d.k + '"/></svg>';
+    sheet.querySelector(".pic").innerHTML = d.k === "goat" ? '<img class="inv" src="assets/goat.png" alt="">' : d.img ? '<img src="' + d.img + '" alt="">' : '<svg aria-hidden="true"><use href="assets/animales.svg#a-' + d.k + '"/></svg>';
     sheet.querySelector(".st").className = "st" + (d.live ? " live" : "");
     sheet.querySelector(".st").textContent = d.live ? "Ya funcionando en un caso real" : (d.s || "Listo para implantar");
     sheet.querySelector("h3").textContent = d.n;
     sheet.querySelector(".what").textContent = d.d;
     sheet.querySelector(".why b").textContent = "El animal · " + d.a;
     sheet.querySelector(".why p").textContent = d.w;
+    sheet.querySelector(".fun-tip").textContent = d.c || "";
+    sheet.querySelector(".fun").classList.remove("open");
     sheet.classList.add("open"); sheet.setAttribute("aria-hidden", "false");
     sheet.querySelector(".x").focus({ preventScroll: true });
   }
@@ -157,6 +159,8 @@
   mirrors.forEach(function (m, i) { m.addEventListener("click", function () { openSheet(i); }); });
   document.querySelector(".hall-now .open").addEventListener("click", function () { openSheet(active < 0 ? 0 : active); });
   sheet.querySelector(".x").addEventListener("click", closeSheet);
+  var fun = sheet.querySelector(".fun"), funBtn = sheet.querySelector(".fun-btn");
+  funBtn.addEventListener("click", function (e) { e.stopPropagation(); var o = !fun.classList.contains("open"); fun.classList.toggle("open", o); funBtn.setAttribute("aria-expanded", String(o)); });
   sheet.addEventListener("click", function (e) { if (e.target === sheet) closeSheet(); });
   sheet.querySelector(".prev").addEventListener("click", function () { openSheet(cur - 1); });
   sheet.querySelector(".next").addEventListener("click", function () { openSheet(cur + 1); });
@@ -166,7 +170,9 @@
   });
 
   /* ================= bucle principal ================= */
+  document.querySelectorAll(".facts.rise").forEach(function (el) { el.addEventListener("animationend", function () { el.classList.remove("rise", "d5"); }); });
   var targetRot = 0;
+  var heroParts = [[".hero .left", 1], [".hero .right", .8], ["body.one .facts", .45]].map(function (a) { return { el: document.querySelector(a[0]), k: a[1] }; }).filter(function (o) { return o.el; });
   function frame() {
     requestAnimationFrame(frame);
     var y = scrollY, vh = innerHeight, Hh = hero.offsetHeight;
@@ -181,13 +187,23 @@
 
     for (var i = 0; i < gens.length; i++) {
       var el = gens[i], r = el.getBoundingClientRect();
-      if (r.top > vh * 1.2 || r.bottom < -vh * .2) { if (r.top > vh) el.style.setProperty("--p", 0); continue; }
+      if (r.top > vh * 1.2 || r.bottom < -vh * .2) { el.style.setProperty("--p", 0); continue; }
       var lag = parseFloat(el.dataset.lag || 0);
-      var p = (vh * 1.0 - r.top) / (vh * .55) - lag;
-      el.style.setProperty("--p", Math.max(0, Math.min(1, p)).toFixed(3));
+      var pin = (vh - r.top) / (vh * .55) - lag;           // entrando por abajo
+      var pout = (r.bottom - vh * .02) / (vh * .45) - lag;  // saliendo por arriba
+      var p = Math.max(0, Math.min(1, Math.min(pin, pout)));
+      el.style.setProperty("--p", p.toFixed(3));
+      el.style.setProperty("--d", pout < pin ? 1 : 0);
     }
+    // portada: se aleja al bajar y se recompone al volver arriba
+    var hp2 = Math.max(0, Math.min(1, y / (Hh * .7)));
+    heroParts.forEach(function (o) {
+      o.el.style.transform = "translateY(" + (-hp2 * o.k * 120).toFixed(1) + "px) scale(" + (1 - hp2 * .06).toFixed(3) + ")";
+      o.el.style.opacity = (1 - hp2 * 1.15).toFixed(3);
+      o.el.style.filter = "blur(" + (hp2 * 10).toFixed(1) + "px)";
+    });
     leads.forEach(function (el) {
-      var r = el.getBoundingClientRect(), prog = Math.max(0, Math.min(1, (vh * .85 - r.top) / (vh * .5)));
+      var r = el.getBoundingClientRect(), prog = Math.max(0, Math.min(1, Math.min((vh * .85 - r.top) / (vh * .5), (r.bottom - vh * .05) / (vh * .3))));
       var ws = el.children, n = ws.length, lit = Math.round(prog * n);
       for (var k = 0; k < n; k++) ws[k].classList.toggle("lit", k < lit);
     });

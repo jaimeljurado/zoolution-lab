@@ -142,8 +142,13 @@
     addEventListener("resize", fit);
   }
 
+  function initScrolled() {
+    const f = () => document.body.classList.toggle("scrolled", scrollY > 60);
+    addEventListener("scroll", f, { passive: true }); f();
+  }
+
   function boot() {
-    [initEntrance, initWatermark, initScramble, initMenu, initScrub, initLazyVideos, initCine, initReveal, initForm].forEach(f => safe(f, f.name));
+    [initEntrance, initScrolled, initWatermark, initScramble, initMenu, initScrub, initLazyVideos, initCine, initReveal, initForm].forEach(f => safe(f, f.name));
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
 })();

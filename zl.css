@@ -228,3 +228,36 @@ html, body.one { overflow-x: clip; }
 .hero-stage .seam { -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 35%, #000 65%, transparent 100%); }
 body.one .facts { bottom: 15vh; }
 @media (max-width: 760px), (max-aspect-ratio: 4/5) { body.one .facts { bottom: auto; } .hero-stage { -webkit-mask-image: linear-gradient(to bottom, #000 92%, rgba(0,0,0,0) 100%); mask-image: linear-gradient(to bottom, #000 92%, rgba(0,0,0,0) 100%); } .hero-stage .stage { padding-bottom: 60px; } }
+
+/* v8 · animales abajo del todo en cada espejo */
+.mirror .face { display: flex; align-items: flex-end; justify-content: center; padding: 0 9% 11%; }
+.mirror .face img, .mirror .face svg { width: auto; height: auto; max-width: 82%; max-height: 62%; color: #0b0b0b; position: relative; z-index: 1; display: block; }
+.mirror .face svg { width: 70%; height: 55%; }
+.mirror img, .sheet .pic img { filter: none; }
+.mirror img.inv, .sheet .pic img.inv, .tools .row img.inv { filter: invert(1); }
+.sheet .pic { display: flex; align-items: flex-end; justify-content: center; padding: 0 12% 12%; }
+.sheet .pic img, .sheet .pic svg { width: auto; height: auto; max-width: 84%; max-height: 60%; color: #0b0b0b; }
+.sheet .pic svg { width: 70%; height: 50%; }
+.tools .row img { height: 26px; width: auto; }
+
+/* dato curioso */
+.fun { position: relative; display: inline-block; margin-top: 18px; }
+.fun-btn { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 12px 0 9px; border-radius: 999px; border: 1px solid rgba(255,255,255,.22); background: rgba(255,255,255,.06); color: rgba(255,255,255,.85); font: 500 12px/1 var(--inter); letter-spacing: .01em; cursor: help; transition: background-color .25s, border-color .25s; }
+.fun-btn span { font-size: 12px; display: inline-block; transition: transform .6s cubic-bezier(.16,1,.3,1); }
+.fun:hover .fun-btn, .fun.open .fun-btn, .fun-btn:focus-visible { background: #fff; color: #0a0a0a; border-color: #fff; }
+.fun:hover .fun-btn span, .fun.open .fun-btn span { transform: rotate(180deg) scale(1.15); }
+.fun-tip { position: absolute; left: 0; bottom: calc(100% + 12px); width: min(360px, 78vw); padding: 16px 18px; border-radius: 16px; background: rgba(255,255,255,.96); color: #0b0b0b; font: 500 14px/1.45 var(--inter); letter-spacing: -0.01em; box-shadow: 0 20px 50px rgba(0,0,0,.45); opacity: 0; visibility: hidden; transform: translateY(8px) scale(.97); transform-origin: 20px 100%; transition: opacity .3s, transform .4s cubic-bezier(.16,1,.3,1), visibility .3s; z-index: 5; pointer-events: none; }
+.fun-tip::before { content: "Dato curioso"; display: block; font: 600 11px/1 var(--inter); letter-spacing: .14em; text-transform: uppercase; color: rgba(0,0,0,.45); margin-bottom: 8px; }
+.fun-tip::after { content: ""; position: absolute; left: 22px; top: 100%; border: 7px solid transparent; border-top-color: rgba(255,255,255,.96); }
+.fun:hover .fun-tip, .fun.open .fun-tip, .fun-btn:focus-visible + .fun-tip { opacity: 1; visibility: visible; transform: none; }
+.sheet .nav2 { margin-top: 18px; }
+
+/* v8 · aparición en las dos direcciones: se deshace al salir por arriba y se reconstruye al volver */
+.js .gen { --d: 0;
+  transform: perspective(1200px) translateY(calc((1 - var(--p)) * 70px * (1 - 2 * var(--d)))) rotateX(calc((1 - var(--p)) * 16deg * (1 - 2 * var(--d)))) scale(calc(.9 + var(--p) * .1));
+  clip-path: inset(calc((1 - var(--p)) * 62% * (1 - var(--d))) 0 calc((1 - var(--p)) * 62% * var(--d)) 0 round 20px);
+  transform-origin: 50% calc(100% * (1 - var(--d))); }
+.js .gen-t { --d: 0; transform: translateY(calc((1 - var(--p)) * 40px * (1 - 2 * var(--d)))); }
+/* portada: al bajar se aleja y se difumina; al volver arriba se recompone */
+.hero .left, .hero .right, body.one .facts, .top .brand { will-change: transform, opacity, filter; }
+@media (prefers-reduced-motion: reduce) { .js .gen, .js .gen-t { transform: none; clip-path: none; } }
