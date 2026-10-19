@@ -130,8 +130,20 @@
     });
   }
 
+  // Ajusta el rótulo de fondo para que quepa siempre en pantalla
+  function initWatermark() {
+    const els = $$(".watermark"); if (!els.length) return;
+    const fit = () => els.forEach(el => {
+      el.style.fontSize = ""; let fs = parseFloat(getComputedStyle(el).fontSize), n = 0;
+      const s = el.firstElementChild || el;
+      while (s.getBoundingClientRect().width > innerWidth * 0.94 && fs > 40 && n++ < 60) { fs *= 0.94; el.style.fontSize = fs + "px"; }
+    });
+    (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(fit);
+    addEventListener("resize", fit);
+  }
+
   function boot() {
-    [initEntrance, initScramble, initMenu, initScrub, initLazyVideos, initCine, initReveal, initForm].forEach(f => safe(f, f.name));
+    [initEntrance, initWatermark, initScramble, initMenu, initScrub, initLazyVideos, initCine, initReveal, initForm].forEach(f => safe(f, f.name));
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
 })();
