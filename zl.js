@@ -1,4 +1,15 @@
 (function () {
+  // cursor de doble círculo
+  var cin = document.querySelector(".cursor-in"), cout = document.querySelector(".cursor-out");
+  if (cin && cout && matchMedia("(pointer: fine)").matches) {
+    var mx = innerWidth / 2, my = innerHeight / 2, ox = mx, oy = my;
+    addEventListener("mousemove", function (e) { mx = e.clientX; my = e.clientY; cin.style.left = mx + "px"; cin.style.top = my + "px"; }, { passive: true });
+    (function loopC() { ox += (mx - ox) * .2; oy += (my - oy) * .2; cout.style.left = ox + "px"; cout.style.top = oy + "px"; requestAnimationFrame(loopC); })();
+    document.addEventListener("mouseover", function (e) { cout.classList.toggle("big", !!e.target.closest("a, button, .mirror, input, select, textarea")); });
+    document.addEventListener("mouseleave", function () { cin.style.opacity = cout.style.opacity = 0; });
+    document.addEventListener("mouseenter", function () { cin.style.opacity = cout.style.opacity = 1; });
+  }
+
   var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   var hero = document.querySelector(".hero-stage");
   var desert = document.querySelector(".desert");
@@ -58,11 +69,11 @@
     sx.clearRect(0, 0, W, H);
     // nubes: dos capas a distinta velocidad, sólo en la franja del cielo
     if (cloudTile) {
-      cloudX += dt * 9;
+      cloudX += dt * 30;
       var th = H * .5, tw = th * (cloudTile.width / cloudTile.height) * 1.6;
       sx.save();
       var grad = sx.createLinearGradient(0, 0, 0, H * .62);
-      sx.globalAlpha = .13;
+      sx.globalAlpha = .2;
       for (var layer = 0; layer < 2; layer++) {
         var off = ((cloudX * (layer ? .55 : 1)) % tw + tw) % tw, yy = layer ? H * .1 : H * .02, sc = layer ? 1.35 : 1;
         for (var xx = -off * sc; xx < W; xx += tw * sc) sx.drawImage(cloudTile, xx, yy, tw * sc, th * sc);
@@ -189,7 +200,7 @@
       var el = gens[i], r = el.getBoundingClientRect();
       if (r.top > vh * 1.2 || r.bottom < -vh * .2) { el.style.setProperty("--p", 0); continue; }
       var lag = parseFloat(el.dataset.lag || 0);
-      var pin = (vh - r.top) / (vh * .55) - lag;           // entrando por abajo
+      var pin = (vh - r.top) / (vh * (el.classList.contains("gen-t") ? .32 : .55)) - lag;           // entrando por abajo
       var pout = (r.bottom - vh * .02) / (vh * .45) - lag;  // saliendo por arriba
       var p = Math.max(0, Math.min(1, Math.min(pin, pout)));
       el.style.setProperty("--p", p.toFixed(3));
@@ -203,7 +214,7 @@
       o.el.style.filter = "blur(" + (hp2 * 10).toFixed(1) + "px)";
     });
     leads.forEach(function (el) {
-      var r = el.getBoundingClientRect(), prog = Math.max(0, Math.min(1, Math.min((vh * .85 - r.top) / (vh * .5), (r.bottom - vh * .05) / (vh * .3))));
+      var r = el.getBoundingClientRect(), prog = Math.max(0, Math.min(1, Math.min((vh * .95 - r.top) / (vh * .33), (r.bottom - vh * .05) / (vh * .3))));
       var ws = el.children, n = ws.length, lit = Math.round(prog * n);
       for (var k = 0; k < n; k++) ws[k].classList.toggle("lit", k < lit);
     });
