@@ -154,7 +154,7 @@
   var sheet = document.querySelector(".sheet"), cur = 0;
   function openSheet(i) {
     cur = (i + N) % N; var d = MODS[cur];
-    sheet.querySelector(".pic").innerHTML = d.k === "goat" ? '<img class="inv" src="assets/goat.png" alt="">' : d.img ? '<img src="' + d.img + '" alt="">' : '<svg aria-hidden="true"><use href="assets/animales.svg#a-' + d.k + '"/></svg>';
+    sheet.querySelector(".pic").innerHTML = d.k === "goat" ? '<img class="inv" src="assets/fauna/goat.png" alt="">' : d.img ? '<img src="' + d.img + '" alt="">' : '<svg aria-hidden="true"><use href="assets/animales.svg#a-' + d.k + '"/></svg>';
     sheet.querySelector(".st").className = "st" + (d.live ? " live" : "");
     sheet.querySelector(".st").textContent = d.live ? "Ya funcionando en un caso real" : (d.s || "Listo para implantar");
     sheet.querySelector("h3").textContent = d.n;
@@ -182,6 +182,27 @@
 
   /* ================= bucle principal ================= */
   document.querySelectorAll(".facts.rise").forEach(function (el) { el.addEventListener("animationend", function () { el.classList.remove("rise", "d5"); }); });
+  var hallStage = document.querySelector(".hall-stage");
+  function hallRange() { var top = hall.getBoundingClientRect().top + scrollY; return { top: top, span: hall.offsetHeight - innerHeight }; }
+  function inHall() { var r = hall.getBoundingClientRect(); return r.top <= 1 && r.bottom >= innerHeight - 1; }
+  function hallNudge(px) { // px de gesto horizontal -> avance del anillo
+    var hr2 = hallRange(), per = hr2.span / (N - 1), k = per / 260;
+    var ny = Math.max(hr2.top, Math.min(hr2.top + hr2.span, scrollY + px * k));
+    window.scrollTo({ top: ny, behavior: "instant" });
+  }
+  addEventListener("wheel", function (e) {
+    if (!inHall() || Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+    e.preventDefault(); hallNudge(e.deltaX);
+  }, { passive: false });
+  var tx0 = null, ty0 = null, tLock = 0;
+  hallStage.addEventListener("touchstart", function (e) { tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY; tLock = 0; }, { passive: true });
+  hallStage.addEventListener("touchmove", function (e) {
+    if (tx0 === null) return;
+    var dx = e.touches[0].clientX - tx0, dy = e.touches[0].clientY - ty0;
+    if (!tLock && Math.abs(dx) + Math.abs(dy) > 8) tLock = Math.abs(dx) > Math.abs(dy) ? 1 : 2;
+    if (tLock === 1) { e.preventDefault(); hallNudge(-dx * 2.2); tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY; }
+  }, { passive: false });
+  hallStage.addEventListener("touchend", function () { tx0 = null; });
   var targetRot = 0;
   var heroParts = [[".hero .left", 1], [".hero .right", .8], ["body.one .facts", .45]].map(function (a) { return { el: document.querySelector(a[0]), k: a[1] }; }).filter(function (o) { return o.el; });
   function frame() {
