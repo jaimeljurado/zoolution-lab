@@ -610,3 +610,17 @@ body.one.past .brand .stack { gap: 4px; }
 }
 body.one .nav { transition: top .45s cubic-bezier(.2,.8,.2,1); }
 body.one.past .nav { top: 14px; }
+
+/* ================= v22 · portátil 13–15": pie y cierre ================= */
+@media (max-height: 900px) and (min-width: 901px) {
+  .foot2 .content { padding-top: 104px; gap: 24px; }
+  .flow .f-title { font-size: 20px; margin-top: 16px; }
+  .f-text { font-size: 13.5px; margin-top: 10px; }
+  .f-cta { margin-top: 14px; }
+  .f-copy { margin-top: 16px; }
+  .foot2 .chips2 { margin-top: 12px; flex-wrap: nowrap; }
+  .f-col ul { gap: 11px; margin-top: 16px; font-size: 13.5px; }
+  .f-logo .door { height: 54px; } .f-logo .stack img { height: 15px; }
+  .wordmark { font-size: min(17.2vw, 31vh); bottom: 1.2vh; }
+  .cta2 { padding: clamp(90px, 14vh, 140px) 0 clamp(60px, 10vh, 100px); }
+}

@@ -20,6 +20,29 @@
   var sky = document.getElementById("sky"), sx = sky.getContext("2d");
   var W = 0, H = 0, DPR = Math.min(devicePixelRatio || 1, 2), stars = [], shooters = [], nextShoot = 2.5;
   var cloudTile = null, cloudX = 0;
+  // aurora boreal blanca: cortinas de luz que ondulan despacio (se pinta a baja resolución y se escala: queda suave)
+  var aur = document.createElement("canvas"), ax = aur.getContext("2d"), aSprite = document.createElement("canvas");
+  aSprite.width = 1; aSprite.height = 96;
+  (function () { var g = aSprite.getContext("2d"), gr = g.createLinearGradient(0, 0, 0, 96);
+    gr.addColorStop(0, "rgba(255,255,255,0)"); gr.addColorStop(.55, "rgba(255,255,255,.22)"); gr.addColorStop(.86, "rgba(255,255,255,.85)"); gr.addColorStop(.93, "rgba(255,255,255,1)"); gr.addColorStop(1, "rgba(255,255,255,0)");
+    g.fillStyle = gr; g.fillRect(0, 0, 1, 96); })();
+  function drawAurora(t) {
+    var aw = aur.width, ah = aur.height;
+    ax.clearRect(0, 0, aw, ah);
+    for (var b = 0; b < 3; b++) {
+      var wgt = [1, .7, .45][b], yb = [.30, .38, .24][b], ph = b * 2.1;
+      for (var x = 0; x < aw; x++) {
+        var u = x / aw;
+        var base = ah * (yb + .075 * Math.sin(u * 4.6 + t * .05 + ph) + .03 * Math.sin(u * 11.5 - t * .08 + ph * 1.3) + .012 * Math.sin(u * 31 + t * .2));
+        var hgt = ah * (.2 + .09 * Math.sin(u * 6.8 + t * .07 + ph));
+        var I = Math.pow(.5 + .5 * Math.sin(u * 7.7 - t * .09 + ph * 1.7), 1.4) * (.65 + .35 * Math.sin(u * 37 + t * .4 + ph)) * Math.pow(Math.sin(Math.PI * u), .8);
+        if (I < .02) continue;
+        ax.globalAlpha = Math.min(1, I * wgt * 1.1);
+        ax.drawImage(aSprite, x, base - hgt, 1.6, hgt * 1.08);
+      }
+    }
+    ax.globalAlpha = 1;
+  }
   function rnd(a, b) { return a + Math.random() * (b - a); }
   function buildStars() {
     stars = [];
@@ -55,6 +78,7 @@
     sky.width = Math.round(W * DPR); sky.height = Math.round(H * DPR);
     sx.setTransform(DPR, 0, 0, DPR, 0, 0);
     buildStars();
+    aur.width = Math.max(120, Math.round(W / 5)); aur.height = Math.max(80, Math.round(H / 5));
   }
   function shoot() {
     var fromLeft = Math.random() < .5, len = rnd(120, 260);
@@ -83,6 +107,10 @@
       sx.fillStyle = grad; sx.fillRect(0, 0, W, H);
       sx.restore();
     }
+    // aurora
+    drawAurora(reduce ? 0 : t);
+    sx.save(); sx.globalCompositeOperation = "lighter"; sx.globalAlpha = .85; sx.imageSmoothingEnabled = true; sx.imageSmoothingQuality = "high";
+    sx.drawImage(aur, 0, 0, W, H); sx.restore();
     // estrellas parpadeando
     for (var i = 0; i < stars.length; i++) {
       var s = stars[i], a = s.base + s.amp * (.5 + .5 * Math.sin(t * s.sp + s.ph));
