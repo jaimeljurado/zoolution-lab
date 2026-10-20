@@ -523,3 +523,17 @@ html, body { overscroll-behavior-x: none; }
   filter: blur(calc(var(--q) * 12px)); clip-path: none; }
 .steps2 .gen:nth-child(1) { --sx: -70; } .steps2 .gen:nth-child(2) { --sx: -45; } .steps2 .gen:nth-child(3) { --sx: 45; } .steps2 .gen:nth-child(4) { --sx: 70; }
 @media (prefers-reduced-motion: reduce) { .js .steps2 .gen { transform: none; filter: none; opacity: 1; } }
+
+/* ================= v19 · puerta de luz, sutil ================= */
+.desert::after { z-index: 1; }
+.portal { position: absolute; inset: 0; z-index: 2; pointer-events: none; transform: scale(var(--dz, 1.1)); transform-origin: 50% 70%; }
+.p-wrap { position: absolute; --dw: 28px; --dh: 56px; }
+.p-wrap > div { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+.p-door { width: var(--dw); height: var(--dh); background: #fff; border-radius: 1px;
+  box-shadow: 0 0 3px 1px #fff, 0 0 calc(var(--dw) * .6) calc(var(--dw) * .15) rgba(255,255,255,.55); animation: zl-pd 6s ease-in-out infinite; }
+@keyframes zl-pd { 50% { box-shadow: 0 0 4px 1px #fff, 0 0 calc(var(--dw) * .8) calc(var(--dw) * .22) rgba(255,255,255,.62); } }
+.p-halo { width: calc(var(--dw) * 9); height: calc(var(--dh) * 3); background: radial-gradient(closest-side, rgba(255,255,255,.22), rgba(255,255,255,.06) 50%, transparent); animation: zl-ph 6s ease-in-out infinite; }
+@keyframes zl-ph { 50% { opacity: .75; } }
+.p-sky { width: calc(var(--dw) * 40); height: calc(var(--dh) * 4); margin-top: calc(var(--dh) * .2); background: radial-gradient(closest-side, rgba(255,255,255,.09), transparent); }
+.p-floor { top: 100% !important; transform: translate(-50%, -30%) !important; width: calc(var(--dw) * 14); height: calc(var(--dh) * .9); background: radial-gradient(closest-side, rgba(255,255,255,.26), rgba(255,255,255,.06) 50%, transparent); }
+@media (prefers-reduced-motion: reduce) { .portal * { animation: none !important; } }
