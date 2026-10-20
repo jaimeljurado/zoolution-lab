@@ -122,6 +122,27 @@
     [].slice.call(g.querySelectorAll(".gen")).forEach(function (el, i) { el.dataset.lag = (i % 4) * 0.07; });
   });
 
+  /* ================= bento: origen de cada tarjeta, foco del ratón, contador, copiar ================= */
+  var bento2 = document.querySelector(".bento2"), statEl = document.querySelector(".bento2 .stat"), countEl = statEl && statEl.querySelector(".count"), lastN = -1;
+  function bentoOrigins() {
+    if (!bento2) return;
+    var cx = bento2.clientWidth / 2, cy = bento2.clientHeight / 2;
+    [].slice.call(bento2.children).forEach(function (el) {
+      el.style.setProperty("--ox", (el.offsetLeft + el.offsetWidth / 2 - cx).toFixed(0));
+      el.style.setProperty("--oy", (el.offsetTop + el.offsetHeight / 2 - cy).toFixed(0));
+    });
+  }
+  if (bento2) [].slice.call(bento2.children).forEach(function (el, i) { el.dataset.lag = [0, .05, .1, .08, .13][i] || 0; });
+  bentoOrigins(); addEventListener("resize", bentoOrigins); addEventListener("load", bentoOrigins);
+  if (bento2) [].slice.call(bento2.children).forEach(function (el) {
+    el.addEventListener("pointermove", function (e) { var r = el.getBoundingClientRect(); el.style.setProperty("--mx", (e.clientX - r.left) + "px"); el.style.setProperty("--my", (e.clientY - r.top) + "px"); });
+  });
+  var copyBtn = document.querySelector(".bento2 .copy");
+  if (copyBtn) copyBtn.addEventListener("click", function () {
+    var done = function () { copyBtn.textContent = "Copiado ✓"; setTimeout(function () { copyBtn.textContent = "Copiar"; }, 1800); };
+    if (navigator.clipboard) navigator.clipboard.writeText(copyBtn.dataset.mail).then(done, done); else done();
+  });
+
   /* ================= Mirror Hall ================= */
   var hall = document.querySelector(".hall"), ring = document.querySelector(".ring");
   var mirrors = [].slice.call(document.querySelectorAll(".mirror"));
@@ -219,11 +240,15 @@
     document.body.classList.toggle("past", y > Hh * .6);
 
     for (var i = 0; i < gens.length; i++) {
-      var el = gens[i], r = el.getBoundingClientRect();
+      var el = gens[i], inB = bento2 && el.parentNode === bento2, r = (inB ? bento2 : el).getBoundingClientRect();
       if (r.top > vh * 1.2 || r.bottom < -vh * .2) { el.style.setProperty("--p", 0); continue; }
       var lag = parseFloat(el.dataset.lag || 0);
+      if (inB) { // el bento se monta como una sola pieza
+        var pin = (vh * .98 - r.top) / (vh * .72) - lag, pout = (r.bottom - vh * .04) / (vh * .5) - lag;
+      } else {
       var pin = (vh - r.top) / (vh * (el.classList.contains("gen-t") ? .32 : .55)) - lag;           // entrando por abajo
       var pout = (r.bottom - vh * .02) / (vh * .45) - lag;  // saliendo por arriba
+      }
       var p = Math.max(0, Math.min(1, Math.min(pin, pout)));
       el.style.setProperty("--p", p.toFixed(3));
       el.style.setProperty("--d", pout < pin ? 1 : 0);
@@ -241,6 +266,7 @@
       for (var k = 0; k < n; k++) ws[k].classList.toggle("lit", k < lit);
     });
 
+    if (statEl) { var sp = parseFloat(statEl.style.getPropertyValue("--p")) || 0, nv = Math.round(16 * Math.min(1, Math.max(0, (sp - .25) / .65))); if (nv !== lastN) { countEl.textContent = nv; lastN = nv; } }
     // mirror hall: el anillo gira con el scroll y se para en cada espejo
     var hr = hall.getBoundingClientRect(), xl = vh * 1.6, span = Math.max(1, hall.offsetHeight - vh - xl);
     var hp = Math.max(0, Math.min(1, -hr.top / span));
