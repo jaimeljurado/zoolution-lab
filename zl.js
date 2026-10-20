@@ -123,7 +123,7 @@
   });
 
   /* ================= bento: origen de cada tarjeta, foco del ratón, contador, copiar ================= */
-  var bento2 = document.querySelector(".bento2"), statEl = document.querySelector(".bento2 .stat"), countEl = statEl && statEl.querySelector(".count"), lastN = -1;
+  var steps2 = document.querySelector(".steps2"), bento2 = document.querySelector(".bento2"), statEl = document.querySelector(".bento2 .stat"), countEl = statEl && statEl.querySelector(".count"), lastN = -1;
   function bentoOrigins() {
     if (!bento2) return;
     var cx = bento2.clientWidth / 2, cy = bento2.clientHeight / 2;
@@ -133,6 +133,7 @@
     });
   }
   if (bento2) [].slice.call(bento2.children).forEach(function (el, i) { el.dataset.lag = [0, .05, .1, .08, .13][i] || 0; });
+  if (steps2) [].slice.call(steps2.children).forEach(function (el, i) { el.dataset.lag = [0, .07, .07, 0][i] || 0; });
   bentoOrigins(); addEventListener("resize", bentoOrigins); addEventListener("load", bentoOrigins);
   if (bento2) [].slice.call(bento2.children).forEach(function (el) {
     el.addEventListener("pointermove", function (e) { var r = el.getBoundingClientRect(); el.style.setProperty("--mx", (e.clientX - r.left) + "px"); el.style.setProperty("--my", (e.clientY - r.top) + "px"); });
@@ -240,11 +241,11 @@
     document.body.classList.toggle("past", y > Hh * .6);
 
     for (var i = 0; i < gens.length; i++) {
-      var el = gens[i], inB = bento2 && el.parentNode === bento2, r = (inB ? bento2 : el).getBoundingClientRect();
+      var el = gens[i], grp = el.parentNode && (el.parentNode === bento2 || el.parentNode === steps2) ? el.parentNode : null, inB = !!grp, r = (grp || el).getBoundingClientRect();
       if (r.top > vh * 1.2 || r.bottom < -vh * .2) { el.style.setProperty("--p", 0); continue; }
       var lag = parseFloat(el.dataset.lag || 0);
       if (inB) { // el bento se monta como una sola pieza
-        var pin = (vh * .98 - r.top) / (vh * .72) - lag, pout = (r.bottom - vh * .04) / (vh * .5) - lag;
+        var pin = (vh * .98 - r.top) / (vh * (grp === steps2 ? .42 : .72)) - lag, pout = (r.bottom - vh * .04) / (vh * .5) - lag;
       } else {
       var pin = (vh - r.top) / (vh * (el.classList.contains("gen-t") ? .32 : .55)) - lag;           // entrando por abajo
       var pout = (r.bottom - vh * .02) / (vh * .45) - lag;  // saliendo por arriba
