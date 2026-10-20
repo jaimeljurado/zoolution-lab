@@ -122,17 +122,6 @@
     [].slice.call(g.querySelectorAll(".gen")).forEach(function (el, i) { el.dataset.lag = (i % 4) * 0.07; });
   });
 
-  /* ================= puerta de luz: misma posición que en la imagen del desierto ================= */
-  var pWrap = document.querySelector(".p-wrap");
-  function placePortal() {
-    if (!pWrap) return;
-    var W = innerWidth, H = innerHeight, s = Math.max(W / 1920, H / 1436), rw = 1920 * s, rh = 1436 * s, ox = (W - rw) * .5, oy = (H - rh) * .6;
-    pWrap.style.left = (ox + .4922 * rw).toFixed(1) + "px"; pWrap.style.top = (oy + .5734 * rh).toFixed(1) + "px";
-    pWrap.style.width = (.0193 * rw).toFixed(1) + "px"; pWrap.style.height = (.0508 * rh).toFixed(1) + "px";
-    pWrap.style.setProperty("--dw", (.0193 * rw).toFixed(1) + "px"); pWrap.style.setProperty("--dh", (.0508 * rh).toFixed(1) + "px");
-  }
-  placePortal(); addEventListener("resize", placePortal);
-
   /* ================= bento: origen de cada tarjeta, foco del ratón, contador, copiar ================= */
   var steps2 = document.querySelector(".steps2"), bento2 = document.querySelector(".bento2"), statEl = document.querySelector(".bento2 .stat"), countEl = statEl && statEl.querySelector(".count"), lastN = -1;
   function bentoOrigins() {
