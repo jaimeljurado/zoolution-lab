@@ -183,7 +183,7 @@
   /* ================= bucle principal ================= */
   document.querySelectorAll(".facts.rise").forEach(function (el) { el.addEventListener("animationend", function () { el.classList.remove("rise", "d5"); }); });
   var hallStage = document.querySelector(".hall-stage");
-  function exitLen() { return innerHeight * 1.2; }
+  function exitLen() { return innerHeight * 1.6; }
   function hallRange() { var top = hall.getBoundingClientRect().top + scrollY; return { top: top, span: Math.max(1, hall.offsetHeight - innerHeight - exitLen()) }; }
   function inHall() { var r = hall.getBoundingClientRect(); return r.top <= 1 && -r.top <= hall.offsetHeight - innerHeight - exitLen() + 2; }
   function hallNudge(px) { // px de gesto horizontal -> avance del anillo
@@ -242,11 +242,11 @@
     });
 
     // mirror hall: el anillo gira con el scroll y se para en cada espejo
-    var hr = hall.getBoundingClientRect(), xl = vh * 1.2, span = Math.max(1, hall.offsetHeight - vh - xl);
+    var hr = hall.getBoundingClientRect(), xl = vh * 1.6, span = Math.max(1, hall.offsetHeight - vh - xl);
     var hp = Math.max(0, Math.min(1, -hr.top / span));
     var ex = Math.max(0, Math.min(1, (-hr.top - span) / xl)); // salida: las cartas giran y se van a los lados
     ring.classList.toggle("out", ex > 0);
-    hallNow.style.opacity = hallHead.style.opacity = dotsBox.style.opacity = (1 - Math.min(1, ex * 1.6)).toFixed(3);
+    hallNow.style.opacity = hallHead.style.opacity = dotsBox.style.opacity = (1 - Math.max(0, Math.min(1, (ex - .45) * 2.5))).toFixed(3);
     hallNow.style.pointerEvents = ex > .3 ? "none" : "";
     var f = hp * (N - 1), base = Math.floor(f), frac = f - base;
     var eased = base + (frac < .5 ? 0 : 1) * 0 + (frac < .5 ? Math.pow(frac * 2, 3) / 2 : 1 - Math.pow((1 - frac) * 2, 3) / 2); // pausa en cada espejo
@@ -260,10 +260,11 @@
       var op = aa > 78 ? 0 : 1 - Math.max(0, aa - 40) / 38;
       if (ex > 0 && aa <= 78) {
         var side = Math.abs(ang) < step / 2 ? (active % 2 ? 1 : -1) : (ang > 0 ? -1 : 1);
-        var dl = .32 * (1 - aa / 78), e = Math.max(0, Math.min(1, (ex - dl) / (1 - dl)));
-        var ee = e < .5 ? 4 * e * e * e : 1 - Math.pow(-2 * e + 2, 3) / 2;
-        mm.style.transform = mm._b + " translateX(" + (side * ee * innerWidth * 1.05).toFixed(1) + "px) translateZ(" + (ee * 160).toFixed(1) + "px) rotateY(" + (side * ee * 360).toFixed(1) + "deg)";
-        op *= 1 - Math.max(0, e - .72) / .28;
+        var dl = .18 * (aa / 78), e = Math.max(0, Math.min(1, (ex - dl) / (1 - dl)));
+        var es = Math.min(1, e / .55); es = es < .5 ? 4 * es * es * es : 1 - Math.pow(-2 * es + 2, 3) / 2; // 1º: giro de 360º en el sitio
+        var et = Math.max(0, (e - .5) / .5); et = et * et * et;                                            // 2º: salen disparadas a los lados
+        mm.style.transform = mm._b + " translateX(" + (side * et * innerWidth * 1.1).toFixed(1) + "px) translateZ(" + (Math.sin(es * Math.PI) * 120).toFixed(1) + "px) rotateY(" + (side * (es * 360 + et * 50)).toFixed(1) + "deg)";
+        op *= 1 - Math.max(0, e - .8) / .2;
       } else if (mm._x !== ex) mm.style.transform = mm._b;
       mm._x = ex;
       mm.style.opacity = op.toFixed(3);
