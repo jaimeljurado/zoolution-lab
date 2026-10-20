@@ -292,3 +292,5 @@ body.one .fact .t small { display: block; font: 500 clamp(13px, 1vw, 15px)/1.3 v
 }
 body.one .cursor-in, body.one .cursor-out { mix-blend-mode: difference; }
 .cta2 .lead2 { margin-left: auto; margin-right: auto; }
+
+.wordmark { font-size: 17.2vw; letter-spacing: -0.055em; padding: 0 .06em; }

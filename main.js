@@ -83,14 +83,14 @@
     (function loop() {
       if (ready && v.duration && mx !== null) {
         const p = Math.max(0, Math.min(1, (mx - 0.08) / 0.84));
-        const want = p * (v.duration - 0.05);
+        const want = (0.02 + p * 0.88) * v.duration;
         target += (want - target) * 0.22;
         apply();
       }
       // inclinación vertical: mirar arriba/abajo/lados con un ligero giro del plano
       const ny = (my - 0.5) * 2, nx = ((mx === null ? 0.5 : mx) - 0.5) * 2;
       cy += (ny - cy) * 0.08; cx += (nx - cx) * 0.08;
-      v.style.transform = "perspective(1200px) rotateX(" + (cy * -3).toFixed(2) + "deg) rotateY(" + (cx * 2).toFixed(2) + "deg) translateY(" + (cy * -10).toFixed(1) + "px) scale(1.06)";
+      v.style.transform = "translate(" + (cx * -8).toFixed(1) + "px," + (46 + cy * -8).toFixed(1) + "px) scale(1.05)";
       requestAnimationFrame(loop);
     })();
     v.load();
