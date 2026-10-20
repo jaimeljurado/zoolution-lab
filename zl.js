@@ -127,7 +127,7 @@
   var mirrors = [].slice.call(document.querySelectorAll(".mirror"));
   var N = mirrors.length, step = 360 / N, R = 600, PUSH = 420, rot = 0, active = -1;
   var nowIx = document.querySelector(".hall-now .ix"), nowNm = document.querySelector(".hall-now .nm"), nowAn = document.querySelector(".hall-now .an");
-  var dotsBox = document.querySelector(".hall-dots");
+  var dotsBox = document.querySelector(".hall-dots"), hallNow = document.querySelector(".hall-now"), hallHead = document.querySelector(".hall-head");
   mirrors.forEach(function () { dotsBox.appendChild(document.createElement("i")); });
   var dots = [].slice.call(dotsBox.children);
   function layoutRing() {
@@ -138,7 +138,7 @@
     ring.style.setProperty("--cw", cw + "px"); ring.style.setProperty("--ch", ch + "px");
     R = ((cw + (small ? 26 : 44)) * N) / (2 * Math.PI);
     PUSH = R * .72;
-    mirrors.forEach(function (m, i) { m.style.transform = "rotateY(" + (-i * step) + "deg) translateZ(" + (-R) + "px)"; });
+    mirrors.forEach(function (m, i) { m._b = "rotateY(" + (-i * step) + "deg) translateZ(" + (-R) + "px)"; m.style.transform = m._b; });
   }
   layoutRing(); addEventListener("resize", layoutRing);
   function setActive(i) {
@@ -183,8 +183,9 @@
   /* ================= bucle principal ================= */
   document.querySelectorAll(".facts.rise").forEach(function (el) { el.addEventListener("animationend", function () { el.classList.remove("rise", "d5"); }); });
   var hallStage = document.querySelector(".hall-stage");
-  function hallRange() { var top = hall.getBoundingClientRect().top + scrollY; return { top: top, span: hall.offsetHeight - innerHeight }; }
-  function inHall() { var r = hall.getBoundingClientRect(); return r.top <= 1 && r.bottom >= innerHeight - 1; }
+  function exitLen() { return innerHeight * 1.2; }
+  function hallRange() { var top = hall.getBoundingClientRect().top + scrollY; return { top: top, span: Math.max(1, hall.offsetHeight - innerHeight - exitLen()) }; }
+  function inHall() { var r = hall.getBoundingClientRect(); return r.top <= 1 && -r.top <= hall.offsetHeight - innerHeight - exitLen() + 2; }
   function hallNudge(px) { // px de gesto horizontal -> avance del anillo
     var hr2 = hallRange(), per = hr2.span / (N - 1), k = per / 260;
     var ny = Math.max(hr2.top, Math.min(hr2.top + hr2.span, scrollY + px * k));
@@ -241,8 +242,12 @@
     });
 
     // mirror hall: el anillo gira con el scroll y se para en cada espejo
-    var hr = hall.getBoundingClientRect(), span = hall.offsetHeight - vh;
-    var hp = Math.max(0, Math.min(1, -hr.top / Math.max(1, span)));
+    var hr = hall.getBoundingClientRect(), xl = vh * 1.2, span = Math.max(1, hall.offsetHeight - vh - xl);
+    var hp = Math.max(0, Math.min(1, -hr.top / span));
+    var ex = Math.max(0, Math.min(1, (-hr.top - span) / xl)); // salida: las cartas giran y se van a los lados
+    ring.classList.toggle("out", ex > 0);
+    hallNow.style.opacity = hallHead.style.opacity = dotsBox.style.opacity = (1 - Math.min(1, ex * 1.6)).toFixed(3);
+    hallNow.style.pointerEvents = ex > .3 ? "none" : "";
     var f = hp * (N - 1), base = Math.floor(f), frac = f - base;
     var eased = base + (frac < .5 ? 0 : 1) * 0 + (frac < .5 ? Math.pow(frac * 2, 3) / 2 : 1 - Math.pow((1 - frac) * 2, 3) / 2); // pausa en cada espejo
     targetRot = eased * step;
@@ -252,8 +257,17 @@
     for (var m = 0; m < N; m++) {
       var ang = ((-m * step + rot) % 360 + 540) % 360 - 180, aa = Math.abs(ang);
       var mm = mirrors[m];
-      mm.style.opacity = aa > 78 ? 0 : (1 - Math.max(0, aa - 40) / 38).toFixed(3);
-      mm.style.pointerEvents = aa > 60 ? "none" : "auto";
+      var op = aa > 78 ? 0 : 1 - Math.max(0, aa - 40) / 38;
+      if (ex > 0 && aa <= 78) {
+        var side = Math.abs(ang) < step / 2 ? (active % 2 ? 1 : -1) : (ang > 0 ? -1 : 1);
+        var dl = .32 * (1 - aa / 78), e = Math.max(0, Math.min(1, (ex - dl) / (1 - dl)));
+        var ee = e < .5 ? 4 * e * e * e : 1 - Math.pow(-2 * e + 2, 3) / 2;
+        mm.style.transform = mm._b + " translateX(" + (side * ee * innerWidth * 1.05).toFixed(1) + "px) translateZ(" + (ee * 160).toFixed(1) + "px) rotateY(" + (side * ee * 360).toFixed(1) + "deg)";
+        op *= 1 - Math.max(0, e - .72) / .28;
+      } else if (mm._x !== ex) mm.style.transform = mm._b;
+      mm._x = ex;
+      mm.style.opacity = op.toFixed(3);
+      mm.style.pointerEvents = aa > 60 || ex > .2 ? "none" : "auto";
       mm.style.setProperty("--glow", aa < step / 2 ? .35 : 0);
       mm.style.setProperty("--lo", aa < step / 2 ? 1 : 0);
       mm.style.setProperty("--shine", (-60 + (ang / 60) * 120).toFixed(1) + "%");
