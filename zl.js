@@ -122,6 +122,7 @@
     [].slice.call(g.querySelectorAll(".gen")).forEach(function (el, i) { el.dataset.lag = (i % 4) * 0.07; });
   });
 
+
   /* ================= bento: origen de cada tarjeta, foco del ratón, contador, copiar ================= */
   var steps2 = document.querySelector(".steps2"), bento2 = document.querySelector(".bento2"), statEl = document.querySelector(".bento2 .stat"), countEl = statEl && statEl.querySelector(".count"), lastN = -1;
   function bentoOrigins() {
@@ -132,12 +133,13 @@
       el.style.setProperty("--oy", (el.offsetTop + el.offsetHeight / 2 - cy).toFixed(0));
     });
   }
-  if (bento2) [].slice.call(bento2.children).forEach(function (el, i) { el.dataset.lag = [0, .05, .1, .08, .13][i] || 0; });
+  if (bento2) [].slice.call(bento2.children).forEach(function (el, i) { el.dataset.lag = [.1, 0, .1, .03, .13][i] || 0; });
   if (steps2) [].slice.call(steps2.children).forEach(function (el, i) { el.dataset.lag = [0, .07, .07, 0][i] || 0; });
   bentoOrigins(); addEventListener("resize", bentoOrigins); addEventListener("load", bentoOrigins);
   if (bento2) [].slice.call(bento2.children).forEach(function (el) {
     el.addEventListener("pointermove", function (e) { var r = el.getBoundingClientRect(); el.style.setProperty("--mx", (e.clientX - r.left) + "px"); el.style.setProperty("--my", (e.clientY - r.top) + "px"); });
   });
+  [].slice.call(document.querySelectorAll(".bento2 .zoo .track")).forEach(function (t) { [].slice.call(t.children).forEach(function (el, k) { el.style.setProperty("--n", k % 9); }); });
   var copyBtn = document.querySelector(".bento2 .copy");
   if (copyBtn) copyBtn.addEventListener("click", function () {
     var done = function () { copyBtn.textContent = "Copiado ✓"; setTimeout(function () { copyBtn.textContent = "Copiar"; }, 1800); };
@@ -252,6 +254,7 @@
       }
       var p = Math.max(0, Math.min(1, Math.min(pin, pout)));
       el.style.setProperty("--p", p.toFixed(3));
+      if (inB) el.style.setProperty("--e", (1 - Math.pow(1 - p, 3)).toFixed(4));
       el.style.setProperty("--d", pout < pin ? 1 : 0);
     }
     // portada: se aleja al bajar y se recompone al volver arriba

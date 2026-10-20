@@ -523,3 +523,18 @@ html, body { overscroll-behavior-x: none; }
   filter: blur(calc(var(--q) * 12px)); clip-path: none; }
 .steps2 .gen:nth-child(1) { --sx: -70; } .steps2 .gen:nth-child(2) { --sx: -45; } .steps2 .gen:nth-child(3) { --sx: 45; } .steps2 .gen:nth-child(4) { --sx: 70; }
 @media (prefers-reduced-motion: reduce) { .js .steps2 .gen { transform: none; filter: none; opacity: 1; } }
+
+
+
+/* ================= v20 · el bento nace del centro, con zoom y muy difuminado ================= */
+.js .bento2 .gen {
+  --q: calc(1 - var(--e, 0));
+  opacity: clamp(0, calc(var(--p) * 2.2 - .15), 1);
+  transform: translate3d(calc(var(--ox, 0) * var(--q) * -1px), calc(var(--oy, 0) * var(--q) * -1px), 0) scale(calc(.32 + var(--e, 0) * .68));
+  filter: blur(calc(var(--q) * 34px)) brightness(calc(.55 + var(--e, 0) * .45)) saturate(calc(.6 + var(--e, 0) * .4));
+  transform-origin: 50% 50%; will-change: transform, filter, opacity; }
+.js .bento2 .gen.box::after { opacity: calc(var(--q) * 1.6); }
+/* los iconos del zoo también llegan con zoom, uno detrás de otro */
+.bento2 .zoo .track i { --z: clamp(0, calc((var(--p) - .45 - var(--n, 0) * .035) * 4), 1); transform: scale(calc(.4 + var(--z) * .6)); opacity: var(--z); filter: blur(calc((1 - var(--z)) * 8px)); }
+.bento2 .zoo .track i:hover { transform: scale(1.06); }
+@media (prefers-reduced-motion: reduce) { .js .bento2 .gen, .bento2 .zoo .track i { transform: none; filter: none; opacity: 1; } }
