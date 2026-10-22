@@ -224,32 +224,9 @@
     if (navigator.clipboard) navigator.clipboard.writeText(copyBtn.dataset.mail).then(done, done); else done();
   });
 
-  /* ================= Mirror Hall ================= */
-  var hall = document.querySelector(".hall"), ring = document.querySelector(".ring");
+  // La galería se controla desde hall-motion.js; estas referencias conservan las fichas.
   var mirrors = [].slice.call(document.querySelectorAll(".mirror"));
-  var N = mirrors.length, step = 360 / N, R = 600, PUSH = 420, rot = 0, active = -1;
-  var nowIx = document.querySelector(".hall-now .ix"), nowNm = document.querySelector(".hall-now .nm"), nowAn = document.querySelector(".hall-now .an");
-  var dotsBox = document.querySelector(".hall-dots"), hallNow = document.querySelector(".hall-now"), hallHead = document.querySelector(".hall-head");
-  mirrors.forEach(function () { dotsBox.appendChild(document.createElement("i")); });
-  var dots = [].slice.call(dotsBox.children);
-  function layoutRing() {
-    var small = innerWidth < 760;
-    var cw = small ? Math.max(110, innerWidth * .3) : Math.min(196, Math.max(130, innerWidth * .118));
-    var ch = Math.min(cw * 1.42, innerHeight * .34);
-    cw = ch / 1.42;
-    ring.style.setProperty("--cw", cw + "px"); ring.style.setProperty("--ch", ch + "px");
-    R = ((cw + (small ? 26 : 44)) * N) / (2 * Math.PI);
-    PUSH = R * .72;
-    mirrors.forEach(function (m, i) { m._b = "rotateY(" + (-i * step) + "deg) translateZ(" + (-R) + "px)"; m.style.transform = m._b; });
-  }
-  layoutRing(); addEventListener("resize", layoutRing);
-  function setActive(i) {
-    if (i === active) return; active = i;
-    var d = MODS[i];
-    nowIx.textContent = String(i).padStart(2, "0") + " / " + String(N - 1).padStart(2, "0") + (d.fam ? " · " + FAM[d.fam] : "");
-    nowNm.textContent = d.n; nowAn.textContent = d.a + (d.live ? " · implantándose en un caso real" : d.s ? " · " + d.s : "");
-    dots.forEach(function (x, k) { x.classList.toggle("on", k === i); });
-  }
+  var N = mirrors.length;
 
   /* ================= ficha del módulo ================= */
   var MODS = JSON.parse(document.getElementById("mods-data").textContent);
@@ -280,7 +257,6 @@
   }
   function closeSheet() { sheet.classList.remove("open"); sheet.setAttribute("aria-hidden", "true"); }
   mirrors.forEach(function (m, i) { m.addEventListener("click", function () { openSheet(i); }); });
-  document.querySelector(".hall-now .open").addEventListener("click", function () { openSheet(active < 0 ? 0 : active); });
   sheet.querySelector(".x").addEventListener("click", closeSheet);
   var fun = sheet.querySelector(".fun"), funBtn = sheet.querySelector(".fun-btn");
   funBtn.addEventListener("click", function (e) { e.stopPropagation(); var o = !fun.classList.contains("open"); fun.classList.toggle("open", o); funBtn.setAttribute("aria-expanded", String(o)); });
@@ -294,43 +270,6 @@
 
   /* ================= bucle principal ================= */
   document.querySelectorAll(".facts.rise").forEach(function (el) { el.addEventListener("animationend", function () { el.classList.remove("rise", "d5"); }); });
-  /* Mirror Hall en una pantalla: la rueda sobre los espejos gira el anillo; en los laterales, la página baja normal */
-  var hallStage = document.querySelector(".hall-stage"), ringWrap = document.querySelector(".ring-wrap");
-  var hIdx = 0, wAcc = 0, wLock = 0;
-  function REST() { return innerHeight * .4; } function XL() { return innerHeight * 1.1; }
-  function hallDocked() { var r = hall.getBoundingClientRect(); return r.top <= 2 && -r.top <= REST(); }
-  function overMirrors(x, y) { var r = ringWrap.getBoundingClientRect(); return y >= r.top && y <= r.bottom && Math.abs(x - innerWidth / 2) < innerWidth * .36; }
-  function goTo(i) { hIdx = Math.max(0, Math.min(N - 1, i)); }
-  addEventListener("wheel", function (e) {
-    if (!hallDocked() || sheet.classList.contains("open")) return;
-    var horiz = Math.abs(e.deltaX) > Math.abs(e.deltaY);
-    if (!horiz && !overMirrors(e.clientX, e.clientY)) return;      // laterales: scroll normal
-    var d = horiz ? e.deltaX : e.deltaY;
-    if (!horiz && ((d > 0 && hIdx >= N - 1) || (d < 0 && hIdx <= 0))) return; // en los extremos, la página sigue
-    e.preventDefault();
-    var now = performance.now();
-    if (now < wLock) return;
-    wAcc += d;
-    if (Math.abs(wAcc) > 40) { goTo(hIdx + (wAcc > 0 ? 1 : -1)); wAcc = 0; wLock = now + 260; }
-  }, { passive: false });
-  var tx0 = null, ty0 = null, tLock = 0, tAcc = 0;
-  hallStage.addEventListener("touchstart", function (e) { tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY; tLock = 0; tAcc = 0; }, { passive: true });
-  hallStage.addEventListener("touchmove", function (e) {
-    if (tx0 === null) return;
-    var dx = e.touches[0].clientX - tx0, dy = e.touches[0].clientY - ty0;
-    if (!tLock && Math.abs(dx) + Math.abs(dy) > 8) tLock = Math.abs(dx) > Math.abs(dy) ? 1 : 2;
-    if (tLock === 1) { e.preventDefault(); tAcc += -dx; tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY;
-      if (Math.abs(tAcc) > 55) { goTo(hIdx + (tAcc > 0 ? 1 : -1)); tAcc = 0; } }
-  }, { passive: false });
-  hallStage.addEventListener("touchend", function () { tx0 = null; });
-  addEventListener("keydown", function (e) {
-    if (sheet.classList.contains("open") || !hallDocked()) return;
-    if (e.key === "ArrowRight") goTo(hIdx + 1); if (e.key === "ArrowLeft") goTo(hIdx - 1);
-  });
-  dots.forEach(function (d, i) { d.addEventListener("click", function () { goTo(i); }); });
-  var skipBtn = document.querySelector(".hall-skip");
-  if (skipBtn) skipBtn.addEventListener("click", function () { var t = document.getElementById("proyectos"); if (t) t.scrollIntoView({ behavior: "smooth" }); });
-  var targetRot = 0;
   var heroParts = [[".hero .left", 1], [".hero .right", .8], ["body.one .facts", .45]].map(function (a) { return { el: document.querySelector(a[0]), k: a[1] }; }).filter(function (o) { return o.el; });
   function frame() {
     requestAnimationFrame(frame);
@@ -373,36 +312,7 @@
     });
 
     if (statEl) { var sp = parseFloat(statEl.style.getPropertyValue("--p")) || 0, nv = Math.round((+countEl.dataset.to || 16) * Math.min(1, Math.max(0, (sp - .25) / .65))); if (nv !== lastN) { countEl.textContent = nv; lastN = nv; } }
-    // mirror hall: el anillo gira con el scroll y se para en cada espejo
-    var hr = hall.getBoundingClientRect(), xl = XL();
-    var ex = Math.max(0, Math.min(1, (-hr.top - REST()) / xl)); // salida: las cartas giran y se van
-    ring.classList.toggle("out", ex > 0);
-    hallNow.style.opacity = hallHead.style.opacity = dotsBox.style.opacity = (1 - Math.max(0, Math.min(1, (ex - .15) * 3))).toFixed(3);
-    hallNow.style.pointerEvents = ex > .3 ? "none" : "";
-    if (skipBtn) { skipBtn.style.opacity = hallNow.style.opacity; skipBtn.style.pointerEvents = hallNow.style.pointerEvents; }
-    targetRot = hIdx * step;
-    rot += (targetRot - rot) * (reduce ? 1 : .11);
-    ring.style.transform = "translateZ(" + (R - PUSH) + "px) rotateY(" + rot + "deg)";
-    setActive(Math.max(0, Math.min(N - 1, Math.round(rot / step))));
-    for (var m = 0; m < N; m++) {
-      var ang = ((-m * step + rot) % 360 + 540) % 360 - 180, aa = Math.abs(ang);
-      var mm = mirrors[m];
-      var op = aa > 78 ? 0 : 1 - Math.max(0, aa - 40) / 38;
-      if (ex > 0 && aa <= 78) {
-        var side = -1; // todas se van hacia la izquierda, empezando por la de más a la izquierda
-        var dl = .34 * (1 - (ang + 78) / 156), e = Math.max(0, Math.min(1, (ex - dl) / (1 - dl)));
-        var es = Math.min(1, e / .6); es = es < .5 ? 4 * es * es * es : 1 - Math.pow(-2 * es + 2, 3) / 2; // giro de 360º
-        var et = Math.max(0, (e - .2) / .8); et = et * et;                                                 // y salida a la izquierda
-        mm.style.transform = mm._b + " translateX(" + (side * et * innerWidth * 1.5).toFixed(1) + "px) translateZ(" + (Math.sin(es * Math.PI) * 120).toFixed(1) + "px) rotateY(" + (side * (es * 360 + et * 40)).toFixed(1) + "deg)";
-        op *= 1 - Math.max(0, e - .75) / .25;
-      } else if (mm._x !== ex) mm.style.transform = mm._b;
-      mm._x = ex;
-      mm.style.opacity = op.toFixed(3);
-      mm.style.pointerEvents = aa > 60 || ex > .2 ? "none" : "auto";
-      mm.style.setProperty("--glow", aa < step / 2 ? .35 : 0);
-      mm.style.setProperty("--lo", aa < step / 2 ? 1 : 0);
-      mm.style.setProperty("--shine", (-60 + (ang / 60) * 120).toFixed(1) + "%");
-    }
+
   }
   requestAnimationFrame(frame);
 })();
