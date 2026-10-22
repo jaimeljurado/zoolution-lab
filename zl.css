@@ -769,3 +769,16 @@ body.one.past .nav { top: 14px; }
 .ring-wrap { cursor: grab; user-select: none; -webkit-user-select: none; touch-action: pan-y; }
 .ring-wrap.grab, .ring-wrap.grab .mirror { cursor: grabbing; }
 .mirror img { -webkit-user-drag: none; user-select: none; pointer-events: none; }
+
+/* ================= v34 · vuelven los espejos blancos con el animal en negro (centrado y con su tamaño ajustado) ================= */
+.mirror .face { background: linear-gradient(160deg, #ffffff 0%, #f1f1ef 45%, #d9d9d6 100%);
+  box-shadow: 0 0 0 1px rgba(255,255,255,.6) inset, 0 30px 60px rgba(0,0,0,.5), 0 0 40px rgba(255,255,255,var(--glow, 0));
+  -webkit-box-reflect: below 14px linear-gradient(transparent 58%, rgba(255,255,255,.28)); }
+.mirror .face canvas.sand { display: none; }
+.mirror .face::before { mix-blend-mode: soft-light; opacity: 1; }
+.mirror .face::after { border-color: rgba(0,0,0,.09); }
+.mirror .face img { filter: none !important; }
+.mirror .face img.inv { filter: invert(1) !important; }
+.mirror .face .ph { color: #0b0b0b !important; }
+.mirror .no { color: rgba(0,0,0,.45); }
+.mirror.live .no::after { color: #000; }

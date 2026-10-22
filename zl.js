@@ -245,12 +245,14 @@
   layoutRing(); addEventListener("resize", layoutRing);
 
   /* espejos: fondo de arena en movimiento, líneas finas en blanco y negro (una textura compartida, cada espejo ve su trozo) */
+  var SAND = false; // fondo de arena animado en los espejos: desactivado (espejos blancos)
   var dune = document.createElement("canvas"), dg = dune.getContext("2d"), duneW = 0, duneH = 0, faceW = 0, faceH = 0, DPRm = Math.min(devicePixelRatio || 1, 2);
-  mirrors.forEach(function (m, i) {
+  if (SAND) mirrors.forEach(function (m, i) {
     var c = document.createElement("canvas"); c.className = "sand"; c.setAttribute("aria-hidden", "true");
     m.querySelector(".face").insertBefore(c, m.querySelector(".face").firstChild); m._c = c; m._g = c.getContext("2d"); m._o = (i * 0.618) % 1;
   });
   function sizeSand() {
+    if (!SAND) return;
     var r = mirrors[0].getBoundingClientRect(), f = mirrors[0].querySelector(".face");
     faceW = Math.round(f.offsetWidth * DPRm); faceH = Math.round(f.offsetHeight * DPRm);
     duneW = Math.round(faceW * 2.6); duneH = faceH; dune.width = duneW; dune.height = duneH;
@@ -443,7 +445,7 @@
     }
     ring.style.transform = "translateZ(" + (R - PUSH) + "px) rotateY(" + rot + "deg)";
     setActive(((Math.round(rot / step) % N) + N) % N);
-    var sandOn = hr.bottom > 0 && hr.top < vh, tS = nowR / 1000;
+    var sandOn = SAND && hr.bottom > 0 && hr.top < vh, tS = nowR / 1000;
     if (sandOn && (sandTick = (sandTick + 1) % 2) === 0) drawDune(reduce ? 0 : tS); // la arena va lenta: basta con 30 fps
     for (var m = 0; m < N; m++) {
       var ang = ((-m * step + rot) % 360 + 540) % 360 - 180, aa = Math.abs(ang);
