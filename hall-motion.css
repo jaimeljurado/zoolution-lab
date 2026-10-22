@@ -1,0 +1,50 @@
+/* Galería editorial en perspectiva. Las fichas conservan su diseño y datos. */
+.motion-hall { height: var(--hall-height, 1300vh) !important; background:#08090b; isolation:isolate; }
+.motion-hall .hall-stage { height:100svh; min-height:560px; display:block; background:radial-gradient(ellipse at 65% 74%,#161719 0%,#090a0c 50%,#070809 100%); }
+.motion-hall .hall-head { position:absolute; top:0; left:5%; width:90%; padding-top:clamp(96px,13vh,160px); pointer-events:none; }
+.motion-hall .hall-head .mid { font-size:clamp(34px,4.7vw,76px); letter-spacing:-.055em; margin:16px 0; line-height:1.06; }
+.motion-hall .hall-head .s { max-width:650px; margin:0 auto; font-size:14px; line-height:1.5; color:#919294; }
+.scene-viewport { position:absolute; inset:32% 0 90px; overflow:visible; touch-action:pan-y; cursor:grab; perspective:1700px; }
+.scene-viewport.dragging { cursor:grabbing; }
+.motion-hall .scene-card { position:absolute; left:0; top:0; width:var(--card-w,280px); height:var(--card-h,380px); border:0; border-radius:15px; background:#fff; color:#111; padding:0; overflow:hidden; transform-origin:center; box-shadow:0 26px 55px #0006; will-change:transform; text-align:left; user-select:none; -webkit-user-select:none; touch-action:pan-y; transition:box-shadow .25s; font-family:var(--inter); }
+.motion-hall .scene-card:hover { box-shadow:0 25px 70px #0009,0 0 0 1px #ffffff60; }
+.motion-hall .scene-card:focus-visible { outline:3px solid #979797; outline-offset:6px; }
+.scene-number { position:absolute; top:24px; left:24px; color:#949494; font-size:10px; font-weight:500; letter-spacing:.14em; }
+.scene-art { position:absolute; inset:48px 14px 100px; display:flex; align-items:center; justify-content:center; }
+.motion-hall .scene-art img { display:block; width:88%; height:84%; max-height:none; max-width:none; object-fit:contain; filter:none; pointer-events:none; }
+.motion-hall .scene-art img.inv { filter:invert(1); }
+.motion-hall .scene-art.ready img { visibility:hidden; }
+.animal-motion { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; pointer-events:none; }
+.scene-caption { position:absolute; left:24px; right:44px; bottom:26px; display:flex; flex-direction:column; gap:8px; }
+.scene-caption strong { font-size:22px; line-height:1.1; letter-spacing:-.045em; font-weight:500; }
+.scene-caption>span { font-size:11px; color:#777; letter-spacing:.07em; }
+.scene-arrow { position:absolute; right:22px; bottom:28px; font-size:21px; transition:transform .25s; }
+.scene-card:hover .scene-arrow { transform:translate(2px,-2px); }
+.scene-controls { position:absolute; bottom:32px; left:4%; right:4%; display:flex; align-items:center; justify-content:space-between; gap:16px; z-index:5; }
+.scene-counter { font:500 12px/1 var(--inter); letter-spacing:.13em; min-width:75px; color:#fff; }
+.scene-counter span { color:#67686c; }
+.scene-navigation { display:flex; align-items:center; gap:20px; }
+.scene-navigation>span { font:400 10px/1 var(--inter); letter-spacing:.19em; text-transform:uppercase; color:#8e8f93; }
+.scene-navigation button { width:34px; height:34px; border:1px solid #ffffff24; border-radius:50%; color:#ddd; background:transparent; cursor:pointer; }
+.scene-navigation button:hover { background:#fff; color:#111; }
+.motion-hall .hall-skip { position:static; display:flex; gap:20px; padding:6px 7px 6px 19px; height:44px; border:1px solid #ffffff30; background:#ffffff08; border-radius:30px; font:400 12px/1 var(--inter); color:#eee; }
+.skip-icon { display:grid; place-items:center; width:30px; height:30px; background:#fff; color:#111; border-radius:50%; font-size:18px; transition:transform .3s; }
+.hall-skip:hover .skip-icon { transform:rotate(45deg); }
+.scene-progress { position:absolute; bottom:0; left:0; right:0; height:2px; background:#ffffff10; }
+.scene-progress>span { display:block; width:100%; height:100%; background:#b9babc; transform:scaleX(0); transform-origin:left; }
+@media(max-width:760px) {
+ .motion-hall .hall-head { padding-top:95px; }
+ .motion-hall .hall-head .mid { font-size:38px; max-width:350px; margin:14px auto; }
+ .motion-hall .hall-head .s { font-size:12px; max-width:285px; }
+ .scene-viewport { top:30%; bottom:125px; }
+ .scene-controls { bottom:25px; flex-wrap:wrap; justify-content:center; gap:14px 28px; }
+ .scene-counter { min-width:auto; }
+ .scene-navigation { gap:12px; }
+ .scene-navigation>span { font-size:8px; letter-spacing:.1em; }
+ .motion-hall .hall-skip { height:38px; padding:4px 5px 4px 16px; }
+ .skip-icon { height:27px; width:27px; }
+}
+@media(max-height:700px) and (min-width:761px) { .motion-hall .hall-head { padding-top:85px; } .motion-hall .hall-head .mid { font-size:48px; margin:12px 0; } .scene-controls { bottom:20px; } }
+@media(prefers-reduced-motion:reduce) { .motion-hall .scene-card { will-change:auto; } .scene-card *, .hall-skip * { transition:none!important; } }
+/* La galería nueva termina antes de Proyectos; elimina el solape del anillo anterior. */
+.motion-hall + #proyectos { margin-top:0; }
