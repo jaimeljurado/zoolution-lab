@@ -173,6 +173,52 @@
     size(); addEventListener("resize", size); requestAnimationFrame(tick);
   })();
 
+  /* ================= Family App: el móvil tacha una tarea dibujando la línea, suma puntos y baja la lista ================= */
+  (function () {
+    var fam = document.querySelector(".phone .fam"); if (!fam) return;
+    var list = fam.querySelector(".fam-list ul"), items = [].slice.call(list.children), pts = fam.querySelector(".fam-pts"), bar = fam.querySelector(".fam-bar i"), bubble = document.querySelector(".phone .bubble");
+    var on = false, timers = [], wrap = fam.querySelector(".fam-list");
+    function fit() { wrap.style.height = (items[3].offsetTop + items[3].offsetHeight - items[0].offsetTop) + "px"; }
+    fit(); addEventListener("resize", fit); addEventListener("load", fit);
+    function T(fn, ms) { timers.push(setTimeout(fn, ms)); }
+    function count(a, b, ms) { var t0 = performance.now(); (function s(n) { var p = Math.min(1, (n - t0) / ms); pts.textContent = Math.round(a + (b - a) * (1 - Math.pow(1 - p, 3))) + " pts"; if (p < 1) requestAnimationFrame(s); })(t0); }
+    function reset() { items[2].classList.remove("tick"); items[3].classList.remove("tick"); list.style.transform = ""; pts.textContent = "245 pts"; bar.style.width = ""; fam.classList.remove("bump"); }
+    function cycle() {
+      if (!on) return; reset();
+      T(function () { items[2].classList.add("tick"); }, 900);
+      T(function () { bubble.textContent = "+20 pts"; bubble.classList.remove("go"); void bubble.offsetWidth; bubble.classList.add("go"); count(245, 265, 700); bar.style.width = "76%"; fam.classList.add("bump"); }, 1500);
+      T(function () { fam.classList.remove("bump"); list.style.transform = "translateY(-" + (items[1].offsetTop - items[0].offsetTop) + "px)"; }, 2700);
+      T(function () { items[3].classList.add("tick"); }, 3700);
+      T(function () { bubble.textContent = "+10 pts"; bubble.classList.remove("go"); void bubble.offsetWidth; bubble.classList.add("go"); count(265, 275, 600); bar.style.width = "82%"; fam.classList.add("bump"); }, 4300);
+      T(cycle, 7600);
+    }
+    if ("IntersectionObserver" in window && !reduce) new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting && !on) { on = true; cycle(); } else if (!e.isIntersecting && on) { on = false; timers.forEach(clearTimeout); timers = []; } });
+    }, { threshold: .4 }).observe(fam);
+  })();
+
+  /* ================= menú: al pasar el ratón, la palabra se "codifica" en unos y ceros durante 1 s y se recompone ================= */
+  [].slice.call(document.querySelectorAll(".nav a")).forEach(function (a) {
+    var word = a.textContent, run = 0;
+    a.setAttribute("aria-label", word);
+    a.addEventListener("mouseenter", function () {
+      if (reduce) return;
+      var id = ++run, t0 = performance.now(), D = 1000, n = word.length;
+      a.style.minWidth = a.getBoundingClientRect().width / (parseFloat(getComputedStyle(a).getPropertyValue("--zm")) || 1) + "px";
+      a.classList.add("coding");
+      (function step(now) {
+        if (id !== run) return;
+        var p = Math.min(1, (now - t0) / D), out = "";
+        for (var i = 0; i < n; i++) {
+          var c = word[i], reveal = (i + 1) / n * .85 + .15;          // se va fijando de izquierda a derecha
+          out += c === " " ? " " : (p >= reveal ? c : (Math.random() < .5 ? "0" : "1"));
+        }
+        a.textContent = out;
+        if (p < 1) requestAnimationFrame(step); else { a.textContent = word; a.classList.remove("coding"); a.style.minWidth = ""; }
+      })(t0);
+    });
+  });
+
   /* ================= menú: efecto lupa tipo Dock ================= */
   var navEl = document.querySelector(".nav");
   if (navEl && matchMedia("(hover: hover)").matches && !reduce) {
@@ -243,6 +289,43 @@
     mirrors.forEach(function (m, i) { m._b = "rotateY(" + (-i * step) + "deg) translateZ(" + (-R) + "px)"; m.style.transform = m._b; });
   }
   layoutRing(); addEventListener("resize", layoutRing);
+
+  /* reflejo de cada espejo en el suelo: al pasar el ratón por encima tiembla como agua (el agua no se ve, solo se intuye) */
+  var svgNS = "http://www.w3.org/2000/svg", rsvg = document.createElementNS(svgNS, "svg");
+  rsvg.setAttribute("width", "0"); rsvg.setAttribute("height", "0"); rsvg.setAttribute("aria-hidden", "true"); rsvg.style.position = "absolute";
+  var defs = document.createElementNS(svgNS, "defs"); rsvg.appendChild(defs); document.body.appendChild(rsvg);
+  mirrors.forEach(function (m, i) {
+    var f = document.createElementNS(svgNS, "filter"); f.setAttribute("id", "rip" + i); f.setAttribute("x", "-10%"); f.setAttribute("y", "-10%"); f.setAttribute("width", "120%"); f.setAttribute("height", "120%");
+    var tb = document.createElementNS(svgNS, "feTurbulence"); tb.setAttribute("type", "fractalNoise"); tb.setAttribute("baseFrequency", "0.012 0.09"); tb.setAttribute("numOctaves", "2"); tb.setAttribute("seed", String(3 + i)); tb.setAttribute("result", "n");
+    var dm = document.createElementNS(svgNS, "feDisplacementMap"); dm.setAttribute("in", "SourceGraphic"); dm.setAttribute("in2", "n"); dm.setAttribute("scale", "0"); dm.setAttribute("xChannelSelector", "R"); dm.setAttribute("yChannelSelector", "G");
+    f.appendChild(tb); f.appendChild(dm); defs.appendChild(f);
+    var face = m.querySelector(".face"), r = face.cloneNode(true);
+    r.classList.add("refl"); r.setAttribute("aria-hidden", "true"); var no = r.querySelector(".no"); if (no) no.remove();
+    [].slice.call(r.querySelectorAll("img")).forEach(function (im) { im.alt = ""; im.removeAttribute("loading"); });
+    m.appendChild(r); m._r = r; m._tb = tb; m._dm = dm; m._e = 0; m._i = i;
+  });
+  var lpx = -1, lpy = -1;
+  document.querySelector(".hall-stage").addEventListener("pointermove", function (e) {
+    var sp = lpx < 0 ? 0 : Math.hypot(e.clientX - lpx, e.clientY - lpy); lpx = e.clientX; lpy = e.clientY;
+    if (sp < .5) return;
+    mirrors.forEach(function (m) {
+      if (+m.style.opacity < .05) return;
+      var b = m._r.getBoundingClientRect();
+      if (e.clientX > b.left - 12 && e.clientX < b.right + 12 && e.clientY > b.top - 6 && e.clientY < b.bottom + 30) m._e = Math.min(1.6, m._e + Math.min(1, sp / 30) * .45);
+    });
+  });
+  document.querySelector(".hall-stage").addEventListener("pointerleave", function () { lpx = -1; });
+  function rippleTick(t) {
+    for (var i = 0; i < mirrors.length; i++) {
+      var m = mirrors[i];
+      if (m._e > .01) {
+        m._e *= .955;
+        m._dm.setAttribute("scale", (m._e * 26).toFixed(2));
+        m._tb.setAttribute("baseFrequency", (0.010 + .003 * Math.sin(t * 1.3 + i)).toFixed(4) + " " + (0.085 + .025 * Math.sin(t * 2.1 + i * 2)).toFixed(4));
+        if (!m._on) { m._r.style.filter = "url(#rip" + i + ")"; m._on = true; }
+      } else if (m._on) { m._e = 0; m._r.style.filter = ""; m._on = false; }
+    }
+  }
 
   /* espejos: fondo de arena en movimiento, líneas finas en blanco y negro (una textura compartida, cada espejo ve su trozo) */
   var SAND = false; // fondo de arena animado en los espejos: desactivado (espejos blancos)
@@ -320,8 +403,12 @@
     sheet.querySelector(".why b").textContent = "El animal · " + d.a;
     sheet.querySelector(".why p").textContent = d.w;
     sheet.querySelector(".card").scrollTop = 0;
-    sheet.querySelector(".fun-tip").textContent = d.c || "";
+    sheet.querySelector(".fun-tip .ft").textContent = d.c || "";
     sheet.querySelector(".fun").classList.remove("open");
+    var more = sheet.querySelector(".more");
+    more.classList.remove("show"); more.setAttribute("aria-hidden", "true"); sheet.querySelector(".more-btn").setAttribute("aria-expanded", "false");
+    more.querySelector("ol").innerHTML = (d.cx || []).map(function (t, i) { return '<li style="--i:' + i + '"><span>' + String(i + 2).padStart(2, "0") + "</span><p>" + t + "</p></li>"; }).join("");
+    sheet.querySelector(".more-btn").style.display = (d.cx && d.cx.length) ? "" : "none";
     sheet.classList.add("open"); sheet.setAttribute("aria-hidden", "false");
     sheet.querySelector(".x").focus({ preventScroll: true });
   }
@@ -330,6 +417,13 @@
   document.querySelector(".hall-now .open").addEventListener("click", function () { openSheet(active < 0 ? 0 : active); });
   sheet.querySelector(".x").addEventListener("click", closeSheet);
   var fun = sheet.querySelector(".fun"), funBtn = sheet.querySelector(".fun-btn");
+  sheet.querySelector(".more-btn").addEventListener("click", function (e) {
+    e.stopPropagation();
+    var more = sheet.querySelector(".more"), on = !more.classList.contains("show");
+    more.classList.toggle("show", on); more.setAttribute("aria-hidden", String(!on)); this.setAttribute("aria-expanded", String(on));
+    fun.classList.remove("open"); funBtn.setAttribute("aria-expanded", "false");
+    if (on) setTimeout(function () { var c = sheet.querySelector(".card"); c.scrollTo({ top: c.scrollHeight, behavior: "smooth" }); }, 520);
+  });
   funBtn.addEventListener("click", function (e) { e.stopPropagation(); var o = !fun.classList.contains("open"); fun.classList.toggle("open", o); funBtn.setAttribute("aria-expanded", String(o)); });
   sheet.addEventListener("click", function (e) { if (e.target === sheet) closeSheet(); });
   sheet.querySelector(".prev").addEventListener("click", function () { openSheet(cur - 1); });
@@ -402,7 +496,7 @@
       if (r.top > vh * 1.2 || r.bottom < -vh * .2) { el.style.setProperty("--p", 0); continue; }
       var lag = parseFloat(el.dataset.lag || 0);
       if (inB) { // el bento se monta como una sola pieza
-        var pin = (vh * .98 - r.top) / (vh * (grp === steps2 ? .42 : grp === logos2 ? .48 : .72)) - lag, pout = (r.bottom - vh * .04) / (vh * .5) - lag;
+        var pin = grp === bento2 ? (vh * .80 - r.top) / (vh * .55) - lag : (vh * .98 - r.top) / (vh * (grp === steps2 ? .42 : grp === logos2 ? .48 : .72)) - lag, pout = (r.bottom - vh * .04) / (vh * .5) - lag;
       } else {
       var pin = (vh - r.top) / (vh * (el.classList.contains("gen-t") ? .32 : .55)) - lag;           // entrando por abajo
       var pout = (r.bottom - vh * .02) / (vh * .45) - lag;  // saliendo por arriba
@@ -422,7 +516,7 @@
     leads.forEach(function (el) {
       // se ilumina palabra a palabra en un tramo largo de scroll: empieza al entrar por abajo y termina con el texto en el tercio superior
       var r = el.getBoundingClientRect(), ws = el.children, n = ws.length;
-      var pin = (vh * .92 - r.top) / (vh * .62), pout = (r.bottom - vh * .02) / (vh * .28);
+      var pin = (vh * .95 - r.top) / (vh * .48), pout = (r.bottom - vh * .08) / (vh * .12);
       var prog = Math.max(0, Math.min(1, Math.min(pin, pout))), soft = 5, pos = prog * (n + soft);
       if (el._p === prog) return; el._p = prog;
       for (var k = 0; k < n; k++) {
@@ -450,6 +544,7 @@
         rot += vel * dtR;
       }
     }
+    rippleTick(nowR / 1000);
     ring.style.transform = "translateZ(" + (R - PUSH) + "px) rotateY(" + rot + "deg)";
     setActive(((Math.round(rot / step) % N) + N) % N);
     var sandOn = SAND && hr.bottom > 0 && hr.top < vh, tS = nowR / 1000;
