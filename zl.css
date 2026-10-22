@@ -122,7 +122,7 @@ body.one.past .top { background: linear-gradient(to bottom, rgba(0,0,0,.72), rgb
 @media (prefers-reduced-motion: reduce) { .js .gen, .js .gen-t { opacity: 1; transform: none; filter: none; clip-path: none; } .js .gen.box::after { display: none; } .lead2 .w { opacity: 1; } }
 
 /* ---------- Mirror Hall de los módulos ---------- */
-.hall { position: relative; height: 800vh; }
+.hall { position: relative; height: 720vh; }
 .hall-stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; display: flex; flex-direction: column; align-items: center; }
 .hall-head { text-align: center; padding-top: clamp(96px, 13vh, 130px); position: relative; z-index: 3; }
 .hall-head .mid { margin-top: 14px; }
@@ -216,7 +216,7 @@ body.one.past .top { background: linear-gradient(to bottom, rgba(0,0,0,.72), rgb
   .foot2 .content { grid-template-columns: 1fr 1fr; padding-top: 60px; margin-bottom: 42vw; }
   .wordmark { bottom: 4vw; }
   .sheet .card { grid-template-columns: 1fr; } .sheet .pic { min-height: 180px; }
-  .hall { height: 760vh; }
+  .hall { height: 680vh; }
   .ring-wrap { perspective: 900px; }
 }
 .mirror, .mirror .face { -webkit-backface-visibility: hidden; backface-visibility: hidden; }
@@ -357,7 +357,7 @@ html, body { overscroll-behavior-x: none; }
 .dial { position: absolute; inset: 0; }
 .dial i { --t: clamp(0, calc((var(--p) - .3 - var(--k) * .028) * 6), 1);
   position: absolute; left: 50%; top: 50%; width: 3px; height: 13px; margin: -6.5px 0 0 -1.5px; border-radius: 2px; background: rgba(255,255,255,.16);
-  transform: rotate(calc(var(--k) * 360deg / var(--n, 16))) translateY(-80px); opacity: var(--t); }
+  transform: rotate(calc(var(--k) * 22.5deg)) translateY(-80px); opacity: var(--t); }
 .dial i.on { background: #fff; box-shadow: 0 0 10px rgba(255,255,255,.55); }
 .stat .count { font-size: clamp(60px, 5.6vw, 84px); font-variant-numeric: tabular-nums; }
 .stat > span { margin-top: 4px !important; }
@@ -375,7 +375,7 @@ html, body { overscroll-behavior-x: none; }
 .copy:hover { background: rgba(255,255,255,.12); }
 @media (max-width: 1100px) { .bento2 .lines { grid-column: span 2; } }
 @media (max-width: 760px) { .bento2 .lines { grid-column: auto; } .lines-l li { grid-template-columns: 26px 1fr; } .lines-l .tag { display: none; } }
-@media (prefers-reduced-motion: reduce) { .js .bento2 .gen { transform: none; filter: none; opacity: 1; } .lines-l li, .dial i { opacity: 1; transform: none; } .dial i { transform: rotate(calc(var(--k) * 360deg / var(--n, 16))) translateY(-80px); } .track { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .js .bento2 .gen { transform: none; filter: none; opacity: 1; } .lines-l li, .dial i { opacity: 1; transform: none; } .dial i { transform: rotate(calc(var(--k) * 22.5deg)) translateY(-80px); } .track { animation: none; } }
 
 /* ================= v15 ================= */
 /* proyecto destacado: panel con los módulos en uso */
@@ -431,7 +431,7 @@ html, body { overscroll-behavior-x: none; }
     scale(calc(.82 + var(--p) * .18)); }
 /* dial: una luz que recorre las marcas hacia la izquierda */
 .dial i::after { content: ""; position: absolute; inset: -1px; border-radius: 2px; background: #fff; box-shadow: 0 0 12px 2px rgba(255,255,255,.75); opacity: 0;
-  animation: zl-tick 2.4s linear infinite; animation-delay: calc((var(--k) - var(--n, 16)) * 0.15s); }
+  animation: zl-tick 2.4s linear infinite; animation-delay: calc((var(--k) - 16) * 0.15s); }
 @keyframes zl-tick { 0% { opacity: 1; } 38% { opacity: 0; } 100% { opacity: 0; } }
 .dial i { background: rgba(255,255,255,.22); }
 /* proyecto 02: extensión del captador */
@@ -571,7 +571,7 @@ body.one.past .brand .stack { gap: 4px; }
   .zoo-link { margin-top: 12px; font-size: 13.5px; }
   .stat { padding-top: 14px !important; padding-bottom: 16px !important; }
   .numw { width: 138px; height: 138px; }
-  .dial i { height: 11px; margin-top: -5.5px; transform: rotate(calc(var(--k) * 360deg / var(--n, 16))) translateY(-62px); }
+  .dial i { height: 11px; margin-top: -5.5px; transform: rotate(calc(var(--k) * 22.5deg)) translateY(-62px); }
   .stat .count { font-size: clamp(48px, 4.2vw, 64px); }
   .stat > span { font-size: 15.5px; }
   .live-n { margin-top: 6px; font-size: 12px; }
@@ -624,120 +624,3 @@ body.one.past .nav { top: 14px; }
   .wordmark { font-size: min(17.2vw, 31vh); bottom: 1.2vh; }
   .cta2 { padding: clamp(90px, 14vh, 140px) 0 clamp(60px, 10vh, 100px); }
 }
-
-/* ================= v24 · empresas (prueba) ================= */
-.logos2 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 50px; }
-.logos2 .lg { height: clamp(136px, 19vh, 168px); display: grid; place-items: center; padding: 0 0 22px; }
-.logos2 .lg::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(260px circle at var(--mx, 30%) var(--my, -10%), rgba(255,255,255,.1), transparent 60%); }
-.logos2 .lg img { position: relative; height: var(--h); width: auto; max-width: 70%; object-fit: contain; opacity: .85; transition: opacity .35s, transform .5s cubic-bezier(.2,.8,.2,1); }
-.logos2 .lg:hover img { opacity: 1; transform: scale(1.06); }
-.logos2 .lg { transition: border-color .4s; } .logos2 .lg:hover { border-color: rgba(255,255,255,.26); }
-.logos2 .tag { position: absolute; left: 16px; bottom: 13px; font: 500 11px/1 var(--inter); letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.42); }
-.lg-stat { display: flex !important; flex-direction: column; justify-content: center; align-items: center; }
-.lg-stat b { font: 600 clamp(42px, 4vw, 56px)/1 var(--inter); letter-spacing: -0.05em; }
-.lg-stat span { font-size: 14px; color: rgba(255,255,255,.62); margin-top: 8px; }
-.js .logos2 .gen { --q: calc(1 - var(--e, 0));
-  opacity: clamp(0, calc(var(--p) * 2.2 - .15), 1);
-  transform: translate3d(calc(var(--ox, 0) * var(--q) * -1px), calc(var(--oy, 0) * var(--q) * -1px), 0) scale(calc(.32 + var(--e, 0) * .68));
-  filter: blur(calc(var(--q) * 30px)) brightness(calc(.55 + var(--e, 0) * .45)); clip-path: none; transform-origin: 50% 50%; }
-.js .logos2 .gen.box::after { opacity: calc(var(--q) * 1.6); }
-@media (max-width: 900px) { .logos2 { grid-template-columns: 1fr 1fr; } }
-@media (prefers-reduced-motion: reduce) { .js .logos2 .gen { transform: none; filter: none; opacity: 1; } }
-
-/* ================= v25 · catálogo de 19 módulos en 4 familias ================= */
-/* espejo sin ilustración todavía: el nombre del animal, grande */
-.mirror .face .ph, .sheet .pic .ph { font: 600 clamp(18px, 1.6vw, 26px)/1 var(--inter); letter-spacing: -0.04em; color: #0b0b0b; margin-bottom: 18%; }
-.sheet .pic .ph { font-size: 34px; margin: auto; }
-/* ficha ampliada */
-.sheet .card { padding: 0; width: min(920px, 100%); grid-template-columns: 250px 1fr; max-height: min(88vh, 760px); overflow: auto; overscroll-behavior: contain; }
-.sheet .pic { position: sticky; top: 0; min-height: 100%; }
-.sheet .txt { padding: clamp(22px, 2.6vw, 34px); }
-.sheet .fam-k { font: 500 11.5px/1 var(--inter) !important; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.5) !important; margin-bottom: 12px; }
-.sheet .txt h3 { margin: 10px 0 4px; }
-.sheet .full { font-size: 14px !important; color: rgba(255,255,255,.5) !important; margin-bottom: 12px; }
-.sheet .what { margin-top: 8px; }
-.sheet .blocks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
-.sheet .blk { padding: 14px 16px; border-radius: 14px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); }
-.sheet .blk b, .sheet .meta b { display: block; font: 500 11px/1 var(--inter); letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.5); margin-bottom: 8px; }
-.sheet .blk p { font-size: 14px !important; line-height: 1.5 !important; }
-.sheet .blk:first-child p { color: #fff !important; }
-.sheet .meta { display: grid; grid-template-columns: 1.2fr 1fr; gap: 16px; margin-top: 16px; }
-.sheet .secs { display: flex; flex-wrap: wrap; gap: 6px; }
-.sheet .secs span { height: 26px; padding: 0 10px; display: inline-flex; align-items: center; border-radius: 999px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); font: 500 12px/1 var(--inter); color: rgba(255,255,255,.85); }
-.sheet .eco { font-size: 13.5px !important; line-height: 1.5 !important; }
-.sheet .why { margin-top: 16px; padding-top: 16px; }
-@media (max-width: 760px) { .sheet .card { grid-template-columns: 1fr; } .sheet .pic { position: relative; min-height: 180px; } .sheet .blocks, .sheet .meta { grid-template-columns: 1fr; } }
-@media (max-height: 820px) and (min-width: 761px) { .sheet .txt h3 { font-size: 24px; } .sheet .txt p { font-size: 14px; } .sheet .blocks { margin-top: 12px; } .sheet .blk { padding: 11px 13px; } }
-.hall-now .ix { white-space: nowrap; }
-
-/* ================= v26 · cambio 1: menú sin panel, con efecto lupa ================= */
-.nav { background: none !important; box-shadow: none !important; padding: 0 !important; gap: 0 !important; height: 46px; align-items: center; }
-.nav a { color: rgba(255,255,255,.78) !important; background: none !important; font-size: 14.5px; padding: 10px 14px !important; display: inline-block;
-  text-shadow: 0 1px 12px rgba(0,0,0,.65), 0 0 2px rgba(0,0,0,.4);
-  transform: scale(var(--zm, 1)); transform-origin: 50% 70%; transition: color .25s, transform .18s cubic-bezier(.2,.8,.2,1); will-change: transform; }
-.nav a:hover, .nav a:focus-visible { color: #fff !important; }
-.nav a[aria-current="page"]::after { background: #fff; }
-
-/* ================= v26 · cambio 2: GOAT más pequeño y las cuatro letras a la izquierda ================= */
-.goat-word { font-size: clamp(60px, 6.6vw, 118px) !important; }
-.goat-list { list-style: none; margin: clamp(16px, 1.8vw, 24px) 0 0; padding: 0; display: grid; gap: clamp(8px, .9vw, 12px); }
-.goat-list li { display: grid; grid-template-columns: 1.15em 1fr; align-items: center; gap: 14px; font-size: clamp(30px, 2.6vw, 42px); }
-.goat-list b { font: 600 1em/.8 var(--inter); letter-spacing: -0.06em; color: #fff; padding-right: 14px; border-right: 1px solid rgba(255,255,255,.3); text-shadow: 0 0 24px rgba(0,0,0,.8); }
-.goat-list span { display: flex; flex-direction: column; gap: 3px; }
-.goat-list em { font: 600 clamp(15px, 1.25vw, 19px)/1.05 var(--inter); font-style: normal; letter-spacing: -0.03em; color: #fff; text-shadow: 0 0 14px rgba(0,0,0,.9); }
-.goat-list small { font: 500 clamp(12px, .9vw, 13.5px)/1.3 var(--inter); color: rgba(255,255,255,.7); text-shadow: 0 0 12px rgba(0,0,0,.9); }
-@media (max-height: 760px) and (min-width: 901px) { .goat-list li { font-size: 28px; } .goat-list { gap: 7px; } }
-
-/* ================= v26 · cambio 3: cuatro paneles ================= */
-.bento2 .zoo.tall2 { grid-column: 3; grid-row: 1 / span 2; justify-content: center; gap: 0; }
-.bento2 .zoo.tall2 .kick { margin-bottom: auto; }
-.bento2 .zoo.tall2 .marq { gap: 12px; margin-top: 0; }
-.bento2 .zoo.tall2 .zoo-link { margin-top: 26px; margin-bottom: auto; }
-.track.t3 { animation-duration: 44s; }
-.bento2 .stat { grid-column: 2; grid-row: 2; }
-.bento2 .quote { grid-column: 2; grid-row: 1; }
-@media (max-width: 1100px) { .bento2 .zoo.tall2 { grid-column: auto; grid-row: auto; } .bento2 .stat, .bento2 .quote { grid-column: auto; grid-row: auto; } }
-
-/* ================= v26 · cambio 4: Mirror Hall en una pantalla ================= */
-.hall { height: 250vh !important; }
-.hall-dots i { cursor: pointer; }
-.hall-dots i:hover { background: rgba(255,255,255,.7); }
-.hall-skip { position: absolute; right: clamp(16px, 2.6vw, 40px); bottom: clamp(22px, 5vh, 50px); z-index: 4; display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 14px; border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.2); background: rgba(0,0,0,.25); color: rgba(255,255,255,.75); font: 500 12.5px/1 var(--inter); cursor: pointer; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); transition: color .25s, border-color .25s, background-color .25s; }
-.hall-skip svg { width: 13px; height: 13px; transition: transform .3s; }
-.hall-skip:hover { color: #fff; border-color: rgba(255,255,255,.45); background: rgba(255,255,255,.08); } .hall-skip:hover svg { transform: translateY(2px); }
-
-/* v26 · cambio 5: fila de cuatro apps */
-.apps { grid-template-columns: repeat(4, 1fr) !important; }
-@media (max-width: 1100px) { .apps { grid-template-columns: 1fr 1fr !important; } }
-@media (max-width: 600px) { .apps { grid-template-columns: 1fr !important; } }
-
-/* v26 · cambio 11 */
-.mk-demo { margin-left: 10px; padding: 4px 8px; border-radius: 999px; border: 1px dashed rgba(255,255,255,.28); font: 500 10.5px/1 var(--inter); letter-spacing: .04em; color: rgba(255,255,255,.6); }
-.sheet .pic { position: sticky; top: 0; align-self: start; min-height: 0 !important; height: min(88vh, 760px); }
-@media (max-width: 760px) { .sheet .pic { position: relative; height: 200px; } }
-
-/* v26 · cambio 8 */
-.f-legal { display: block; margin-top: 8px; }
-.f-legal a { color: rgba(255,255,255,.55); transition: color .25s; } .f-legal a:hover { color: #fff; }
-
-/* v26 · cambio 9: estrellas de la portada */
-#heroSky { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; mix-blend-mode: screen; }
-/* v26 · ajustes tras la revisión en móvil y escritorio */
-.mk-demo { white-space: nowrap; flex: none; }
-.mk-bar p { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
-@media (max-width: 760px) {
-  .mk-live { display: none; }
-  .hall-skip { right: 50%; transform: translateX(50%); bottom: 14px; }
-  .hall-now { bottom: 64px; }
-  .goat-list { grid-template-columns: 1fr 1fr; column-gap: 18px; }
-  .goat-list li { font-size: 26px; gap: 10px; }
-  .goat-list b { padding-right: 10px; }
-}
-.mk-demo { font-style: normal; }
-
-/* v28 · vídeo nuevo de la cabra: la puerta es más alta, se encaja algo más pequeño para que no quede bajo el menú */
-.plate { background: #000 !important; }
-.plate video#bg { transform: scale(.84); transform-origin: 50% 100%;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%); }
-@media (max-aspect-ratio: 4/5) { .plate video#bg { transform: none; -webkit-mask-image: none; mask-image: none; } }

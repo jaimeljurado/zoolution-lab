@@ -123,7 +123,7 @@
     sx.globalAlpha = 1;
     // estrellas fugaces
     nextShoot -= dt;
-    if (nextShoot <= 0 && !reduce) { shoot(); nextShoot = rnd(1, 3); }
+    if (nextShoot <= 0 && !reduce) { shoot(); nextShoot = rnd(2.2, 6.5); }
     for (var k = shooters.length - 1; k >= 0; k--) {
       var p = shooters[k]; p.life += dt; p.x += p.vx * dt; p.y += p.vy * dt;
       var f = p.life / p.max; if (f >= 1) { shooters.splice(k, 1); continue; }
@@ -139,53 +139,6 @@
   setTimeout(buildClouds, 60);
   requestAnimationFrame(drawSky);
 
-  /* ================= portada: pocas estrellas fijas muy tenues y una fugaz cada 10–15 s, lejos de la puerta ================= */
-  (function () {
-    var c = document.getElementById("heroSky"); if (!c) return;
-    var g = c.getContext("2d"), w = 0, hh = 0, st = [], sh = null, next = 4, lt = performance.now();
-    function away(x, y) { return Math.abs(x - w / 2) > w * .2 || y < hh * .08; } // fuera de la franja de la puerta
-    function size() {
-      w = c.clientWidth; hh = c.clientHeight; c.width = Math.round(w * DPR); c.height = Math.round(hh * DPR); g.setTransform(DPR, 0, 0, DPR, 0, 0);
-      st = []; var n = Math.round(w * hh / 26000);
-      while (st.length < n) { var x = Math.random() * w, y = Math.pow(Math.random(), 1.4) * hh * .55; if (away(x, y)) st.push({ x: x, y: y, r: rnd(.3, .9), b: rnd(.08, .28), sp: rnd(.3, 1.2), ph: Math.random() * 6.28 }); }
-    }
-    function tick(now) {
-      requestAnimationFrame(tick);
-      var dt = Math.min(.05, (now - lt) / 1000); lt = now;
-      if (scrollY > innerHeight * 1.2) return;
-      var t = now / 1000; g.clearRect(0, 0, w, hh); g.fillStyle = "#fff";
-      for (var i = 0; i < st.length; i++) { var s = st[i]; g.globalAlpha = s.b * (.6 + .4 * Math.sin(t * s.sp + s.ph)); g.beginPath(); g.arc(s.x, s.y, s.r, 0, 6.283); g.fill(); }
-      g.globalAlpha = 1;
-      next -= dt;
-      if (!sh && next <= 0 && !reduce) {
-        var left = Math.random() < .5;
-        sh = { x: left ? rnd(w * .03, w * .18) : rnd(w * .82, w * .97), y: rnd(hh * .05, hh * .22), vx: (left ? -1 : 1) * rnd(260, 380), vy: rnd(90, 160), life: 0, max: rnd(.7, 1) }; // siempre se aleja de la puerta
-        next = rnd(10, 15);
-      }
-      if (sh) {
-        sh.life += dt; sh.x += sh.vx * dt; sh.y += sh.vy * dt;
-        var f = sh.life / sh.max; if (f >= 1) { sh = null; return; }
-        var fade = Math.sin(f * Math.PI) * .7, sp = Math.hypot(sh.vx, sh.vy), tx = sh.x - sh.vx / sp * 120, ty = sh.y - sh.vy / sp * 120;
-        var gr = g.createLinearGradient(sh.x, sh.y, tx, ty); gr.addColorStop(0, "rgba(255,255,255," + fade + ")"); gr.addColorStop(1, "rgba(255,255,255,0)");
-        g.strokeStyle = gr; g.lineWidth = 1.1; g.lineCap = "round"; g.beginPath(); g.moveTo(sh.x, sh.y); g.lineTo(tx, ty); g.stroke();
-      }
-    }
-    size(); addEventListener("resize", size); requestAnimationFrame(tick);
-  })();
-
-  /* ================= menú: efecto lupa tipo Dock ================= */
-  var navEl = document.querySelector(".nav");
-  if (navEl && matchMedia("(hover: hover)").matches && !reduce) {
-    var navLinks = [].slice.call(navEl.querySelectorAll("a"));
-    navEl.addEventListener("mousemove", function (e) {
-      navLinks.forEach(function (a) {
-        var r = a.getBoundingClientRect(), d = Math.abs(e.clientX - (r.left + r.width / 2));
-        a.style.setProperty("--zm", (1 + .32 * Math.max(0, 1 - d / 110)).toFixed(3));
-      });
-    });
-    navEl.addEventListener("mouseleave", function () { navLinks.forEach(function (a) { a.style.setProperty("--zm", 1); }); });
-  }
-
   /* ================= textos que se iluminan palabra a palabra ================= */
   var leads = [].slice.call(document.querySelectorAll(".lead2"));
   leads.forEach(function (p) { p.innerHTML = p.textContent.trim().split(/\s+/).map(function (w) { return '<span class="w">' + w + "</span>"; }).join(" "); });
@@ -199,9 +152,8 @@
 
 
   /* ================= bento: origen de cada tarjeta, foco del ratón, contador, copiar ================= */
-  var logos2 = document.querySelector(".logos2"), steps2 = document.querySelector(".steps2"), bento2 = document.querySelector(".bento2"), statEl = document.querySelector(".bento2 .stat"), countEl = statEl && statEl.querySelector(".count"), lastN = -1;
+  var steps2 = document.querySelector(".steps2"), bento2 = document.querySelector(".bento2"), statEl = document.querySelector(".bento2 .stat"), countEl = statEl && statEl.querySelector(".count"), lastN = -1;
   function bentoOrigins() {
-    if (logos2) { var lx = logos2.clientWidth / 2, ly = logos2.clientHeight / 2; [].slice.call(logos2.children).forEach(function (el) { el.style.setProperty("--ox", (el.offsetLeft + el.offsetWidth / 2 - lx).toFixed(0)); el.style.setProperty("--oy", (el.offsetTop + el.offsetHeight / 2 - ly).toFixed(0)); }); }
     if (!bento2) return;
     var cx = bento2.clientWidth / 2, cy = bento2.clientHeight / 2;
     [].slice.call(bento2.children).forEach(function (el) {
@@ -210,8 +162,6 @@
     });
   }
   if (bento2) [].slice.call(bento2.children).forEach(function (el, i) { el.dataset.lag = [.1, 0, .1, .03, .13][i] || 0; });
-  if (logos2) [].slice.call(logos2.children).forEach(function (el, i) { el.dataset.lag = [.06, 0, 0, .06, .06, 0, 0, .06][i] || 0;
-    el.addEventListener("pointermove", function (e) { var r = el.getBoundingClientRect(); el.style.setProperty("--mx", (e.clientX - r.left) + "px"); el.style.setProperty("--my", (e.clientY - r.top) + "px"); }); });
   if (steps2) [].slice.call(steps2.children).forEach(function (el, i) { el.dataset.lag = [0, .07, .07, 0][i] || 0; });
   bentoOrigins(); addEventListener("resize", bentoOrigins); addEventListener("load", bentoOrigins);
   if (bento2) [].slice.call(bento2.children).forEach(function (el) {
@@ -246,33 +196,23 @@
   function setActive(i) {
     if (i === active) return; active = i;
     var d = MODS[i];
-    nowIx.textContent = String(i).padStart(2, "0") + " / " + String(N - 1).padStart(2, "0") + (d.fam ? " · " + FAM[d.fam] : "");
-    nowNm.textContent = d.n; nowAn.textContent = d.a + (d.live ? " · implantándose en un caso real" : d.s ? " · " + d.s : "");
+    nowIx.textContent = String(i).padStart(2, "0") + " / " + String(N - 1).padStart(2, "0");
+    nowNm.textContent = d.n; nowAn.textContent = d.a + (d.live ? " · ya funcionando" : d.s ? " · " + d.s : "");
     dots.forEach(function (x, k) { x.classList.toggle("on", k === i); });
   }
 
   /* ================= ficha del módulo ================= */
   var MODS = JSON.parse(document.getElementById("mods-data").textContent);
-  var FAM = JSON.parse((document.getElementById("fam-data") || { textContent: "{}" }).textContent);
   var sheet = document.querySelector(".sheet"), cur = 0;
   function openSheet(i) {
     cur = (i + N) % N; var d = MODS[cur];
-    sheet.querySelector(".pic").innerHTML = d.k === "goat" ? '<img class="inv" src="assets/fauna/goat.png" alt="">' : d.img ? '<img src="' + d.img + '" alt="">' : '<span class="ph">' + d.a + '</span>';
-    sheet.querySelector(".fam-k").textContent = d.fam ? "Familia " + String(d.fam).padStart(2, "0") + " · " + FAM[d.fam] : "El corazón de Zoolutions Lab";
+    sheet.querySelector(".pic").innerHTML = d.k === "goat" ? '<img class="inv" src="assets/fauna/goat.png" alt="">' : d.img ? '<img src="' + d.img + '" alt="">' : '<svg aria-hidden="true"><use href="assets/animales.svg#a-' + d.k + '"/></svg>';
     sheet.querySelector(".st").className = "st" + (d.live ? " live" : "");
-    sheet.querySelector(".st").textContent = d.live ? "Implantándose en un caso real" : (d.s || "Listo para implantar");
+    sheet.querySelector(".st").textContent = d.live ? "Ya funcionando en un caso real" : (d.s || "Listo para implantar");
     sheet.querySelector("h3").textContent = d.n;
-    var full = sheet.querySelector(".full"); full.textContent = d.full && d.full !== d.n ? d.full : ""; full.style.display = full.textContent ? "" : "none";
     sheet.querySelector(".what").textContent = d.d;
-    var has = !!d.uc;
-    sheet.querySelector(".blocks").style.display = has ? "" : "none"; sheet.querySelector(".meta").style.display = has ? "" : "none";
-    if (has) {
-      sheet.querySelector(".uc").textContent = d.uc; sheet.querySelector(".how").textContent = d.how; sheet.querySelector(".eco").textContent = d.eco;
-      sheet.querySelector(".secs").innerHTML = d.sec.split(" · ").map(function (s) { return "<span>" + s + "</span>"; }).join("");
-    }
     sheet.querySelector(".why b").textContent = "El animal · " + d.a;
     sheet.querySelector(".why p").textContent = d.w;
-    sheet.querySelector(".card").scrollTop = 0;
     sheet.querySelector(".fun-tip").textContent = d.c || "";
     sheet.querySelector(".fun").classList.remove("open");
     sheet.classList.add("open"); sheet.setAttribute("aria-hidden", "false");
@@ -294,42 +234,28 @@
 
   /* ================= bucle principal ================= */
   document.querySelectorAll(".facts.rise").forEach(function (el) { el.addEventListener("animationend", function () { el.classList.remove("rise", "d5"); }); });
-  /* Mirror Hall en una pantalla: la rueda sobre los espejos gira el anillo; en los laterales, la página baja normal */
-  var hallStage = document.querySelector(".hall-stage"), ringWrap = document.querySelector(".ring-wrap");
-  var hIdx = 0, wAcc = 0, wLock = 0;
-  function REST() { return innerHeight * .4; } function XL() { return innerHeight * 1.1; }
-  function hallDocked() { var r = hall.getBoundingClientRect(); return r.top <= 2 && -r.top <= REST(); }
-  function overMirrors(x, y) { var r = ringWrap.getBoundingClientRect(); return y >= r.top && y <= r.bottom && Math.abs(x - innerWidth / 2) < innerWidth * .36; }
-  function goTo(i) { hIdx = Math.max(0, Math.min(N - 1, i)); }
+  var hallStage = document.querySelector(".hall-stage");
+  function exitLen() { return innerHeight * 1.1; }
+  function hallRange() { var top = hall.getBoundingClientRect().top + scrollY; return { top: top, span: Math.max(1, hall.offsetHeight - innerHeight - exitLen()) }; }
+  function inHall() { var r = hall.getBoundingClientRect(); return r.top <= 1 && -r.top <= hall.offsetHeight - innerHeight - exitLen() + 2; }
+  function hallNudge(px) { // px de gesto horizontal -> avance del anillo
+    var hr2 = hallRange(), per = hr2.span / (N - 1), k = per / 260;
+    var ny = Math.max(hr2.top, Math.min(hr2.top + hr2.span, scrollY + px * k));
+    window.scrollTo({ top: ny, behavior: "instant" });
+  }
   addEventListener("wheel", function (e) {
-    if (!hallDocked() || sheet.classList.contains("open")) return;
-    var horiz = Math.abs(e.deltaX) > Math.abs(e.deltaY);
-    if (!horiz && !overMirrors(e.clientX, e.clientY)) return;      // laterales: scroll normal
-    var d = horiz ? e.deltaX : e.deltaY;
-    if (!horiz && ((d > 0 && hIdx >= N - 1) || (d < 0 && hIdx <= 0))) return; // en los extremos, la página sigue
-    e.preventDefault();
-    var now = performance.now();
-    if (now < wLock) return;
-    wAcc += d;
-    if (Math.abs(wAcc) > 40) { goTo(hIdx + (wAcc > 0 ? 1 : -1)); wAcc = 0; wLock = now + 260; }
+    if (!inHall() || Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+    e.preventDefault(); hallNudge(e.deltaX);
   }, { passive: false });
-  var tx0 = null, ty0 = null, tLock = 0, tAcc = 0;
-  hallStage.addEventListener("touchstart", function (e) { tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY; tLock = 0; tAcc = 0; }, { passive: true });
+  var tx0 = null, ty0 = null, tLock = 0;
+  hallStage.addEventListener("touchstart", function (e) { tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY; tLock = 0; }, { passive: true });
   hallStage.addEventListener("touchmove", function (e) {
     if (tx0 === null) return;
     var dx = e.touches[0].clientX - tx0, dy = e.touches[0].clientY - ty0;
     if (!tLock && Math.abs(dx) + Math.abs(dy) > 8) tLock = Math.abs(dx) > Math.abs(dy) ? 1 : 2;
-    if (tLock === 1) { e.preventDefault(); tAcc += -dx; tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY;
-      if (Math.abs(tAcc) > 55) { goTo(hIdx + (tAcc > 0 ? 1 : -1)); tAcc = 0; } }
+    if (tLock === 1) { e.preventDefault(); hallNudge(-dx * 2.2); tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY; }
   }, { passive: false });
   hallStage.addEventListener("touchend", function () { tx0 = null; });
-  addEventListener("keydown", function (e) {
-    if (sheet.classList.contains("open") || !hallDocked()) return;
-    if (e.key === "ArrowRight") goTo(hIdx + 1); if (e.key === "ArrowLeft") goTo(hIdx - 1);
-  });
-  dots.forEach(function (d, i) { d.addEventListener("click", function () { goTo(i); }); });
-  var skipBtn = document.querySelector(".hall-skip");
-  if (skipBtn) skipBtn.addEventListener("click", function () { var t = document.getElementById("proyectos"); if (t) t.scrollIntoView({ behavior: "smooth" }); });
   var targetRot = 0;
   var heroParts = [[".hero .left", 1], [".hero .right", .8], ["body.one .facts", .45]].map(function (a) { return { el: document.querySelector(a[0]), k: a[1] }; }).filter(function (o) { return o.el; });
   function frame() {
@@ -345,18 +271,18 @@
     document.body.classList.toggle("past", y > Hh * .6);
 
     for (var i = 0; i < gens.length; i++) {
-      var el = gens[i], grp = el.parentNode && (el.parentNode === bento2 || el.parentNode === steps2 || el.parentNode === logos2) ? el.parentNode : null, inB = !!grp, r = (grp || el).getBoundingClientRect();
+      var el = gens[i], grp = el.parentNode && (el.parentNode === bento2 || el.parentNode === steps2) ? el.parentNode : null, inB = !!grp, r = (grp || el).getBoundingClientRect();
       if (r.top > vh * 1.2 || r.bottom < -vh * .2) { el.style.setProperty("--p", 0); continue; }
       var lag = parseFloat(el.dataset.lag || 0);
       if (inB) { // el bento se monta como una sola pieza
-        var pin = (vh * .98 - r.top) / (vh * (grp === steps2 ? .42 : grp === logos2 ? .48 : .72)) - lag, pout = (r.bottom - vh * .04) / (vh * .5) - lag;
+        var pin = (vh * .98 - r.top) / (vh * (grp === steps2 ? .42 : .72)) - lag, pout = (r.bottom - vh * .04) / (vh * .5) - lag;
       } else {
       var pin = (vh - r.top) / (vh * (el.classList.contains("gen-t") ? .32 : .55)) - lag;           // entrando por abajo
       var pout = (r.bottom - vh * .02) / (vh * .45) - lag;  // saliendo por arriba
       }
       var p = Math.max(0, Math.min(1, Math.min(pin, pout)));
       el.style.setProperty("--p", p.toFixed(3));
-      if (inB && grp !== steps2) el.style.setProperty("--e", (1 - Math.pow(1 - p, 3)).toFixed(4));
+      if (inB) el.style.setProperty("--e", (1 - Math.pow(1 - p, 3)).toFixed(4));
       el.style.setProperty("--d", pout < pin ? 1 : 0);
     }
     // portada: se aleja al bajar y se recompone al volver arriba
@@ -372,16 +298,18 @@
       for (var k = 0; k < n; k++) ws[k].classList.toggle("lit", k < lit);
     });
 
-    if (statEl) { var sp = parseFloat(statEl.style.getPropertyValue("--p")) || 0, nv = Math.round((+countEl.dataset.to || 16) * Math.min(1, Math.max(0, (sp - .25) / .65))); if (nv !== lastN) { countEl.textContent = nv; lastN = nv; } }
+    if (statEl) { var sp = parseFloat(statEl.style.getPropertyValue("--p")) || 0, nv = Math.round(16 * Math.min(1, Math.max(0, (sp - .25) / .65))); if (nv !== lastN) { countEl.textContent = nv; lastN = nv; } }
     // mirror hall: el anillo gira con el scroll y se para en cada espejo
-    var hr = hall.getBoundingClientRect(), xl = XL();
-    var ex = Math.max(0, Math.min(1, (-hr.top - REST()) / xl)); // salida: las cartas giran y se van
+    var hr = hall.getBoundingClientRect(), xl = vh * 1.1, span = Math.max(1, hall.offsetHeight - vh - xl);
+    var hp = Math.max(0, Math.min(1, -hr.top / span));
+    var ex = Math.max(0, Math.min(1, (-hr.top - span) / xl)); // salida: las cartas giran y se van a los lados
     ring.classList.toggle("out", ex > 0);
     hallNow.style.opacity = hallHead.style.opacity = dotsBox.style.opacity = (1 - Math.max(0, Math.min(1, (ex - .15) * 3))).toFixed(3);
     hallNow.style.pointerEvents = ex > .3 ? "none" : "";
-    if (skipBtn) { skipBtn.style.opacity = hallNow.style.opacity; skipBtn.style.pointerEvents = hallNow.style.pointerEvents; }
-    targetRot = hIdx * step;
-    rot += (targetRot - rot) * (reduce ? 1 : .11);
+    var f = hp * (N - 1), base = Math.floor(f), frac = f - base;
+    var eased = base + (frac < .5 ? 0 : 1) * 0 + (frac < .5 ? Math.pow(frac * 2, 3) / 2 : 1 - Math.pow((1 - frac) * 2, 3) / 2); // pausa en cada espejo
+    targetRot = eased * step;
+    rot += (targetRot - rot) * (reduce ? 1 : .12);
     ring.style.transform = "translateZ(" + (R - PUSH) + "px) rotateY(" + rot + "deg)";
     setActive(Math.max(0, Math.min(N - 1, Math.round(rot / step))));
     for (var m = 0; m < N; m++) {
