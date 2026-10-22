@@ -434,7 +434,7 @@ html, body { overscroll-behavior-x: none; }
   animation: zl-tick 2.4s linear infinite; animation-delay: calc((var(--k) - var(--n, 16)) * 0.15s); }
 @keyframes zl-tick { 0% { opacity: 1; } 38% { opacity: 0; } 100% { opacity: 0; } }
 .dial i { background: rgba(255,255,255,.22); }
-/* proyecto 02: extensión del captador */
+/* lista con escaneo (sin uso) */
 .cases .box:not(.feature) { justify-content: space-between; }
 .mock-ext { margin: 34px 0 22px; }
 .scan { position: relative; padding: 8px; }
@@ -741,3 +741,31 @@ body.one.past .nav { top: 14px; }
 .plate video#bg { transform: scale(.84); transform-origin: 50% 100%;
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%); }
 @media (max-aspect-ratio: 4/5) { .plate video#bg { transform: none; -webkit-mask-image: none; mask-image: none; } }
+
+/* ================= v31 · espejos: arena en movimiento en blanco y negro, animales en blanco ================= */
+.mirror .face { background: #0a0a0a; box-shadow: 0 0 0 1px rgba(255,255,255,.22) inset, 0 30px 60px rgba(0,0,0,.6), 0 0 40px rgba(255,255,255,var(--glow, 0));
+  -webkit-box-reflect: below 14px linear-gradient(transparent 58%, rgba(255,255,255,.22)); }
+.mirror .face canvas.sand { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; display: block; }
+.mirror .face::before { mix-blend-mode: screen; opacity: .35; z-index: 1; }
+.mirror .face::after { border-color: rgba(255,255,255,.14); z-index: 1; }
+.mirror .face img { filter: invert(1) drop-shadow(0 0 14px rgba(0,0,0,.65)) !important; z-index: 2; }
+.mirror .face img.inv { filter: drop-shadow(0 0 14px rgba(0,0,0,.65)) !important; }
+.mirror .face .ph { color: #fff !important; position: relative; z-index: 2; }
+.mirror .no { color: rgba(255,255,255,.55); z-index: 3; }
+.mirror.live .no::after { color: #fff; }
+/* v32 · animales centrados y con tamaño visual parecido (el ancho de cada uno va en su propio style) */
+.mirror .face { align-items: center !important; justify-content: center; padding: 0 !important; }
+.mirror .face img { max-width: none !important; max-height: none !important; height: auto !important; transform: translateY(8%); }
+.mirror .face .ph { margin: 0 !important; transform: translateY(8%); }
+/* v33 · Family App ocupa todo el ancho, texto a la izquierda y el móvil a la derecha */
+.cases2 .fam-card { grid-column: 1 / -1; display: grid !important; grid-template-columns: 1fr auto; grid-template-rows: auto 1fr; column-gap: clamp(28px, 5vw, 80px); align-items: start; padding: clamp(26px, 3vw, 44px); }
+.cases2 .fam-card .cs-head { grid-column: 1; grid-row: 1; }
+.cases2 .fam-card .cs-foot { grid-column: 1; grid-row: 2; align-self: end; margin: 0; padding-top: 18px; }
+.cases2 .fam-card .phone { grid-column: 2; grid-row: 1 / span 2; margin: 0 clamp(0px, 4vw, 60px) 0 0; align-self: center; }
+.flow .cases2 .fam-card h3 { font-size: clamp(28px, 3vw, 44px); }
+@media (max-width: 760px) { .cases2 .fam-card { grid-template-columns: 1fr; } .cases2 .fam-card .phone { grid-column: 1; grid-row: auto; margin: 22px auto 0; } .cases2 .fam-card .cs-foot { grid-row: auto; } }
+
+/* v33 · arrastrar el anillo */
+.ring-wrap { cursor: grab; user-select: none; -webkit-user-select: none; touch-action: pan-y; }
+.ring-wrap.grab, .ring-wrap.grab .mirror { cursor: grabbing; }
+.mirror img { -webkit-user-drag: none; user-select: none; pointer-events: none; }

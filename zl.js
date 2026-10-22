@@ -243,6 +243,51 @@
     mirrors.forEach(function (m, i) { m._b = "rotateY(" + (-i * step) + "deg) translateZ(" + (-R) + "px)"; m.style.transform = m._b; });
   }
   layoutRing(); addEventListener("resize", layoutRing);
+
+  /* espejos: fondo de arena en movimiento, líneas finas en blanco y negro (una textura compartida, cada espejo ve su trozo) */
+  var dune = document.createElement("canvas"), dg = dune.getContext("2d"), duneW = 0, duneH = 0, faceW = 0, faceH = 0, DPRm = Math.min(devicePixelRatio || 1, 2);
+  mirrors.forEach(function (m, i) {
+    var c = document.createElement("canvas"); c.className = "sand"; c.setAttribute("aria-hidden", "true");
+    m.querySelector(".face").insertBefore(c, m.querySelector(".face").firstChild); m._c = c; m._g = c.getContext("2d"); m._o = (i * 0.618) % 1;
+  });
+  function sizeSand() {
+    var r = mirrors[0].getBoundingClientRect(), f = mirrors[0].querySelector(".face");
+    faceW = Math.round(f.offsetWidth * DPRm); faceH = Math.round(f.offsetHeight * DPRm);
+    duneW = Math.round(faceW * 2.6); duneH = faceH; dune.width = duneW; dune.height = duneH;
+    mirrors.forEach(function (m) { m._c.width = faceW; m._c.height = faceH; m._dirty = true; });
+  }
+  function drawDune(t) {
+    var w = duneW, h = duneH, L = 46, P = 90, g = dg;
+    var bg = g.createLinearGradient(0, 0, 0, h); bg.addColorStop(0, "#1b1b1b"); bg.addColorStop(.45, "#0e0e0e"); bg.addColorStop(1, "#050505");
+    g.fillStyle = bg; g.fillRect(0, 0, w, h);
+    var glow = g.createRadialGradient(w * .5, h * .38, 0, w * .5, h * .38, h * .7); glow.addColorStop(0, "rgba(255,255,255,.07)"); glow.addColorStop(1, "rgba(255,255,255,0)");
+    g.fillStyle = glow; g.fillRect(0, 0, w, h);
+    g.lineCap = "round";
+    for (var k = 0; k < L; k++) {
+      var q = k / (L - 1), base = h * (.12 + .95 * Math.pow(q, 1.35)), amp = h * (.012 + .03 * q), ph = k * .41;
+      g.beginPath();
+      for (var s = 0; s <= P; s++) {
+        var u = s / P, x = u * w;
+        var ridge = Math.sin(u * 2.1 + t * .045 + q * .9) * h * .11 * (1 - q * .4);          // la cresta que ondula despacio
+        var y = base + ridge + amp * Math.sin(u * 9 + t * .32 + ph) + amp * .45 * Math.sin(u * 23 - t * .5 + ph * 1.7);
+        if (s) g.lineTo(x, y); else g.moveTo(x, y);
+      }
+      var a = .07 + .3 * Math.pow(1 - Math.abs(q - .42) * 1.4, 2);
+      var lg = g.createLinearGradient(0, 0, w, 0), sh = (t * .035 + k * .07) % 1;
+      lg.addColorStop(0, "rgba(255,255,255," + (a * .35).toFixed(3) + ")");
+      lg.addColorStop(Math.max(.01, Math.min(.99, sh)), "rgba(255,255,255," + Math.min(.75, a * 1.9).toFixed(3) + ")");
+      lg.addColorStop(1, "rgba(255,255,255," + (a * .35).toFixed(3) + ")");
+      g.strokeStyle = lg; g.lineWidth = (.55 + q * .7) * DPRm; g.stroke();
+    }
+    var vg = g.createLinearGradient(0, 0, 0, h); vg.addColorStop(0, "rgba(0,0,0,.35)"); vg.addColorStop(.25, "rgba(0,0,0,0)"); vg.addColorStop(.8, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0,.45)");
+    g.fillStyle = vg; g.fillRect(0, 0, w, h);
+  }
+  function paintSand(m, t) { // cada espejo enseña su trozo de la arena, que además se desliza muy despacio
+    var span = duneW - faceW, ox = Math.round((((m._o + t * .006) % 1) + 1) % 1 * span);
+    m._g.drawImage(dune, ox, 0, faceW, faceH, 0, 0, faceW, faceH);
+  }
+  var sandTick = 1;
+  sizeSand(); addEventListener("resize", sizeSand); addEventListener("load", sizeSand);
   function setActive(i) {
     if (i === active) return; active = i;
     var d = MODS[i];
@@ -294,42 +339,48 @@
 
   /* ================= bucle principal ================= */
   document.querySelectorAll(".facts.rise").forEach(function (el) { el.addEventListener("animationend", function () { el.classList.remove("rise", "d5"); }); });
-  /* Mirror Hall en una pantalla: la rueda sobre los espejos gira el anillo; en los laterales, la página baja normal */
+  /* Mirror Hall: el anillo gira solo, despacio, hacia la izquierda. Con dos dedos (trackpad) se mueve a un lado y al otro;
+     pinchando y arrastrando se lanza y sigue con inercia hasta volver a su ritmo. La rueda vertical baja la página normal. */
   var hallStage = document.querySelector(".hall-stage"), ringWrap = document.querySelector(".ring-wrap");
-  var hIdx = 0, wAcc = 0, wLock = 0;
   function REST() { return innerHeight * .4; } function XL() { return innerHeight * 1.1; }
   function hallDocked() { var r = hall.getBoundingClientRect(); return r.top <= 2 && -r.top <= REST(); }
-  function overMirrors(x, y) { var r = ringWrap.getBoundingClientRect(); return y >= r.top && y <= r.bottom && Math.abs(x - innerWidth / 2) < innerWidth * .36; }
-  function goTo(i) { hIdx = Math.max(0, Math.min(N - 1, i)); }
+  var DRIFT = step / 3.6;          // grados por segundo: un espejo cada ~3,6 s
+  var vel = DRIFT, seek = null, startX = 0, dragPid = null, dragging = false, dragMoved = false, lastX = 0, lastT = 0, dragV = 0, holdT = 0;
+  function pxPerDeg() { return (mirrors[0].offsetWidth + 44) / step; }
+  function nudge(deg) { seek = null; rot += deg; }
   addEventListener("wheel", function (e) {
-    if (!hallDocked() || sheet.classList.contains("open")) return;
-    var horiz = Math.abs(e.deltaX) > Math.abs(e.deltaY);
-    if (!horiz && !overMirrors(e.clientX, e.clientY)) return;      // laterales: scroll normal
-    var d = horiz ? e.deltaX : e.deltaY;
-    if (!horiz && ((d > 0 && hIdx >= N - 1) || (d < 0 && hIdx <= 0))) return; // en los extremos, la página sigue
+    if (sheet.classList.contains("open")) return;
+    var r = hall.getBoundingClientRect(); if (r.top > innerHeight * .5 || r.bottom < innerHeight * .5) return;
+    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;          // vertical: la página baja normal
     e.preventDefault();
-    var now = performance.now();
-    if (now < wLock) return;
-    wAcc += d;
-    if (Math.abs(wAcc) > 40) { goTo(hIdx + (wAcc > 0 ? 1 : -1)); wAcc = 0; wLock = now + 260; }
+    var d = e.deltaX * (e.deltaMode === 1 ? 16 : 1);
+    nudge(d / pxPerDeg()); vel = Math.max(-step * 4, Math.min(step * 4, d / pxPerDeg() * 12)); holdT = performance.now();
   }, { passive: false });
-  var tx0 = null, ty0 = null, tLock = 0, tAcc = 0;
-  hallStage.addEventListener("touchstart", function (e) { tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY; tLock = 0; tAcc = 0; }, { passive: true });
-  hallStage.addEventListener("touchmove", function (e) {
-    if (tx0 === null) return;
-    var dx = e.touches[0].clientX - tx0, dy = e.touches[0].clientY - ty0;
-    if (!tLock && Math.abs(dx) + Math.abs(dy) > 8) tLock = Math.abs(dx) > Math.abs(dy) ? 1 : 2;
-    if (tLock === 1) { e.preventDefault(); tAcc += -dx; tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY;
-      if (Math.abs(tAcc) > 55) { goTo(hIdx + (tAcc > 0 ? 1 : -1)); tAcc = 0; } }
-  }, { passive: false });
-  hallStage.addEventListener("touchend", function () { tx0 = null; });
+  ringWrap.addEventListener("pointerdown", function (e) {
+    if (e.button !== 0 || sheet.classList.contains("open")) return;
+    dragging = true; dragMoved = false; startX = e.clientX; lastX = e.clientX; lastT = performance.now(); dragV = 0; seek = null;
+    dragPid = e.pointerId;
+  });
+  ringWrap.addEventListener("pointermove", function (e) {
+    if (!dragging) return;
+    var now = performance.now(), dx = e.clientX - lastX, dt = Math.max(1, now - lastT) / 1000;
+    if (!dragMoved && Math.abs(e.clientX - startX) > 5) { dragMoved = true; try { ringWrap.setPointerCapture(dragPid); } catch (er) {} ringWrap.classList.add("grab"); }
+    var deg = -dx / pxPerDeg(); rot += deg;
+    dragV = dragV * .6 + (deg / dt) * .4; lastX = e.clientX; lastT = now;
+  });
+  function endDrag() { if (!dragging) return; dragging = false; ringWrap.classList.remove("grab"); vel = Math.max(-step * 14, Math.min(step * 14, dragV)); holdT = performance.now(); }
+  ringWrap.addEventListener("pointerup", endDrag); ringWrap.addEventListener("pointercancel", endDrag);
+  ringWrap.addEventListener("click", function (e) { if (dragMoved) { e.stopPropagation(); e.preventDefault(); dragMoved = false; } }, true);
+  function seekTo(i) { var cur = rot / step, k = Math.round((cur - i) / N); seek = (i + k * N) * step; }
   addEventListener("keydown", function (e) {
     if (sheet.classList.contains("open") || !hallDocked()) return;
-    if (e.key === "ArrowRight") goTo(hIdx + 1); if (e.key === "ArrowLeft") goTo(hIdx - 1);
+    if (e.key === "ArrowRight") seek = (Math.round(rot / step) + 1) * step;
+    if (e.key === "ArrowLeft") seek = (Math.round(rot / step) - 1) * step;
   });
-  dots.forEach(function (d, i) { d.addEventListener("click", function () { goTo(i); }); });
+  dots.forEach(function (d, i) { d.addEventListener("click", function () { seekTo(i); }); });
   var skipBtn = document.querySelector(".hall-skip");
   if (skipBtn) skipBtn.addEventListener("click", function () { var t = document.getElementById("proyectos"); if (t) t.scrollIntoView({ behavior: "smooth" }); });
+  var ringT = performance.now();
   var targetRot = 0;
   var heroParts = [[".hero .left", 1], [".hero .right", .8], ["body.one .facts", .45]].map(function (a) { return { el: document.querySelector(a[0]), k: a[1] }; }).filter(function (o) { return o.el; });
   function frame() {
@@ -380,10 +431,20 @@
     hallNow.style.opacity = hallHead.style.opacity = dotsBox.style.opacity = (1 - Math.max(0, Math.min(1, (ex - .15) * 3))).toFixed(3);
     hallNow.style.pointerEvents = ex > .3 ? "none" : "";
     if (skipBtn) { skipBtn.style.opacity = hallNow.style.opacity; skipBtn.style.pointerEvents = hallNow.style.pointerEvents; }
-    targetRot = hIdx * step;
-    rot += (targetRot - rot) * (reduce ? 1 : .11);
+    var nowR = performance.now(), dtR = Math.min(.05, (nowR - ringT) / 1000); ringT = nowR;
+    if (!dragging) {
+      if (seek !== null) { rot += (seek - rot) * (reduce ? 1 : .12); if (Math.abs(seek - rot) < .05) { rot = seek; seek = null; vel = DRIFT; } }
+      else {
+        var paused = sheet.classList.contains("open") || reduce;
+        var target = paused ? 0 : DRIFT;
+        if (nowR - holdT > 120) vel += (target - vel) * (1 - Math.exp(-dtR * 1.6)); // la inercia se apaga y vuelve a su ritmo
+        rot += vel * dtR;
+      }
+    }
     ring.style.transform = "translateZ(" + (R - PUSH) + "px) rotateY(" + rot + "deg)";
-    setActive(Math.max(0, Math.min(N - 1, Math.round(rot / step))));
+    setActive(((Math.round(rot / step) % N) + N) % N);
+    var sandOn = hr.bottom > 0 && hr.top < vh, tS = nowR / 1000;
+    if (sandOn && (sandTick = (sandTick + 1) % 2) === 0) drawDune(reduce ? 0 : tS); // la arena va lenta: basta con 30 fps
     for (var m = 0; m < N; m++) {
       var ang = ((-m * step + rot) % 360 + 540) % 360 - 180, aa = Math.abs(ang);
       var mm = mirrors[m];
@@ -402,6 +463,7 @@
       mm.style.setProperty("--glow", aa < step / 2 ? .35 : 0);
       mm.style.setProperty("--lo", aa < step / 2 ? 1 : 0);
       mm.style.setProperty("--shine", (-60 + (ang / 60) * 120).toFixed(1) + "%");
+      if (sandOn && sandTick === 0 && op > .01) paintSand(mm, tS);
     }
   }
   requestAnimationFrame(frame);
