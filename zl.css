@@ -865,3 +865,4 @@ body.one.past .nav { top: 14px; }
 @keyframes zl-bubble2 { 0% { opacity: 0; transform: translateY(14px) scale(.8); } 18% { opacity: 1; transform: translateY(0) scale(1.05); } 30% { transform: scale(1); } 70% { opacity: 1; transform: translateY(-6px); } 100% { opacity: 0; transform: translateY(-22px) scale(.95); } }
 .hero .right { width: min(330px, 27vw); }
 .hero .right p { font-size: clamp(16px, 1.3vw, 19.5px) !important; line-height: 1.45; }
+@media (max-width: 760px), (max-aspect-ratio: 4/5) { .hero .right { width: auto !important; } }

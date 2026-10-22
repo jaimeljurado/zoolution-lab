@@ -24,7 +24,7 @@ img, video { display: block; }
 /* ---------- escenario con vídeo ---------- */
 .stage { position: relative; height: 100vh; height: 100svh; min-height: 560px; overflow: hidden; }
 .stage.short { height: 78vh; height: 78svh; min-height: 520px; }
-.plate { position: absolute; inset: 0; overflow: hidden; background: #000 url("assets/zl-cabra-v3-poster.jpg") center / cover no-repeat; }
+.plate { position: absolute; inset: 0; overflow: hidden; background: #000 url("assets/zl-cabra-v4-poster.jpg") center / cover no-repeat; }
 .plate video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; }
 .plate::after { content: ""; position: absolute; inset: 0; pointer-events: none;
   background:
