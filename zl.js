@@ -420,9 +420,16 @@
       o.el.style.filter = "blur(" + (hp2 * 10).toFixed(1) + "px)";
     });
     leads.forEach(function (el) {
-      var r = el.getBoundingClientRect(), prog = Math.max(0, Math.min(1, Math.min((vh * .95 - r.top) / (vh * .33), (r.bottom - vh * .05) / (vh * .3))));
-      var ws = el.children, n = ws.length, lit = Math.round(prog * n);
-      for (var k = 0; k < n; k++) ws[k].classList.toggle("lit", k < lit);
+      // se ilumina palabra a palabra en un tramo largo de scroll: empieza al entrar por abajo y termina con el texto en el tercio superior
+      var r = el.getBoundingClientRect(), ws = el.children, n = ws.length;
+      var pin = (vh * .92 - r.top) / (vh * .62), pout = (r.bottom - vh * .02) / (vh * .28);
+      var prog = Math.max(0, Math.min(1, Math.min(pin, pout))), soft = 5, pos = prog * (n + soft);
+      if (el._p === prog) return; el._p = prog;
+      for (var k = 0; k < n; k++) {
+        var t = Math.max(0, Math.min(1, (pos - k) / soft)); t = t * t * (3 - 2 * t);
+        ws[k].style.opacity = (.14 + .86 * t).toFixed(3);
+        ws[k].style.filter = t < 1 ? "blur(" + ((1 - t) * 2.2).toFixed(2) + "px)" : "";
+      }
     });
 
     if (statEl) { var sp = parseFloat(statEl.style.getPropertyValue("--p")) || 0, nv = Math.round((+countEl.dataset.to || 16) * Math.min(1, Math.max(0, (sp - .25) / .65))); if (nv !== lastN) { countEl.textContent = nv; lastN = nv; } }

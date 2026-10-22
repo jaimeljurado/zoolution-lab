@@ -794,3 +794,9 @@ body.one.past .nav { top: 14px; }
 .mirror .face.t-sea img { -webkit-mask-image: linear-gradient(to bottom, #000 calc(var(--cut, 0%) - .5%), rgba(0,0,0,.42) calc(var(--cut, 0%) + 1.5%));
   mask-image: linear-gradient(to bottom, #000 calc(var(--cut, 0%) - .5%), rgba(0,0,0,.42) calc(var(--cut, 0%) + 1.5%)); }
 @media (min-width: 761px) { .hall-now { bottom: clamp(14px, 3.2vh, 40px); } .hall-now .open { margin-top: 12px; } }
+
+/* v39 · relleno de las palabras más lento y suave; pie con «Zoolutions Lab» completo */
+.lead2 .w { transition: none !important; will-change: opacity, filter; }
+.wordmark { font-size: 12.2vw !important; letter-spacing: -0.055em; }
+.wordmark .lab { font-weight: 600; }
+@media (max-height: 900px) and (min-width: 901px) { .wordmark { font-size: min(12.2vw, 26vh) !important; } }
