@@ -235,8 +235,8 @@
   function layoutRing() {
     var small = innerWidth < 760;
     var cw = small ? Math.max(110, innerWidth * .3) : Math.min(196, Math.max(130, innerWidth * .118));
-    var ch = Math.min(cw * 1.42, innerHeight * .34);
-    cw = ch / 1.42;
+    var ch = Math.min(cw * 1.86, innerHeight * .345);  // misma proporción que la puerta del logo (324×603)
+    cw = ch / 1.86;
     ring.style.setProperty("--cw", cw + "px"); ring.style.setProperty("--ch", ch + "px");
     R = ((cw + (small ? 26 : 44)) * N) / (2 * Math.PI);
     PUSH = R * .72;

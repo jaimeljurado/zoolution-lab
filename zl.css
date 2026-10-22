@@ -782,3 +782,15 @@ body.one.past .nav { top: 14px; }
 .mirror .face .ph { color: #0b0b0b !important; }
 .mirror .no { color: rgba(0,0,0,.45); }
 .mirror.live .no::after { color: #000; }
+
+/* ================= v35 · espejos con proporción de la puerta del logo y animales sobre una línea de tierra ================= */
+.mirror .face::after { display: none; }                         /* fuera el marco gris interior */
+.mirror .face { display: block !important; padding: 0 !important; }
+.mirror .face img { position: absolute; left: 50%; transform: translateX(-50%) !important; height: auto !important; max-width: none !important; max-height: none !important; z-index: 1; }
+/* mar: la línea de tierra hace de superficie; lo que queda por debajo se ve sumergido */
+.mirror .face.t-sea { background:
+  linear-gradient(to top, rgba(0,0,0,.045) 0, rgba(0,0,0,.045) 24%, rgba(0,0,0,.16) 24%, rgba(0,0,0,.16) calc(24% + 1px), transparent calc(24% + 1px)),
+  linear-gradient(160deg, #ffffff 0%, #f1f1ef 45%, #d9d9d6 100%); }
+.mirror .face.t-sea img { -webkit-mask-image: linear-gradient(to bottom, #000 calc(var(--cut, 0%) - .5%), rgba(0,0,0,.42) calc(var(--cut, 0%) + 1.5%));
+  mask-image: linear-gradient(to bottom, #000 calc(var(--cut, 0%) - .5%), rgba(0,0,0,.42) calc(var(--cut, 0%) + 1.5%)); }
+@media (min-width: 761px) { .hall-now { bottom: clamp(14px, 3.2vh, 40px); } .hall-now .open { margin-top: 12px; } }
