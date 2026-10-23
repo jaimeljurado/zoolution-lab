@@ -197,40 +197,97 @@
     }, { threshold: .4 }).observe(fam);
   })();
 
-  /* ================= menú: al pasar el ratón, la palabra se "codifica" en unos y ceros durante 1 s y se recompone ================= */
+  /* ================= menú: onda binaria breve, sin cambiar el ancho de las palabras ================= */
   [].slice.call(document.querySelectorAll(".nav a")).forEach(function (a) {
-    var word = a.textContent, run = 0;
+    var word = a.textContent, cells = [], frame = 0, sequence = 0;
+    var motion = matchMedia("(prefers-reduced-motion: reduce)");
     a.setAttribute("aria-label", word);
-    a.addEventListener("mouseenter", function () {
-      if (reduce) return;
-      var id = ++run, t0 = performance.now(), D = 1000, n = word.length;
-      a.style.minWidth = a.getBoundingClientRect().width / (parseFloat(getComputedStyle(a).getPropertyValue("--zm")) || 1) + "px";
-      a.classList.add("coding");
-      (function step(now) {
-        if (id !== run) return;
-        var p = Math.min(1, (now - t0) / D), out = "";
-        for (var i = 0; i < n; i++) {
-          var c = word[i], reveal = (i + 1) / n * .85 + .15;          // se va fijando de izquierda a derecha
-          out += c === " " ? " " : (p >= reveal ? c : (Math.random() < .5 ? "0" : "1"));
-        }
-        a.textContent = out;
-        if (p < 1) requestAnimationFrame(step); else { a.textContent = word; a.classList.remove("coding"); a.style.minWidth = ""; }
-      })(t0);
-    });
-  });
 
-  /* ================= menú: efecto lupa tipo Dock ================= */
-  var navEl = document.querySelector(".nav");
-  if (navEl && matchMedia("(hover: hover)").matches && !reduce) {
-    var navLinks = [].slice.call(navEl.querySelectorAll("a"));
-    navEl.addEventListener("mousemove", function (e) {
-      navLinks.forEach(function (a) {
-        var r = a.getBoundingClientRect(), d = Math.abs(e.clientX - (r.left + r.width / 2));
-        a.style.setProperty("--zm", (1 + .32 * Math.max(0, 1 - d / 110)).toFixed(3));
-      });
+    // La etiqueta original fija la medida exacta, incluido el kerning.
+    // Las capas decorativas se superponen y nunca alteran el layout ni el nombre accesible.
+    var label = document.createElement("span");
+    label.className = "nav-code-label";
+    label.setAttribute("aria-hidden", "true");
+    var measure = document.createElement("span");
+    measure.className = "nav-code-measure";
+    measure.textContent = word;
+    label.appendChild(measure);
+    var glyphs = document.createElement("span");
+    glyphs.className = "nav-code-glyphs";
+    label.appendChild(glyphs);
+    a.textContent = "";
+    a.appendChild(label);
+
+    Array.from(word).forEach(function (c) {
+      var cell = document.createElement("span");
+      cell.className = "nav-code-char";
+      var letter = document.createElement("span");
+      letter.className = "nav-code-letter";
+      letter.textContent = c;
+      cell.appendChild(letter);
+      glyphs.appendChild(cell);
+      if (c === " ") return;
+      var bit = document.createElement("span");
+      bit.className = "nav-code-bit";
+      bit.textContent = "0";
+      cell.appendChild(bit);
+      cells.push({ el: cell, bit: bit });
     });
-    navEl.addEventListener("mouseleave", function () { navLinks.forEach(function (a) { a.style.setProperty("--zm", 1); }); });
-  }
+
+    function reset() {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      cells.forEach(function (c) { c.el.classList.remove("is-encoding"); });
+      a.classList.remove("coding");
+    }
+    function play() {
+      if (motion.matches || frame) return;
+      sequence++;
+      a.classList.add("coding");
+      var start = performance.now();
+      function step(now) {
+        var elapsed = now - start;
+        cells.forEach(function (c, i) {
+          // Onda de 150 ms; cada carácter se codifica solo 190 ms.
+          // Dos cambios de bit deliberados, sin parpadeo aleatorio por fotograma.
+          var age = elapsed - i / Math.max(1, cells.length - 1) * 150;
+          var active = age >= 0 && age < 190;
+          if (active) {
+            var next = String((Math.floor(age / 76) + i + sequence) % 2);
+            if (c.bit.textContent !== next) c.bit.textContent = next;
+          }
+          c.el.classList.toggle("is-encoding", active);
+        });
+        if (elapsed < 490) frame = requestAnimationFrame(step);
+        else reset();
+      }
+      frame = requestAnimationFrame(step);
+    }
+    a.addEventListener("pointerenter", function (e) { if (e.pointerType !== "touch") play(); });
+    a.addEventListener("pointerleave", reset);
+    a.addEventListener("focus", function () { if (a.matches(":focus-visible")) play(); });
+    a.addEventListener("blur", reset);
+    a.addEventListener("click", reset);
+    if (motion.addEventListener) motion.addEventListener("change", reset);
+
+    // Conserva las posiciones de los glifos de la palabra completa (sin saltos por kerning).
+    function alignGlyphs() {
+      var range = document.createRange(), offset = 0;
+      Array.from(word).forEach(function (c, i) {
+        range.setStart(measure.firstChild, offset);
+        range.setEnd(measure.firstChild, offset + c.length);
+        var rect = range.getBoundingClientRect(), origin = measure.getBoundingClientRect();
+        var cell = glyphs.children[i];
+        cell.style.left = (rect.left - origin.left) + "px";
+        cell.style.width = rect.width + "px";
+        offset += c.length;
+      });
+      range.detach();
+    }
+    alignGlyphs();
+    if (document.fonts) document.fonts.ready.then(alignGlyphs);
+    addEventListener("resize", alignGlyphs);
+  });
 
   /* ================= textos que se iluminan palabra a palabra ================= */
   var leads = [].slice.call(document.querySelectorAll(".lead2"));

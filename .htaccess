@@ -1,3 +1,22 @@
+# Cierre temporal. Para reabrir la web, eliminar únicamente el archivo .maintenance.
+# La regla protege también páginas secundarias y recursos pedidos por URL directa.
+ErrorDocument 503 /maintenance.html
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{DOCUMENT_ROOT}/.maintenance -f
+  RewriteCond %{REQUEST_URI} !^/maintenance\.html$ [NC]
+  RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/ [NC]
+  RewriteRule ^ - [R=503,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  <Files "maintenance.html">
+    Header always set Cache-Control "no-store, max-age=0"
+    Header always set Retry-After "3600"
+    Header always set X-Robots-Tag "noindex, nofollow"
+  </Files>
+</IfModule>
+
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType text/html "access plus 0 seconds"

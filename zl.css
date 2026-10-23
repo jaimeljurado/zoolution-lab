@@ -670,11 +670,11 @@ body.one.past .nav { top: 14px; }
 @media (max-height: 820px) and (min-width: 761px) { .sheet .txt h3 { font-size: 24px; } .sheet .txt p { font-size: 14px; } .sheet .blocks { margin-top: 12px; } .sheet .blk { padding: 11px 13px; } }
 .hall-now .ix { white-space: nowrap; }
 
-/* ================= v26 · cambio 1: menú sin panel, con efecto lupa ================= */
+/* ================= menú sin panel; posición estable durante la interacción ================= */
 .nav { background: none !important; box-shadow: none !important; padding: 0 !important; gap: 0 !important; height: 46px; align-items: center; }
 .nav a { color: rgba(255,255,255,.78) !important; background: none !important; font-size: 14.5px; padding: 10px 14px !important; display: inline-block;
   text-shadow: 0 1px 12px rgba(0,0,0,.65), 0 0 2px rgba(0,0,0,.4);
-  transform: scale(var(--zm, 1)); transform-origin: 50% 70%; transition: color .25s, transform .18s cubic-bezier(.2,.8,.2,1); will-change: transform; }
+  transition: color .24s cubic-bezier(.22,1,.36,1); }
 .nav a:hover, .nav a:focus-visible { color: #fff !important; }
 .nav a[aria-current="page"]::after { background: #fff; }
 
@@ -832,9 +832,22 @@ body.one.past .nav { top: 14px; }
 .mirror .face.refl::before { display: none; }
 .more li p, .more li span { font-family: var(--inter) !important; letter-spacing: -0.01em; }
 
-/* v41 · menú que se codifica en 1 y 0 */
+/* Menú binario: onda de medio segundo, capas fijas y recorrido vertical de solo 3 px. */
 .nav a { text-align: center; }
-.nav a.coding { font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+.nav-code-label { display: inline-block; position: relative; white-space: pre; }
+.nav-code-measure { opacity: 0; }
+.nav-code-glyphs { position: absolute; inset: 0; pointer-events: none; }
+.nav-code-char { position: absolute; top: 0; height: 100%; }
+.nav-code-letter { display: block; transition: opacity .13s .04s cubic-bezier(.22,1,.36,1), transform .18s cubic-bezier(.22,1,.36,1), filter .14s; }
+.nav-code-bit { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums; font-size: .9em; opacity: 0; transform: translateY(3px); filter: blur(1px); transition: opacity .05s ease-out, transform .14s cubic-bezier(.22,1,.36,1), filter .11s; }
+.nav-code-char.is-encoding .nav-code-letter { opacity: 0; transform: translateY(-3px); filter: blur(1px); transition: opacity .055s ease-out, transform .14s cubic-bezier(.22,1,.36,1), filter .08s; }
+.nav-code-char.is-encoding .nav-code-bit { opacity: .8; transform: translateY(0); filter: blur(0); transition: opacity .09s .045s ease-out, transform .14s cubic-bezier(.22,1,.36,1), filter .11s; }
+.nav a:focus-visible { outline: 1px solid rgba(255,255,255,.65); outline-offset: -3px; }
+@media (prefers-reduced-motion: reduce) {
+  .nav-code-letter, .nav-code-bit { transition: none; }
+  .nav-code-measure { opacity: 1; }
+  .nav-code-glyphs { visibility: hidden; }
+}
 /* v41 · el bento entra desde los lados (izquierda desde la izquierda, derecha desde la derecha, el centro desde abajo) */
 .js .bento2 .gen {
   transform: translate3d(calc(var(--ox, 0) * var(--q) * 1.6px), calc(var(--q) * 90px), 0) scale(calc(.86 + var(--e, 0) * .14)) !important;
