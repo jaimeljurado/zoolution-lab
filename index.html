@@ -1620,6 +1620,15 @@ body.one.past .nav { top: 14px; }
 
 /* v77 · sin estrellas fugaces en los cajetines */
 .business-card-star{display:none!important;animation:none!important}
+
+/* v79: 0/1 del menú con la misma fuente, tamaño y línea base que las letras */
+.nav-code-bit{position:absolute!important;top:0!important;bottom:auto!important;height:auto!important;display:block!important;font-family:inherit!important;font-size:1em!important;font-weight:inherit!important;line-height:inherit!important;letter-spacing:0!important;text-align:center;font-variant-numeric:tabular-nums;transform:none!important;filter:none!important}
+.nav-code-char.is-encoding .nav-code-bit{opacity:.9!important}
+.nav-code-bit,.nav-code-letter{transition-duration:.12s!important}
+.nav-code-char.is-encoding .nav-code-bit{transition:opacity .12s .06s ease-out!important}
+.nav-code-char.is-encoding .nav-code-letter{transition:opacity .09s ease-out!important}
+/* punto de la i completo (el recorte de line-height lo cortaba) */
+.wordmark{padding-top:.3em!important}
 </style>
 </head>
 <body class="one">
@@ -2208,7 +2217,7 @@ body.one.past .nav { top: 14px; }
       if (motion.matches || frame) return;
       a.classList.add("coding");
       var start = performance.now();
-      var fillStep = 75, revealStep = 45;
+      var fillStep = 120, revealStep = 75;
       var revealStart = Math.max(0, cells.length - 1) * fillStep + 240;
       var duration = revealStart + Math.max(0, cells.length - 1) * revealStep + 180;
       function step(now) {
@@ -2219,7 +2228,7 @@ body.one.past .nav { top: 14px; }
           var age = elapsed - i * fillStep;
           var active = age >= 0 && elapsed < revealStart + i * revealStep;
           if (active) {
-            var next = String((Math.floor(age / 90) + i) % 2);
+            var next = String((Math.floor(age / 150) + i) % 2);
             if (c.bit.textContent !== next) c.bit.textContent = next;
           }
           c.el.classList.toggle("is-encoding", active);
@@ -2619,12 +2628,12 @@ body.one.past .nav { top: 14px; }
   'use strict';
   function normalize(value) {
     var text = String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9@+ ]/g, ' ').replace(/\s+/g, ' ').trim();
-    var aliases = { inmobilaria:'inmobiliaria', inmobiliara:'inmobiliaria', inmobliaria:'inmobiliaria', immobilaria:'inmobiliaria', clinia:'clinica', clinicas:'clinica', factruas:'facturas', faturacion:'facturacion', exel:'excel', exccel:'excel', wasap:'whatsapp', wasapp:'whatsapp', wassap:'whatsapp', whatssap:'whatsapp', whatsaap:'whatsapp', whatsap:'whatsapp', mail:'correo', emails:'correos' };
+    var aliases = { clinia:'clinica', clinicas:'clinica', factruas:'facturas', faturacion:'facturacion', exel:'excel', exccel:'excel', wasap:'whatsapp', wasapp:'whatsapp', wassap:'whatsapp', whatssap:'whatsapp', whatsaap:'whatsapp', whatsap:'whatsapp', mail:'correo', emails:'correos' };
     return text.split(' ').map(function (w) { return aliases[w] || w; }).join(' ');
   }
   var sectors = [
+    {id:'energy', label:'Energía renovable', match:/\b(energia\w*|renovable\w*|eolic\w*|fotovoltaic\w*|solar\w*|aerogenerador\w*|bess|baterias? de almacenamiento|almacenamiento de energia|parques? (?:eolico|solar|fotovoltaico)\w*)\b/, topics:['e_prod','e_rep','e_tram']},
     {id:'clinic', label:'Clínica', match:/\b(clinica|dentista|dental|fisioterapia|fisioterapeuta|psicologo|psicologia|medico|sanitario|veterinari\w*)\b/, topics:['agenda','atc','fact']},
-    {id:'property', label:'Inmobiliaria', match:/\b(inmobiliari\w*|bienes raices|agencia de pisos|agencia de viviendas)\b/, topics:['prosp','crm','exp']},
     {id:'restaurant', label:'Restaurante', match:/\b(restaurante\w*|restauracion|cafeteria|bar|hosteleria|catering)\b/, topics:['agenda','compras','inv']},
     {id:'hotel', label:'Hotel o alojamiento', match:/\b(hotel\w*|alojamiento\w*|casa rural|apartamento turistico|hostal)\b/, topics:['agenda','atc','personal']},
     {id:'shop', label:'Comercio', match:/\b(tienda\w*|comercio\w*|ecommerce|e commerce|venta online)\b/, topics:['inv','atc','fact']},
@@ -2640,6 +2649,12 @@ body.one.past .nav { top: 14px; }
     {id:'professional', label:'Servicios profesionales', match:/\b(autonomo|freelance|profesional independiente)\b/, topics:['fact','presu','tareas']}
   ];
   var topics = [
+    {key:'e_prod',mod:'alert',energy:true,label:'Producción y alertas',match:/\b(produccion|generacion|disponibilidad de (?:la )?planta|averia\w*|curtailment|monitorizacion|scada|rendimiento de (?:los )?(?:parques?|plantas?|activos))\b/,keys:['alert','inf'],why:'Alertas avisa cuando una planta, un parque o una batería se sale de lo esperado, e Informes reúne producción y disponibilidad por activo para revisarlas sin ir hoja por hoja.'},
+    {key:'e_rep',mod:'inf',energy:true,label:'Reporting a inversores',match:/\b(reporting|inversor\w*|financiador\w*|covenant\w*|informes? (?:a|para) (?:los |las )?(?:inversores|bancos|propietarios|financiadores))\b/,keys:['inf','rent'],why:'Informes prepara el reporting periódico a partir de los datos de cada activo, y Rentabilidad ayuda a seguir ingresos, costes y margen por parque o por planta.'},
+    {key:'e_contr',mod:'contr',energy:true,label:'PPA y contratos de O&M',match:/\b(ppa|o m|contratos? de (?:operacion|mantenimiento)|garantias de (?:los )?activos)\b/,keys:['contr','exp'],why:'Contratos y formularios ayuda a preparar y revisar la documentación contractual, y Expedientes mantiene cada activo con sus contratos, garantías y vencimientos ordenados.'},
+    {key:'e_tram',mod:'exp',energy:true,label:'Tramitación y permisos',match:/\b(tramitacion|tramites?|permisos?|autorizacion\w*|permitting|licencias?|conexion a (?:la )?red|punto de conexion|acceso y conexion|impacto ambiental)\b/,keys:['exp','alert'],why:'Expedientes lleva cada proyecto con su documentación administrativa y su estado, y Alertas avisa de los plazos y vencimientos de los trámites para que no se pierda ninguno.'},
+    {key:'e_pipe',mod:'proy',energy:true,label:'Cartera de proyectos',match:/\b(cartera|pipeline|portfolio|hitos?|fases? del proyecto|nuevos proyectos)\b/,keys:['proy','tareas'],why:'Proyectos ordena la cartera, sus fases y sus hitos, y Tareas concreta quién tiene que hacer cada paso y qué queda pendiente.'},
+    {key:'e_land',mod:'crm',energy:true,label:'Terrenos y propietarios',match:/\b(terreno\w*|propietari\w*|arrendamiento\w*|servidumbre\w*|suelo)\b/,keys:['crm','contr'],why:'CRM mantiene el seguimiento de cada propietario y de cada terreno, y Contratos y formularios ayuda a preparar los contratos de arrendamiento y servidumbre.'},
     {key:'agenda',label:'Citas y reservas',match:/\b(cita\w*|reserva\w*|agenda|calendario|ausencias de clientes)\b/,keys:['agenda','correo'],why:'La agenda centraliza las citas y los cambios; Correos puede apoyar las confirmaciones y los recordatorios.'},
     {key:'fact',label:'Facturas',match:/\b(factur\w*|contabilidad|contable|albaran\w*)\b/,keys:['fact','gastos'],why:'Facturas ayuda a leer y registrar documentos y a contrastarlos con pedidos. Gastos complementa el trabajo con tickets y justificantes.'},
     {key:'gastos',label:'Gastos y tickets',match:/\b(gasto\w*|ticket\w*|justificante\w*)\b/,keys:['gastos','rent'],why:'Gastos permite clasificar tickets y justificantes; Rentabilidad ayuda a entender cómo afectan a los resultados.'},
@@ -2671,13 +2686,21 @@ body.one.past .nav { top: 14px; }
   function create(catalogue) {
     var available={};catalogue.forEach(function(m){available[m.k]=m;});
     var state;
-    function reset(){state={sector:null,topic:null,tools:[],keys:[],stage:'sector',custom:false,unknown:0,offeredTools:false};return welcome();}
+    function reset(){state={sector:null,topic:null,tools:[],keys:[],stage:'sector',custom:false,unknown:0,offeredTools:false,energyMode:null};return welcome();}
     function result(text,question,choices,extra){
       return Object.assign({text:text,question:question||'',choices:(choices||[]).slice(0,3),keys:state.keys.slice(),sector:state.sector?state.sector.label:'',topic:state.topic?state.topic.label:state.custom?'Software a medida':'',tools:state.tools.slice(),contact:false},extra||{});
     }
     function welcome(){return result('Hola. Te ayudo a encontrar soluciones para tu negocio. Cuéntame a qué se dedica tu empresa y qué tarea te gustaría simplificar.','',['Buscar módulos','Qué hacemos','Hablar con el equipo']);}
-    function topicOptions(){return (state.sector?state.sector.topics:['agenda','fact','crm']).map(function(k){return topics.find(function(t){return t.key===k;}).label;});}
+    function topicOptions(){if(state.sector&&state.sector.id==='energy'){var em=state.energyMode;return em==='assets'?['Producción y alertas','Reporting a inversores','PPA y contratos de O&M']:em==='dev'?['Tramitación y permisos','Cartera de proyectos','Terrenos y propietarios']:['Producción y alertas','Tramitación y permisos','Reporting a inversores'];}return (state.sector?state.sector.topics:['agenda','fact','crm']).map(function(k){return topics.find(function(t){return t.key===k;}).label;});}
     function askNeed(prefix){state.stage='need';return result(prefix||'Podemos empezar por una tarea concreta del día a día.','¿Qué te gustaría simplificar primero?',topicOptions());}
+    function energyMode(text){
+      var both=/\b(las dos|ambas|ambos|las dos cosas|ambas cosas|las dos vertientes)\b/.test(text);
+      var assets=/\b(gestion\w* (?:de )?(?:los |nuestros |sus )?activos|gestionamos|gestionan|gestiona|asset management|asset manager|operamos|operan|opera|operacion y mantenimiento|explotacion|activos en operacion|mantenimiento)\b/.test(text);
+      var dev=/\b(desarroll\w*|promocion|promotor\w*|promovemos|originacion|nuevos proyectos)\b/.test(text);
+      if(both||(assets&&dev))return 'both';if(assets)return 'assets';if(dev)return 'dev';return null;
+    }
+    function energyAsk(){state.stage='need';return result('Entendido: energía renovable. Son dos formas de trabajar muy distintas y cada una necesita cosas diferentes.','¿Gestionáis activos en operación (parques eólicos, plantas fotovoltaicas, baterías) o desarrolláis nuevos proyectos?',['Gestionamos activos','Desarrollamos proyectos','Las dos cosas']);}
+    function energyNeed(){state.stage='need';var m=state.energyMode;var intro=m==='assets'?'Perfecto: gestión de activos renovables en operación, como parques eólicos, plantas fotovoltaicas o baterías. Lo habitual es perder tiempo en el seguimiento de la producción, el reporting a inversores y el control de contratos.':m==='dev'?'Perfecto: desarrollo de nuevos proyectos renovables. Lo habitual es perder tiempo en tramitación y permisos, en el seguimiento de la cartera y con terrenos y propietarios.':'Perfecto: gestionáis activos y también desarrolláis proyectos. Podemos empezar por la parte que más tiempo os quita.';return result(intro,'¿Por dónde empezamos?',topicOptions());}
     function toolQuestion(prefix){state.stage='tools';state.offeredTools=true;return result(prefix,'¿Con qué lo gestionáis ahora?',['Con Excel','A mano','Con otro programa']);}
     function ready(prefix){state.stage='ready';return result(prefix||'Con esto ya tenemos un punto de partida. El equipo revisaría vuestro proceso y las herramientas actuales para concretar qué se puede automatizar.','',['Ver mi resumen','Preparar consulta','Cambiar de necesidad']);}
     function chooseTopic(topic){
@@ -2688,6 +2711,7 @@ body.one.past .nav { top: 14px; }
     function summary(){
       var lines=['Este es el punto de partida para vuestra consulta:'];
       if(state.sector)lines.push('Negocio: '+state.sector.label+'.');
+      if(state.energyMode)lines.push('Actividad: '+{assets:'gestión de activos renovables',dev:'desarrollo de proyectos renovables',both:'gestión de activos y desarrollo de proyectos'}[state.energyMode]+'.');
       if(state.topic)lines.push('Prioridad: '+state.topic.label+'.');
       if(state.custom)lines.push('Objetivo: estudiar un desarrollo de software a medida.');
       if(state.tools.length)lines.push('Herramientas: '+state.tools.join(', ')+'.');
@@ -2711,7 +2735,7 @@ body.one.past .nav { top: 14px; }
       if(/\b(eres (?:una )?ia|eres (?:un )?bot|eres humano|quien eres|eres una persona)\b/.test(text))return result('Soy el asistente guiado de Zoolutions Lab. Respondo a partir de los servicios y módulos de esta web; no soy una persona ni una IA de conversación abierta. Para estudiar un caso fuera de esas opciones, te puedo poner en contacto con el equipo.','',['Buscar módulos','Hablar con el equipo']);
       if(/^(hola|buenas|buenos dias|buenas tardes|buenas noches|hey|hola buenas)$/.test(text))return resume('Hola, encantado de ayudarte.');
       if(/^(gracias|muchas gracias|perfecto|genial|vale gracias|ok gracias)$/.test(text))return result('De nada. Puedes seguir preguntando o preparar una consulta cuando quieras.','',state.keys.length?['Ver mi resumen','Preparar consulta']:['Buscar módulos','Qué hacemos']);
-      if(/\b(que haceis|que ofreceis|a que os dedicais|quienes sois|que es zoolutions|que es zoolution|vuestros servicios|que podeis hacer por mi|como podeis ayudar(?:me)?|en que podeis ayudar(?:me)?)\b/.test(text)||/^(servicios|que podeis hacer)$/.test(text))return result('En Zoolutions Lab automatizamos procesos y desarrollamos software a medida y SaaS. Combinamos módulos como agenda, correos, facturas o inventario y los adaptamos a cada empresa. También mantenemos y mejoramos las soluciones que implantamos.','¿Qué tipo de negocio tienes?',['Clínica','Inmobiliaria','Otro negocio']);
+      if(/\b(que haceis|que ofreceis|a que os dedicais|quienes sois|que es zoolutions|que es zoolution|vuestros servicios|que podeis hacer por mi|como podeis ayudar(?:me)?|en que podeis ayudar(?:me)?)\b/.test(text)||/^(servicios|que podeis hacer)$/.test(text))return result('En Zoolutions Lab automatizamos procesos y desarrollamos software a medida y SaaS. Combinamos módulos como agenda, correos, facturas o inventario y los adaptamos a cada empresa. También mantenemos y mejoramos las soluciones que implantamos.','¿Qué tipo de negocio tienes?',['Clínica','Energía renovable','Otro negocio']);
       if(/\b(que (?:modulos|soluciones) (?:teneis|ofreceis)|que modulos me|cuales son (?:los |vuestros )?modulos|recomiendame|recomendarme)\b/.test(text))return askNeed('Tenemos módulos para ventas, administración, operaciones y control del negocio. Para recomendarte algo útil, podemos empezar por lo que más tiempo os quita.');
       if(/\b(que significa goat|que es goat)\b/.test(text))return result('GOAT resume nuestra idea: Grow, Optimize, Automate, Transform. Crecer, optimizar, automatizar y transformar el negocio con soluciones adaptadas a su forma de trabajar.','',['Qué hacemos','Buscar módulos']);
       if(/\b(no quiero (?:mas |contestar mas )?preguntas|demasiadas preguntas|al grano|sin mas preguntas)\b/.test(text))return state.keys.length?ready('Podemos quedarnos con la propuesta que ya tienes y revisarla directamente con el equipo.'):result('Puedes explorar los módulos de la web o contarnos tu caso directamente por correo.','',['Buscar módulos','Hablar con el equipo']);
@@ -2723,7 +2747,7 @@ body.one.past .nav { top: 14px; }
       if(/^(buscar modulos|encontrar modulos|ver modulos|seguir explorando)$/.test(text))return askNeed(state.sector?'Seguimos con tu negocio.':'Podemos orientarte por la tarea que quieres mejorar, aunque todavía no hayamos definido el sector.');
       if(/^(cambiar de necesidad|otra necesidad|otra cosa|no es eso|eso no|no me sirve)$/.test(text)){state.topic=null;state.keys=[];state.custom=false;return askNeed('Vamos a enfocar la propuesta de otra manera.');}
       var sector=sectors.find(function(s){return positiveMatch(text,s.match);});
-      if(sector&&(!state.sector||sector.id!==state.sector.id)){state.sector=sector;state.topic=null;state.tools=[];state.keys=[];state.custom=false;state.unknown=0;}
+      if(sector&&(!state.sector||sector.id!==state.sector.id)){state.sector=sector;state.energyMode=null;state.topic=null;state.tools=[];state.keys=[];state.custom=false;state.unknown=0;}
       var tools=toolRules.filter(function(t){return positiveMatch(text,t[1]);}).map(function(t){return t[0];});
       // CRM puede ser lo que buscan o lo que ya usan: solo se anota como herramienta si lo expresan.
       tools=tools.filter(function(t){return !['Un CRM','Un ERP'].includes(t)||/\b(uso|usamos|utilizo|utilizamos|tenemos|trabajamos con|con un)\b/.test(text)||state.stage==='tools';});
@@ -2742,11 +2766,14 @@ body.one.past .nav { top: 14px; }
       if(!/\b(correo\w*|email|bandeja)\b/.test(text)&&tools.some(function(t){return t==='Gmail'||t==='Outlook';}))matched=matched.filter(function(t){return t.key!=='correo';});
       // Si responden a la pregunta de herramientas, no sustituimos la necesidad por «correos» solo por decir Gmail.
       if(state.stage==='tools'&&tools.length&&/^(?:con |usamos |uso |utilizamos |utilizo |trabajamos con |lo gestionamos con |lo llevo con )/.test(text))matched=[];
+      var enMatched=matched.filter(function(t){return t.energy;});
+      if(enMatched.length)matched=enMatched;
+      if(state.sector&&state.sector.id==='energy'&&!enMatched.length&&state.stage!=='tools'&&state.stage!=='ready'){var em=energyMode(text);if(em){state.energyMode=em;if(!matched.length||/^(gestionamos activos|desarrollamos proyectos|las dos cosas)$/.test(text)){state.topic=null;state.keys=[];return energyNeed();}}}
       if(matched.length){
         var topic=matched[0];
         // Varias necesidades explícitas: como máximo dos módulos principales.
         if(matched.length>1){
-          state.topic=topic;state.custom=false;state.keys=matched.map(function(t){return t.key;}).filter(function(k,i,a){return available[k]&&a.indexOf(k)===i;}).slice(0,2);
+          state.topic=topic;state.custom=false;state.keys=matched.map(function(t){return t.mod||t.key;}).filter(function(k,i,a){return available[k]&&a.indexOf(k)===i;}).slice(0,2);
           var explanation='Podemos empezar por '+matched.slice(0,2).map(function(t){return t.label.toLowerCase();}).join(' y ')+'. '+state.keys.map(function(k){return available[k].n+': '+available[k].d;}).join('\n\n');
           return state.tools.length?ready(explanation):toolQuestion(explanation);
         }
@@ -2762,7 +2789,7 @@ body.one.past .nav { top: 14px; }
         if(text.split(' ').length<=8&&!/\b(quiero|necesito|puedo|puedes|ayuda|que|como|por que)\b/.test(text)){state.tools=[String(raw).trim().slice(0,80)];return ready('Anoto «'+state.tools[0]+'» como herramienta actual. El equipo comprobaría qué posibilidades de conexión ofrece antes de confirmar la solución.');}
       }
       if(state.custom){state.stage='ready';return result('Ese caso habría que estudiarlo como un desarrollo a medida. En una primera conversación concretaríamos los usuarios, el flujo de trabajo y las funciones imprescindibles; no puedo confirmar su viabilidad solo con el chat.','',['Preparar consulta','Ver mi resumen']);}
-      if(sector)return askNeed('Entendido: '+sector.label.toLowerCase()+'. Podemos buscar una solución para vuestro trabajo diario.');
+      if(sector)return sector.id==='energy'?energyAsk():askNeed('Entendido: '+sector.label.toLowerCase()+'. Podemos buscar una solución para vuestro trabajo diario.');
       if(/\b(tengo (?:un |una )?(?:negocio|empresa)|mi negocio|mi empresa|trabajo en una empresa)\b/.test(text))return askNeed('Podemos empezar por el proceso que queréis mejorar, sin encajar la empresa en una categoría.');
       if(/^(otro negocio|otra empresa|otros)$/.test(text))return askNeed('No hace falta encajar tu empresa en una categoría para empezar.');
       if(/^(si|vale|ok|de acuerdo|adelante)$/.test(text))return state.stage==='ready'?contact():resume('Vamos paso a paso.');
@@ -2823,6 +2850,7 @@ body.one.past .nav { top: 14px; }
   function emailLink(answer){
     var state=engine.getState(),lines=['Hola, me gustaría que valorarais una solución para mi negocio.'];
     if(state.sector)lines.push('Negocio: '+state.sector.label);
+    if(state.energyMode)lines.push('Actividad: '+{assets:'gestión de activos renovables',dev:'desarrollo de proyectos renovables',both:'gestión de activos y desarrollo de proyectos'}[state.energyMode]);
     if(state.topic)lines.push('Prioridad: '+state.topic.label);
     if(state.custom)lines.push('Objetivo: estudiar software a medida / SaaS.');
     if(state.tools.length)lines.push('Herramientas actuales: '+state.tools.join(', '));
