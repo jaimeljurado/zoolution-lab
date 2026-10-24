@@ -362,6 +362,14 @@ h2 { font: 400 clamp(26px, 3vw, 44px)/1.15 var(--pixel); letter-spacing: -.01em;
 @keyframes bc-star-a{0%{left:-20%;top:-30%;opacity:0}2%{opacity:1}13%{opacity:1}15%{left:100%;top:110%;opacity:0}100%{left:100%;top:110%;opacity:0}}
 @keyframes bc-star-b{0%{left:120%;top:-30%;opacity:0}2%{opacity:1}13%{opacity:1}15%{left:-20%;top:110%;opacity:0}100%{left:-20%;top:110%;opacity:0}}
 @media(prefers-reduced-motion:reduce){.business-card-star{display:none!important;animation:none!important}.screen-motion .business-grid .business-card{opacity:1;transform:none;filter:none}}
+
+/* v62 · título de Sectores: entra enorme y borroso y se asienta con el scroll */
+#negocios{--ts:1.9}
+@media(max-width:760px){#negocios{--ts:.6}}
+.screen-motion #negocios [data-motion-title] .title-letter{opacity:1!important;filter:none!important;transform:none!important}
+.screen-motion #negocios [data-motion-title]{transform-origin:0 55%;transform:translate3d(0,calc((1 - var(--tt,1))*60px),0) scale(calc(1 + (1 - var(--tt,1))*var(--ts)))!important;filter:blur(calc((1 - var(--tt,1))*38px))!important;opacity:clamp(0,calc(var(--tt,1)*2.4),1)!important;will-change:transform,filter,opacity}
+@media(min-width:1000px){.hero .goat-promise{align-self:flex-end!important}}
+@media(prefers-reduced-motion:reduce){.screen-motion #negocios [data-motion-title]{transform:none!important;filter:none!important;opacity:1!important}}
 </style>
 <style>
 /* ===== Zoolutions Lab · v7 — tipografía Apple (Inter) en toda la web ===== */
@@ -1578,9 +1586,9 @@ body.one.past .nav { top: 14px; }
 
 <section class="business-section screen-section" id="negocios" aria-labelledby="business-title">
   <div class="wrap2">
-    <p class="kick" data-reveal="up">01 / TU NEGOCIO</p>
-    <h2 id="business-title" data-motion-title>Empieza por lo que te quita tiempo.</h2>
-    <p class="business-lead" data-reveal="up">Procesos reales. Soluciones concretas. Descubre dónde podemos ayudarte.</p>
+    <p class="kick" data-reveal="up">01 / ELIGE TU NEGOCIO</p>
+    <h2 id="business-title" data-motion-title>Elige tu negocio. Míralo funcionar.</h2>
+    <p class="business-lead" data-reveal="up">Pincha en tu sector y mira en 16 segundos cómo quedaría automatizado.</p>
     <div class="business-grid" id="business-grid" aria-label="Elige tu tipo de negocio"></div>
     <button class="business-other" type="button" data-diagnosis="Mi negocio es de otro sector">¿Tu negocio es diferente? Cuéntanoslo ↗</button>
   </div>
@@ -2868,7 +2876,7 @@ function fitScreens(){
  updateScroll();
 }
 function updateScroll(){pending=0;var vh=innerHeight;
- sections.forEach(function(section){var r=section.getBoundingClientRect();var p=reduced.matches?1:clamp((vh-r.top)/(vh*.75));var ease=1-Math.pow(1-p,2);section.style.setProperty('--appear',ease.toFixed(4));section.querySelectorAll('.title-letter').forEach(function(l,i){var q=clamp((p-i*.003)/.65);l.style.setProperty('--letter-p',q.toFixed(4));});section.dataset.motionComplete=String(p>=1);
+ sections.forEach(function(section){var r=section.getBoundingClientRect();var p=reduced.matches?1:clamp((vh-r.top)/(vh*.75));var ease=1-Math.pow(1-p,2);section.style.setProperty('--appear',ease.toFixed(4));if(section.id==='negocios'){var tt=reduced.matches?1:clamp((p-.1)/.95);section.style.setProperty('--tt',(1-Math.pow(1-tt,3)).toFixed(4));}section.querySelectorAll('.title-letter').forEach(function(l,i){var q=clamp((p-i*.003)/.65);l.style.setProperty('--letter-p',q.toFixed(4));});section.dataset.motionComplete=String(p>=1);
  var group=section.querySelector('.business-grid');if(group){var gr=group.getBoundingClientRect();group.querySelectorAll('.business-card').forEach(function(card){
  // offsetLeft/Top no incluyen la transformación actual: el centro no deriva al hacer scroll.
  var dx=(group.clientWidth/2-card.offsetLeft-card.offsetWidth/2)*.65*(1-ease),dy=(group.clientHeight/2-card.offsetTop-card.offsetHeight/2)*.65*(1-ease);
