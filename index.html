@@ -340,58 +340,6 @@ h2 { font: 400 clamp(26px, 3vw, 44px)/1.15 var(--pixel); letter-spacing: -.01em;
 }
 
 
-/* ================= v61 ================= */
-.screen-section{scroll-margin-top:0!important}
-.nav-code-bit{right:auto;font-family:var(--pixel);font-size:.78em;letter-spacing:0;line-height:1}
-@media(min-width:1000px){.hero .goat-promise{margin-right:clamp(40px,5.4vw,120px)!important}}
-.screen-motion .business-grid{perspective:1400px;perspective-origin:50% 40%}
-.screen-motion .business-grid .business-card{
- opacity:calc(var(--ci,1)*(1 - var(--co,0)*1.15));
- transform:translate3d(calc(var(--cx,0)*(1 - var(--ci,1))*-1px + var(--cx,0)*var(--co,0)*2.4px),calc((1 - var(--ci,1))*120px - var(--co,0)*170px),0) rotateX(calc((1 - var(--ci,1))*28deg - var(--co,0)*32deg)) rotateZ(calc(var(--co,0)*var(--cs,0)*6deg)) scale(calc(.84 + var(--ci,1)*.16 - var(--co,0)*.24));
- filter:blur(calc((1 - var(--ci,1))*15px + var(--co,0)*13px));
- transform-origin:50% 100%;will-change:transform,opacity,filter}
-.business-card-star{display:none}
-@media(hover:hover) and (pointer:fine){
-.business-card-star{display:block;position:absolute!important;z-index:0!important;width:120px;height:1.5px;left:-30%;top:-30%;pointer-events:none;opacity:0;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.9));filter:drop-shadow(0 0 4px rgba(255,255,255,.6))}
-.business-card-star::after{content:"";position:absolute;right:-1px;top:50%;width:3px;height:3px;margin-top:-1.5px;border-radius:50%;background:#fff;box-shadow:0 0 7px 2px rgba(255,255,255,.55)}
-.business-card-star.star-a{transform:rotate(26deg)}
-.business-card-star.star-b{transform:rotate(154deg);left:120%}
-.business-card:hover .star-a,.business-card:focus-visible .star-a{animation:bc-star-a 6s linear infinite}
-.business-card:hover .star-b,.business-card:focus-visible .star-b{animation:bc-star-b 6s linear infinite 3s}
-}
-@keyframes bc-star-a{0%{left:-20%;top:-30%;opacity:0}2%{opacity:1}13%{opacity:1}15%{left:100%;top:110%;opacity:0}100%{left:100%;top:110%;opacity:0}}
-@keyframes bc-star-b{0%{left:120%;top:-30%;opacity:0}2%{opacity:1}13%{opacity:1}15%{left:-20%;top:110%;opacity:0}100%{left:-20%;top:110%;opacity:0}}
-@media(prefers-reduced-motion:reduce){.business-card-star{display:none!important;animation:none!important}.screen-motion .business-grid .business-card{opacity:1;transform:none;filter:none}}
-
-/* v62 · título de Sectores: entra enorme y borroso y se asienta con el scroll */
-#negocios{--ts:1.9}
-@media(max-width:760px){#negocios{--ts:.6}}
-.screen-motion #negocios [data-motion-title] .title-letter{opacity:1!important;filter:none!important;transform:none!important}
-.screen-motion #negocios [data-motion-title]{transform-origin:0 55%;transform:translate3d(0,calc((1 - var(--tt,1))*60px),0) scale(calc(1 + (1 - var(--tt,1))*var(--ts)))!important;filter:blur(calc((1 - var(--tt,1))*38px))!important;opacity:clamp(0,calc(var(--tt,1)*2.4),1)!important;will-change:transform,filter,opacity}
-@media(min-width:1000px){.hero .goat-promise{align-self:flex-end!important}}
-@media(prefers-reduced-motion:reduce){.screen-motion #negocios [data-motion-title]{transform:none!important;filter:none!important;opacity:1!important}}
-
-/* v63 */
-@media(min-width:1000px){.hero .goat-promise{margin-right:clamp(14px,2.4vw,52px)!important;margin-bottom:clamp(22px,3.4vh,40px)!important}}
-.screen-motion .business-grid .business-card{filter:blur(calc((1 - var(--cb,1))*26px + var(--co,0)*13px))}
-#demo-negocio [data-motion-title] .title-letter{opacity:1!important;filter:none!important;transform:none!important}
-.dt-a,.dt-b{display:inline-block;white-space:nowrap;will-change:transform,filter,opacity}
-.dt-a{transform-origin:0 50%;transform:translate3d(calc((1 - var(--dt,1))*-78vw),0,0) scale(calc(1 + (1 - var(--dt,1))*.4));filter:blur(calc((1 - var(--dt,1))*32px));opacity:clamp(0,calc(var(--dt,1)*2.2),1)}
-.dt-b{transform-origin:100% 50%;transform:translate3d(calc((1 - var(--dt,1))*78vw),0,0) scale(calc(1 + (1 - var(--dt,1))*.4));filter:blur(calc((1 - var(--dt,1))*32px));opacity:clamp(0,calc(var(--dt,1)*2.2),1)}
-@media(prefers-reduced-motion:reduce){.dt-a,.dt-b{transform:none;filter:none;opacity:1}}
-
-/* v64 · líneas del cajetín: ondas idénticas y equidistantes que fluyen rápido y sin tocarse */
-.business-card-waves .business-wave-current{transform-box:view-box;transform-origin:0 0;animation:bc-wave-slide 4.6s linear infinite paused}
-@keyframes bc-wave-slide{from{transform:translate3d(0,0,0)}to{transform:translate3d(100px,0,0)}}
-@media(prefers-reduced-motion:reduce){.business-card-waves .business-wave-current{animation:none!important}}
-
-/* v65 · líneas finas y sedosas que fluyen hacia abajo y a la derecha en bucle continuo */
-.business-card-waves{-webkit-mask-image:linear-gradient(115deg,#000 0%,rgba(0,0,0,.6) 42%,rgba(0,0,0,.1) 100%);mask-image:linear-gradient(115deg,#000 0%,rgba(0,0,0,.6) 42%,rgba(0,0,0,.1) 100%)}
-.business-card-waves path{opacity:.8!important}
-
-/* v67 · cinta de líneas horizontal que avanza siempre hacia delante (bucle exacto de un periodo) */
-.business-card-waves{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 16%,#000 84%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 16%,#000 84%,transparent 100%)}
-.business-card-waves path{opacity:.4!important}
 </style>
 <style>
 /* ===== Zoolutions Lab · v7 — tipografía Apple (Inter) en toda la web ===== */
@@ -1555,6 +1503,63 @@ body.one.past .nav { top: 14px; }
 @keyframes business-wave-roll{from{transform:translate3d(-5px,-1.4px,0) scaleY(.94)}to{transform:translate3d(5px,1.4px,0) scaleY(1.06)}}
 @media(prefers-reduced-motion:reduce){.business-card-waves{transition:none;transform:none}.business-card-waves .business-wave-current{animation:none!important;transform:none}}
 
+
+/* ================= v61 ================= */
+.screen-section{scroll-margin-top:0!important}
+.nav-code-bit{right:auto;font-family:var(--pixel);font-size:.78em;letter-spacing:0;line-height:1}
+@media(min-width:1000px){.hero .goat-promise{margin-right:clamp(40px,5.4vw,120px)!important}}
+.screen-motion .business-grid{perspective:1400px;perspective-origin:50% 40%}
+.screen-motion .business-grid .business-card{
+ opacity:calc(var(--ci,1)*(1 - var(--co,0)*1.15));
+ transform:translate3d(calc(var(--cx,0)*(1 - var(--ci,1))*-1px + var(--cx,0)*var(--co,0)*2.4px),calc((1 - var(--ci,1))*120px - var(--co,0)*170px),0) rotateX(calc((1 - var(--ci,1))*28deg - var(--co,0)*32deg)) rotateZ(calc(var(--co,0)*var(--cs,0)*6deg)) scale(calc(.84 + var(--ci,1)*.16 - var(--co,0)*.24));
+ filter:blur(calc((1 - var(--ci,1))*15px + var(--co,0)*13px));
+ transform-origin:50% 100%;will-change:transform,opacity,filter}
+.business-card-star{display:none}
+@media(hover:hover) and (pointer:fine){
+.business-card-star{display:block;position:absolute!important;z-index:0!important;width:120px;height:1.5px;left:-30%;top:-30%;pointer-events:none;opacity:0;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.9));filter:drop-shadow(0 0 4px rgba(255,255,255,.6))}
+.business-card-star::after{content:"";position:absolute;right:-1px;top:50%;width:3px;height:3px;margin-top:-1.5px;border-radius:50%;background:#fff;box-shadow:0 0 7px 2px rgba(255,255,255,.55)}
+.business-card-star.star-a{transform:rotate(26deg)}
+.business-card-star.star-b{transform:rotate(154deg);left:120%}
+.business-card:hover .star-a,.business-card:focus-visible .star-a{animation:bc-star-a 6s linear infinite}
+.business-card:hover .star-b,.business-card:focus-visible .star-b{animation:bc-star-b 6s linear infinite 3s}
+}
+@keyframes bc-star-a{0%{left:-20%;top:-30%;opacity:0}2%{opacity:1}13%{opacity:1}15%{left:100%;top:110%;opacity:0}100%{left:100%;top:110%;opacity:0}}
+@keyframes bc-star-b{0%{left:120%;top:-30%;opacity:0}2%{opacity:1}13%{opacity:1}15%{left:-20%;top:110%;opacity:0}100%{left:-20%;top:110%;opacity:0}}
+@media(prefers-reduced-motion:reduce){.business-card-star{display:none!important;animation:none!important}.screen-motion .business-grid .business-card{opacity:1;transform:none;filter:none}}
+
+/* v62 · título de Sectores: entra enorme y borroso y se asienta con el scroll */
+#negocios{--ts:1.9}
+@media(max-width:760px){#negocios{--ts:.6}}
+.screen-motion #negocios [data-motion-title] .title-letter{opacity:1!important;filter:none!important;transform:none!important}
+.screen-motion #negocios [data-motion-title]{transform-origin:0 55%;transform:translate3d(0,calc((1 - var(--tt,1))*60px),0) scale(calc(1 + (1 - var(--tt,1))*var(--ts)))!important;filter:blur(calc((1 - var(--tt,1))*38px))!important;opacity:clamp(0,calc(var(--tt,1)*2.4),1)!important;will-change:transform,filter,opacity}
+@media(min-width:1000px){.hero .goat-promise{align-self:flex-end!important}}
+@media(prefers-reduced-motion:reduce){.screen-motion #negocios [data-motion-title]{transform:none!important;filter:none!important;opacity:1!important}}
+
+/* v63 */
+@media(min-width:1000px){.hero .goat-promise{margin-right:clamp(14px,2.4vw,52px)!important;margin-bottom:clamp(22px,3.4vh,40px)!important}}
+.screen-motion .business-grid .business-card{filter:blur(calc((1 - var(--cb,1))*26px + var(--co,0)*13px))}
+#demo-negocio [data-motion-title] .title-letter{opacity:1!important;filter:none!important;transform:none!important}
+.dt-a,.dt-b{display:inline-block;white-space:nowrap;will-change:transform,filter,opacity}
+.dt-a{transform-origin:0 50%;transform:translate3d(calc((1 - var(--dt,1))*-78vw),0,0) scale(calc(1 + (1 - var(--dt,1))*.4));filter:blur(calc((1 - var(--dt,1))*32px));opacity:clamp(0,calc(var(--dt,1)*2.2),1)}
+.dt-b{transform-origin:100% 50%;transform:translate3d(calc((1 - var(--dt,1))*78vw),0,0) scale(calc(1 + (1 - var(--dt,1))*.4));filter:blur(calc((1 - var(--dt,1))*32px));opacity:clamp(0,calc(var(--dt,1)*2.2),1)}
+@media(prefers-reduced-motion:reduce){.dt-a,.dt-b{transform:none;filter:none;opacity:1}}
+
+/* v64 · líneas del cajetín: ondas idénticas y equidistantes que fluyen rápido y sin tocarse */
+.business-card-waves .business-wave-current{transform-box:view-box;transform-origin:0 0;animation:bc-wave-slide 4.6s linear infinite paused}
+@keyframes bc-wave-slide{from{transform:translate3d(0,0,0)}to{transform:translate3d(100px,0,0)}}
+@media(prefers-reduced-motion:reduce){.business-card-waves .business-wave-current{animation:none!important}}
+
+/* v65 · líneas finas y sedosas que fluyen hacia abajo y a la derecha en bucle continuo */
+.business-card-waves{-webkit-mask-image:linear-gradient(115deg,#000 0%,rgba(0,0,0,.6) 42%,rgba(0,0,0,.1) 100%);mask-image:linear-gradient(115deg,#000 0%,rgba(0,0,0,.6) 42%,rgba(0,0,0,.1) 100%)}
+.business-card-waves path{opacity:.8!important}
+
+/* v67 · cinta de líneas horizontal que avanza siempre hacia delante (bucle exacto de un periodo) */
+.business-card-waves{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 16%,#000 84%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 16%,#000 84%,transparent 100%)}
+.business-card-waves path{opacity:.4!important}
+
+/* v68 · líneas más finas y movimiento continuo: nunca se detiene, solo se muestra al pasar el cursor */
+.business-card-waves .business-wave-current{animation-play-state:running!important}
+.business-card-waves path{opacity:.55!important}
 </style>
 </head>
 <body class="one">
@@ -2870,7 +2875,7 @@ var waves=document.createElementNS('http://www.w3.org/2000/svg','svg');waves.set
 var defs=document.createElementNS('http://www.w3.org/2000/svg','defs'),gradient=document.createElementNS('http://www.w3.org/2000/svg','linearGradient');gradient.id='business-dune-'+i;gradient.setAttribute('x1','0');gradient.setAttribute('y1','0');gradient.setAttribute('x2','1');gradient.setAttribute('y2','0');
 [['0','.02'],['.18','.38'],['.5','.72'],['.82','.38'],['1','.02']].forEach(function(stop){var st=document.createElementNS('http://www.w3.org/2000/svg','stop');st.setAttribute('offset',stop[0]);st.setAttribute('stop-color','#fff');st.setAttribute('stop-opacity',stop[1]);gradient.append(st);});defs.append(gradient);waves.append(defs);
 var waveField=document.createElementNS('http://www.w3.org/2000/svg','g');waveField.setAttribute('class','business-wave-current');
-var NL=30,TP=Math.PI*2/100;for(var li=0;li<NL;li++){var tt=li/(NL-1),u=tt*2-1,d='';for(var xx=-110;xx<=110;xx+=2.5){var cy=50+13*Math.sin(TP*xx+1.0)+4*Math.sin(TP*2*xx+.4),hh=30*Math.sin(TP*xx+.2)+7*Math.sin(TP*2*xx+1.3+u*.7),yy=cy+u*hh;d+=(xx===-110?'M':'L')+xx+' '+yy.toFixed(2)+' ';}var path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d',d);path.setAttribute('stroke','#fff');path.setAttribute('stroke-width','0.7');path.setAttribute('stroke-linejoin','round');path.setAttribute('fill','none');path.setAttribute('vector-effect','non-scaling-stroke');waveField.append(path);}
+var NL=38,TP=Math.PI*2/100;for(var li=0;li<NL;li++){var tt=li/(NL-1),u=tt*2-1,d='';for(var xx=-110;xx<=110;xx+=2.5){var cy=50+13*Math.sin(TP*xx+1.0)+4*Math.sin(TP*2*xx+.4),hh=30*Math.sin(TP*xx+.2)+7*Math.sin(TP*2*xx+1.3+u*.7),yy=cy+u*hh;d+=(xx===-110?'M':'L')+xx+' '+yy.toFixed(2)+' ';}var path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d',d);path.setAttribute('stroke','#fff');path.setAttribute('stroke-width','0.45');path.setAttribute('stroke-linejoin','round');path.setAttribute('fill','none');path.setAttribute('vector-effect','non-scaling-stroke');waveField.append(path);}
 waves.append(waveField);
 var starA=node('span','business-card-star star-a'),starB=node('span','business-card-star star-b');starA.setAttribute('aria-hidden','true');starB.setAttribute('aria-hidden','true');b.append(number,symbol,title,desc,link,waves,starA,starB);b.addEventListener('click',function(){pauseFrame();setCase(i);wanted=!reduced.matches;var ds=document.getElementById('demo-negocio');window.scrollTo({top:Math.round(ds.getBoundingClientRect().top+window.pageYOffset),behavior:reduced.matches?'auto':'smooth'});resume();});grid.append(b);
 var option=node('option','',c.name);option.value=String(i);select.append(option);});
