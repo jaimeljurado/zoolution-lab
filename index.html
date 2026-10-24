@@ -1572,6 +1572,25 @@ body.one.past .nav { top: 14px; }
 .business-card .bc-dots .bc-dot{z-index:auto}
 .business-card-waves .business-wave-current{animation:none!important}
 @media(prefers-reduced-motion:reduce){.business-card:hover .bc-dots{opacity:1}}
+
+/* v71 · móvil: el vídeo ocupa solo la parte de arriba y el texto va debajo, sin tapar a la cabra */
+@media(max-width:760px){
+.hero-stage .stage{padding-top:64svh!important}
+.hero-stage .plate{inset:0 0 auto 0!important;height:66svh!important;-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 78%,transparent 100%)!important;mask-image:linear-gradient(to bottom,#000 0%,#000 78%,transparent 100%)!important}
+.hero-stage .plate video{object-position:50% 62%}
+}
+
+.title-word{display:inline-block;white-space:nowrap}
+.dt-a,.dt-b{white-space:normal}.dt-a .title-word,.dt-b .title-word{white-space:nowrap}
+
+/* v72 · móvil: el botón del chat pasa a ser un círculo con la cabra */
+.zl-chat-goat{display:none}
+@media(max-width:760px){
+.zl-chat-launcher{width:58px;height:58px;padding:0;gap:0;justify-content:center;margin-left:auto;border-radius:50%}
+.zl-chat-launcher span,.zl-chat-launcher svg{display:none}
+.zl-chat-goat{display:block;width:34px;height:34px;object-fit:contain;filter:invert(1)}
+.zl-chat-panel{bottom:70px!important}
+}
 </style>
 </head>
 <body class="one">
@@ -1862,7 +1881,7 @@ body.one.past .nav { top: 14px; }
       <p class="zl-chat-note">Asistente guiado · Tú decides qué enviar.</p>
     </div>
   </section>
-  <button class="zl-chat-launcher" type="button" aria-controls="zl-chat-panel" aria-expanded="false"><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M18.5 10.5a7.5 7.5 0 0 1-7.5 7.5H4l-2 2V10.5A7.5 7.5 0 0 1 9.5 3H11a7.5 7.5 0 0 1 7.5 7.5Z" stroke="currentColor" stroke-width="1.4"/><path d="M7 10h6M7 13h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span>Hablemos de tu negocio</span></button>
+  <button class="zl-chat-launcher" type="button" aria-label="Hablemos de tu negocio" aria-controls="zl-chat-panel" aria-expanded="false"><img class="zl-chat-goat" src="assets/fauna/cabra-montes-v60.png" alt="" width="30" height="30"><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M18.5 10.5a7.5 7.5 0 0 1-7.5 7.5H4l-2 2V10.5A7.5 7.5 0 0 1 9.5 3H11a7.5 7.5 0 0 1 7.5 7.5Z" stroke="currentColor" stroke-width="1.4"/><path d="M7 10h6M7 13h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span>Hablemos de tu negocio</span></button>
 </aside>
 <script>
 (function () {
@@ -2912,6 +2931,7 @@ document.querySelectorAll('[data-motion-title]').forEach(function(title){
 });
 (function(){var h=document.getElementById('demo-title');if(!h)return;var L=h.querySelectorAll('.title-letter');if(L.length<20)return;var a=node('span','dt-a'),b=node('span','dt-b');
  [].slice.call(L).forEach(function(l,i){if(i<13)a.append(l);else if(i>13)b.append(l);else l.remove();});h.append(a,document.createTextNode(' '),b);})();
+document.querySelectorAll('[data-motion-title]').forEach(function(t){if(t.querySelector('.dt-a'))return;var kids=[].slice.call(t.childNodes),w=null;kids.forEach(function(n){if(n.nodeType===1&&n.classList.contains('title-letter')&&n.textContent.trim()!==''){if(!w){w=node('span','title-word');t.insertBefore(w,n);}w.append(n);}else{w=null;}});});
 var sections=[].slice.call(document.querySelectorAll('.screen-section'));
 var pending=0,desktop=matchMedia('(min-width: 1000px)');
 function clamp(n){return Math.max(0,Math.min(1,n));}
