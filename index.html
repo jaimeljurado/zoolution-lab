@@ -381,9 +381,13 @@ h2 { font: 400 clamp(26px, 3vw, 44px)/1.15 var(--pixel); letter-spacing: -.01em;
 @media(prefers-reduced-motion:reduce){.dt-a,.dt-b{transform:none;filter:none;opacity:1}}
 
 /* v64 · líneas del cajetín: ondas idénticas y equidistantes que fluyen rápido y sin tocarse */
-.business-card-waves .business-wave-current{transform-box:view-box;transform-origin:0 0;animation:bc-wave-slide 1.5s linear infinite paused}
-@keyframes bc-wave-slide{from{transform:translate3d(0,0,0)}to{transform:translate3d(-18px,0,0)}}
+.business-card-waves .business-wave-current{transform-box:view-box;transform-origin:0 0;animation:bc-wave-slide 4.2s linear infinite paused}
+@keyframes bc-wave-slide{from{transform:translate3d(0,0,0)}to{transform:translate3d(100px,12px,0)}}
 @media(prefers-reduced-motion:reduce){.business-card-waves .business-wave-current{animation:none!important}}
+
+/* v65 · líneas finas y sedosas que fluyen hacia abajo y a la derecha en bucle continuo */
+.business-card-waves{-webkit-mask-image:linear-gradient(115deg,#000 0%,rgba(0,0,0,.6) 42%,rgba(0,0,0,.1) 100%);mask-image:linear-gradient(115deg,#000 0%,rgba(0,0,0,.6) 42%,rgba(0,0,0,.1) 100%)}
+.business-card-waves path{opacity:.8!important}
 </style>
 <style>
 /* ===== Zoolutions Lab · v7 — tipografía Apple (Inter) en toda la web ===== */
@@ -2862,7 +2866,8 @@ var waves=document.createElementNS('http://www.w3.org/2000/svg','svg');waves.set
 var defs=document.createElementNS('http://www.w3.org/2000/svg','defs'),gradient=document.createElementNS('http://www.w3.org/2000/svg','linearGradient');gradient.id='business-dune-'+i;gradient.setAttribute('x1','0');gradient.setAttribute('y1','0');gradient.setAttribute('x2','1');gradient.setAttribute('y2','0');
 [['0','.02'],['.18','.38'],['.5','.72'],['.82','.38'],['1','.02']].forEach(function(stop){var st=document.createElementNS('http://www.w3.org/2000/svg','stop');st.setAttribute('offset',stop[0]);st.setAttribute('stop-color','#fff');st.setAttribute('stop-opacity',stop[1]);gradient.append(st);});defs.append(gradient);waves.append(defs);
 var waveField=document.createElementNS('http://www.w3.org/2000/svg','g');waveField.setAttribute('class','business-wave-current');
-for(var j=0;j<11;j++){var y=5+j*9,A=3.4,H=9,d='M-36 '+y+' Q-31.5 '+(y-2*A)+' -27 '+y;for(var k=1;k<26;k++){d+=' T'+(-27+k*H)+' '+y;}var path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d',d);path.setAttribute('stroke','url(#business-dune-'+i+')');path.setAttribute('stroke-width','0.8');path.setAttribute('stroke-linecap','round');path.setAttribute('fill','none');path.setAttribute('vector-effect','non-scaling-stroke');waveField.append(path);}
+function wv(x){return 20*Math.sin(x*.0628318)+5*Math.sin(x*.1256637+1.1);}
+for(var c=-40;c<=140;c+=6){var d='';for(var xx=-110;xx<=200;xx+=3){d+=(xx===-110?'M':'L')+xx+' '+(c+wv(xx)).toFixed(2)+' ';}var path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d',d);path.setAttribute('stroke','#fff');path.setAttribute('stroke-width','0.75');path.setAttribute('stroke-linejoin','round');path.setAttribute('fill','none');path.setAttribute('vector-effect','non-scaling-stroke');waveField.append(path);}
 waves.append(waveField);
 var starA=node('span','business-card-star star-a'),starB=node('span','business-card-star star-b');starA.setAttribute('aria-hidden','true');starB.setAttribute('aria-hidden','true');b.append(number,symbol,title,desc,link,waves,starA,starB);b.addEventListener('click',function(){pauseFrame();setCase(i);wanted=!reduced.matches;var ds=document.getElementById('demo-negocio');window.scrollTo({top:Math.round(ds.getBoundingClientRect().top+window.pageYOffset),behavior:reduced.matches?'auto':'smooth'});resume();});grid.append(b);
 var option=node('option','',c.name);option.value=String(i);select.append(option);});
