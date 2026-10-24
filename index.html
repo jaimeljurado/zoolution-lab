@@ -339,6 +339,29 @@ h2 { font: 400 clamp(26px, 3vw, 44px)/1.15 var(--pixel); letter-spacing: -.01em;
   .mini-foot { white-space: normal; padding: 0 var(--px) 24px; }
 }
 
+
+/* ================= v61 ================= */
+.screen-section{scroll-margin-top:0!important}
+.nav-code-bit{right:auto;font-family:var(--pixel);font-size:.78em;letter-spacing:0;line-height:1}
+@media(min-width:1000px){.hero .goat-promise{margin-right:clamp(40px,5.4vw,120px)!important}}
+.screen-motion .business-grid{perspective:1400px;perspective-origin:50% 40%}
+.screen-motion .business-grid .business-card{
+ opacity:calc(var(--ci,1)*(1 - var(--co,0)*1.15));
+ transform:translate3d(calc(var(--cx,0)*(1 - var(--ci,1))*-1px + var(--cx,0)*var(--co,0)*2.4px),calc((1 - var(--ci,1))*120px - var(--co,0)*170px),0) rotateX(calc((1 - var(--ci,1))*28deg - var(--co,0)*32deg)) rotateZ(calc(var(--co,0)*var(--cs,0)*6deg)) scale(calc(.84 + var(--ci,1)*.16 - var(--co,0)*.24));
+ filter:blur(calc((1 - var(--ci,1))*15px + var(--co,0)*13px));
+ transform-origin:50% 100%;will-change:transform,opacity,filter}
+.business-card-star{display:none}
+@media(hover:hover) and (pointer:fine){
+.business-card-star{display:block;position:absolute!important;z-index:0!important;width:120px;height:1.5px;left:-30%;top:-30%;pointer-events:none;opacity:0;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.9));filter:drop-shadow(0 0 4px rgba(255,255,255,.6))}
+.business-card-star::after{content:"";position:absolute;right:-1px;top:50%;width:3px;height:3px;margin-top:-1.5px;border-radius:50%;background:#fff;box-shadow:0 0 7px 2px rgba(255,255,255,.55)}
+.business-card-star.star-a{transform:rotate(26deg)}
+.business-card-star.star-b{transform:rotate(154deg);left:120%}
+.business-card:hover .star-a,.business-card:focus-visible .star-a{animation:bc-star-a 6s linear infinite}
+.business-card:hover .star-b,.business-card:focus-visible .star-b{animation:bc-star-b 6s linear infinite 3s}
+}
+@keyframes bc-star-a{0%{left:-20%;top:-30%;opacity:0}2%{opacity:1}13%{opacity:1}15%{left:100%;top:110%;opacity:0}100%{left:100%;top:110%;opacity:0}}
+@keyframes bc-star-b{0%{left:120%;top:-30%;opacity:0}2%{opacity:1}13%{opacity:1}15%{left:-20%;top:110%;opacity:0}100%{left:-20%;top:110%;opacity:0}}
+@media(prefers-reduced-motion:reduce){.business-card-star{display:none!important;animation:none!important}.screen-motion .business-grid .business-card{opacity:1;transform:none;filter:none}}
 </style>
 <style>
 /* ===== Zoolutions Lab · v7 — tipografía Apple (Inter) en toda la web ===== */
@@ -2128,6 +2151,13 @@ body.one.past .nav { top: 14px; }
         var cell = glyphs.children[i];
         cell.style.left = (rect.left - origin.left) + "px";
         cell.style.width = rect.width + "px";
+        var bitEl = cell.querySelector(".nav-code-bit");
+        if (bitEl) {
+          // Cada 0/1 ocupa un hueco de igual ancho repartido por toda la palabra: nunca se pisan.
+          var pitch = origin.width / Array.from(word).length, centre = (i + .5) * pitch;
+          bitEl.style.width = pitch + "px";
+          bitEl.style.left = (centre - pitch / 2 - (rect.left - origin.left)) + "px";
+        }
         offset += c.length;
       });
       range.detach();
@@ -2812,7 +2842,7 @@ var defs=document.createElementNS('http://www.w3.org/2000/svg','defs'),gradient=
 var waveField=document.createElementNS('http://www.w3.org/2000/svg','g');waveField.setAttribute('class','business-wave-current');
 for(var j=0;j<11;j++){var y=4+j*9.2,amp=4.8+(j%3)*.45,d='M-14 '+y+' C-2 '+(y-amp)+' 7 '+(y-amp)+' 18 '+y+' S42 '+(y+amp)+' 54 '+y+' S78 '+(y-amp)+' 90 '+y+' S114 '+(y+amp)+' 126 '+y+' S148 '+(y-amp)+' 160 '+y;var path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d',d);path.setAttribute('stroke','url(#business-dune-'+i+')');path.setAttribute('stroke-width',j===5?'0.9':'0.72');path.setAttribute('stroke-linecap','round');path.setAttribute('fill','none');path.setAttribute('vector-effect','non-scaling-stroke');waveField.append(path);}
 waves.append(waveField);
-b.append(number,symbol,title,desc,link,waves);b.addEventListener('click',function(){pauseFrame();setCase(i);wanted=!reduced.matches;document.getElementById('demo-negocio').scrollIntoView({behavior:reduced.matches?'auto':'smooth'});resume();});grid.append(b);
+var starA=node('span','business-card-star star-a'),starB=node('span','business-card-star star-b');starA.setAttribute('aria-hidden','true');starB.setAttribute('aria-hidden','true');b.append(number,symbol,title,desc,link,waves,starA,starB);b.addEventListener('click',function(){pauseFrame();setCase(i);wanted=!reduced.matches;var ds=document.getElementById('demo-negocio');window.scrollTo({top:Math.round(ds.getBoundingClientRect().top+window.pageYOffset),behavior:reduced.matches?'auto':'smooth'});resume();});grid.append(b);
 var option=node('option','',c.name);option.value=String(i);select.append(option);});
 select.addEventListener('change',function(){pauseFrame();setCase(Number(select.value));wanted=!reduced.matches;resume();markPlay();});
 play.addEventListener('click',function(){if(reduced.matches){elapsed=((step+1)%4)*4000;renderStep((step+1)%4,true);progress();return;}wanted=!frame;if(wanted)resume();else pauseFrame();});
@@ -2843,6 +2873,12 @@ function updateScroll(){pending=0;var vh=innerHeight;
  // offsetLeft/Top no incluyen la transformación actual: el centro no deriva al hacer scroll.
  var dx=(group.clientWidth/2-card.offsetLeft-card.offsetWidth/2)*.65*(1-ease),dy=(group.clientHeight/2-card.offsetTop-card.offsetHeight/2)*.65*(1-ease);
  card.style.setProperty('--gather-x',dx.toFixed(2)+'px');card.style.setProperty('--gather-y',dy.toFixed(2)+'px');
+ });
+ var cardsList=[].slice.call(group.querySelectorAll('.business-card')),o=(reduced.matches||!desktop.matches)?0:clamp(-r.top/(vh*.62));
+ cardsList.forEach(function(card,i){var col=i%3,row=Math.floor(i/3);
+ var pi=reduced.matches?1:clamp((p*1.25-(row*.2+col*.07))/.62),ci=1-Math.pow(1-pi,3);
+ var oi=clamp((o-(row*.16+(2-col)*.05))/.62),co=Math.pow(oi,1.7);
+ card.style.setProperty('--ci',ci.toFixed(4));card.style.setProperty('--co',co.toFixed(4));card.style.setProperty('--cx',String((col-1)*70));card.style.setProperty('--cs',String(col-1));
  });}
  });
 }
