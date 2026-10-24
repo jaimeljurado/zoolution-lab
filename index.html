@@ -370,6 +370,15 @@ h2 { font: 400 clamp(26px, 3vw, 44px)/1.15 var(--pixel); letter-spacing: -.01em;
 .screen-motion #negocios [data-motion-title]{transform-origin:0 55%;transform:translate3d(0,calc((1 - var(--tt,1))*60px),0) scale(calc(1 + (1 - var(--tt,1))*var(--ts)))!important;filter:blur(calc((1 - var(--tt,1))*38px))!important;opacity:clamp(0,calc(var(--tt,1)*2.4),1)!important;will-change:transform,filter,opacity}
 @media(min-width:1000px){.hero .goat-promise{align-self:flex-end!important}}
 @media(prefers-reduced-motion:reduce){.screen-motion #negocios [data-motion-title]{transform:none!important;filter:none!important;opacity:1!important}}
+
+/* v63 */
+@media(min-width:1000px){.hero .goat-promise{margin-right:clamp(14px,2.4vw,52px)!important;margin-bottom:clamp(22px,3.4vh,40px)!important}}
+.screen-motion .business-grid .business-card{filter:blur(calc((1 - var(--cb,1))*26px + var(--co,0)*13px))}
+#demo-negocio [data-motion-title] .title-letter{opacity:1!important;filter:none!important;transform:none!important}
+.dt-a,.dt-b{display:inline-block;white-space:nowrap;will-change:transform,filter,opacity}
+.dt-a{transform-origin:0 50%;transform:translate3d(calc((1 - var(--dt,1))*-78vw),0,0) scale(calc(1 + (1 - var(--dt,1))*.4));filter:blur(calc((1 - var(--dt,1))*32px));opacity:clamp(0,calc(var(--dt,1)*2.2),1)}
+.dt-b{transform-origin:100% 50%;transform:translate3d(calc((1 - var(--dt,1))*78vw),0,0) scale(calc(1 + (1 - var(--dt,1))*.4));filter:blur(calc((1 - var(--dt,1))*32px));opacity:clamp(0,calc(var(--dt,1)*2.2),1)}
+@media(prefers-reduced-motion:reduce){.dt-a,.dt-b{transform:none;filter:none;opacity:1}}
 </style>
 <style>
 /* ===== Zoolutions Lab · v7 — tipografía Apple (Inter) en toda la web ===== */
@@ -2865,6 +2874,8 @@ setCase(0);markPlay();
 document.querySelectorAll('[data-motion-title]').forEach(function(title){
  var text=title.textContent.trim().replace('tareas.Más','tareas. Más'),breakAfter=Number(title.dataset.breakAfter)||0;title.replaceChildren();Array.from(text).forEach(function(c,i){if(breakAfter&&i===breakAfter){title.append(document.createElement('br'));if(c===' ')return;}var letter=node('span','title-letter',c);letter.style.setProperty('--letter-index',i);title.append(letter);});
 });
+(function(){var h=document.getElementById('demo-title');if(!h)return;var L=h.querySelectorAll('.title-letter');if(L.length<20)return;var a=node('span','dt-a'),b=node('span','dt-b');
+ [].slice.call(L).forEach(function(l,i){if(i<13)a.append(l);else if(i>13)b.append(l);else l.remove();});h.append(a,document.createTextNode(' '),b);})();
 var sections=[].slice.call(document.querySelectorAll('.screen-section'));
 var pending=0,desktop=matchMedia('(min-width: 1000px)');
 function clamp(n){return Math.max(0,Math.min(1,n));}
@@ -2876,7 +2887,7 @@ function fitScreens(){
  updateScroll();
 }
 function updateScroll(){pending=0;var vh=innerHeight;
- sections.forEach(function(section){var r=section.getBoundingClientRect();var p=reduced.matches?1:clamp((vh-r.top)/(vh*.75));var ease=1-Math.pow(1-p,2);section.style.setProperty('--appear',ease.toFixed(4));if(section.id==='negocios'){var tt=reduced.matches?1:clamp((p-.1)/.95);section.style.setProperty('--tt',(1-Math.pow(1-tt,3)).toFixed(4));}section.querySelectorAll('.title-letter').forEach(function(l,i){var q=clamp((p-i*.003)/.65);l.style.setProperty('--letter-p',q.toFixed(4));});section.dataset.motionComplete=String(p>=1);
+ sections.forEach(function(section){var r=section.getBoundingClientRect();var p=reduced.matches?1:clamp((vh-r.top)/(vh*.75));var ease=1-Math.pow(1-p,2);section.style.setProperty('--appear',ease.toFixed(4));if(section.id==='demo-negocio'){var dt=reduced.matches?1:clamp((p-.1)/.75);section.style.setProperty('--dt',(1-Math.pow(1-dt,3)).toFixed(4));}if(section.id==='negocios'){var tt=reduced.matches?1:clamp((p-.1)/.95);section.style.setProperty('--tt',(1-Math.pow(1-tt,3)).toFixed(4));}section.querySelectorAll('.title-letter').forEach(function(l,i){var q=clamp((p-i*.003)/.65);l.style.setProperty('--letter-p',q.toFixed(4));});section.dataset.motionComplete=String(p>=1);
  var group=section.querySelector('.business-grid');if(group){var gr=group.getBoundingClientRect();group.querySelectorAll('.business-card').forEach(function(card){
  // offsetLeft/Top no incluyen la transformación actual: el centro no deriva al hacer scroll.
  var dx=(group.clientWidth/2-card.offsetLeft-card.offsetWidth/2)*.65*(1-ease),dy=(group.clientHeight/2-card.offsetTop-card.offsetHeight/2)*.65*(1-ease);
@@ -2886,7 +2897,7 @@ function updateScroll(){pending=0;var vh=innerHeight;
  cardsList.forEach(function(card,i){var col=i%3,row=Math.floor(i/3);
  var pi=reduced.matches?1:clamp((p*1.25-(row*.2+col*.07))/.62),ci=1-Math.pow(1-pi,3);
  var oi=clamp((o-(row*.16+(2-col)*.05))/.62),co=Math.pow(oi,1.7);
- card.style.setProperty('--ci',ci.toFixed(4));card.style.setProperty('--co',co.toFixed(4));card.style.setProperty('--cx',String((col-1)*70));card.style.setProperty('--cs',String(col-1));
+ var cb=reduced.matches?1:clamp((p*1.25-(row*.2+col*.07)-.1)/.78);card.style.setProperty('--cb',(1-Math.pow(1-cb,2)).toFixed(4));card.style.setProperty('--ci',ci.toFixed(4));card.style.setProperty('--co',co.toFixed(4));card.style.setProperty('--cx',String((col-1)*70));card.style.setProperty('--cs',String(col-1));
  });}
  });
 }
